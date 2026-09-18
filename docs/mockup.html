@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grupo de Aracnología — Mygalomorphae · CERZOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200;0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&family=Karla:wght@400;500;600&family=Azeret+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F2F2EE; --paper-2:#E7E7E0; --ink:#17191A; --ink-soft:#5C6160;
+    --petrol:#1F4E4A; --petrol-lt:#3E7A73; --hairline:#CFCFC7;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth; scroll-padding-top:62px;}
+  @media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto;} *{animation:none !important; transition:none !important;} }
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:'Karla',sans-serif;font-size:16.5px;line-height:1.62;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 34px;}
+  .lbl{font-family:'Azeret Mono',monospace;font-size:10.5px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--petrol);}
+  .sci{font-family:'Newsreader',serif;font-style:italic;}
+  a{color:inherit;}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--petrol);outline-offset:3px;}
+
+  /* ═══ NAV ═══ */
+  .topbar{position:sticky;top:0;z-index:60;background:rgba(242,242,238,0.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--hairline);}
+  .topbar .wrap{display:flex;align-items:center;justify-content:space-between;height:61px;gap:18px;}
+  .logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0;}
+  .logo svg{width:26px;height:26px;}
+  .logo span{font-family:'Newsreader',serif;font-size:16px;letter-spacing:-0.01em;line-height:1.1;}
+  .navlinks{display:flex;gap:2px;align-items:center;}
+  .navlinks a{font-size:12.5px;text-decoration:none;color:var(--ink-soft);padding:7px 10px;border-radius:2px;letter-spacing:0.01em;transition:background .12s,color .12s;}
+  .navlinks a:hover{background:var(--petrol);color:#F4F7F6;}
+  .lang{font-family:'Azeret Mono',monospace;font-size:10.5px;letter-spacing:0.1em;color:var(--ink-soft);flex-shrink:0;}
+  .lang b{color:var(--ink);}
+  .burger{display:none;background:none;border:1px solid var(--hairline);padding:7px 11px;font-family:'Azeret Mono',monospace;font-size:10px;letter-spacing:0.1em;cursor:pointer;}
+  @media (max-width:1060px){ .navlinks{display:none;} .burger{display:block;} }
+
+  /* ═══ HERO ═══ */
+  .hero{position:relative;min-height:min(80vh,680px);display:flex;align-items:flex-end;overflow:hidden;background:#171C1A;}
+  .slide{position:absolute;inset:0;opacity:0;animation:rot 18s infinite;}
+  .slide:nth-child(1){background:radial-gradient(120% 90% at 68% 30%,#5A6A4E 0%,#2F3A30 45%,#161C18 100%);animation-delay:0s;}
+  .slide:nth-child(2){background:radial-gradient(120% 90% at 35% 45%,#8A7355 0%,#4A3B2A 46%,#1C1712 100%);animation-delay:6s;}
+  .slide:nth-child(3){background:radial-gradient(120% 90% at 55% 25%,#5E7078 0%,#31434A 46%,#151D20 100%);animation-delay:12s;}
+  @keyframes rot{0%{opacity:0}5%{opacity:1}28%{opacity:1}36%{opacity:0}100%{opacity:0}}
+  .hero::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,14,14,0.25) 0%,rgba(10,14,14,0.78) 76%);}
+  .hero .photo-note{position:absolute;top:16px;right:22px;z-index:3;font-family:'Azeret Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(242,242,238,0.5);border:1px dashed rgba(242,242,238,0.3);padding:5px 9px;}
+  .hero .wrap{position:relative;z-index:2;padding-bottom:54px;padding-top:96px;width:100%;}
+  .hero h1{font-family:'Newsreader',serif;font-weight:200;font-size:clamp(34px,5.6vw,66px);line-height:1.05;letter-spacing:-0.022em;color:#F4F5F1;margin:0 0 18px;max-width:17ch;}
+  .hero h1 em{font-weight:300;font-style:italic;}
+  .hero .kicker{color:rgba(244,245,241,0.72);letter-spacing:0.14em;margin-bottom:24px;display:block;}
+  .hero .standfirst{color:rgba(244,245,241,0.86);max-width:46ch;font-size:16.5px;margin:0;}
+  .keywords{margin-top:30px;padding-top:16px;border-top:1px solid rgba(244,245,241,0.22);display:flex;gap:10px;flex-wrap:wrap;}
+  .keywords span{font-family:'Azeret Mono',monospace;font-size:9.5px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(244,245,241,0.72);border:1px solid rgba(244,245,241,0.3);padding:4px 10px;}
+  .dots{position:absolute;bottom:22px;right:34px;z-index:3;display:flex;gap:7px;}
+  .dots i{width:6px;height:6px;border-radius:50%;background:rgba(244,245,241,0.35);}
+  .dots i:first-child{background:rgba(244,245,241,0.9);}
+
+  /* ═══ SCAFFOLD ═══ */
+  .band{padding:84px 0;}
+  .band--rule{border-top:1px solid var(--hairline);}
+  .band--tint{background:var(--paper-2);}
+  .head-2col{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.55fr);gap:52px;align-items:start;}
+  @media (max-width:860px){.head-2col{grid-template-columns:1fr;gap:24px;}}
+  h2.sec{font-family:'Newsreader',serif;font-weight:300;font-size:clamp(26px,3.2vw,37px);line-height:1.12;letter-spacing:-0.018em;margin:10px 0 0;}
+  .prose p{margin:0 0 17px;} .prose p:last-child{margin-bottom:0;}
+  .prose .lead{font-size:18px;} .prose .muted{color:var(--ink-soft);}
+  .more-link{display:inline-block;margin-top:24px;font-family:'Azeret Mono',monospace;font-size:11px;letter-spacing:0.11em;text-transform:uppercase;color:var(--petrol);text-decoration:none;border-bottom:1px solid var(--petrol);padding-bottom:3px;}
+  .more-link:hover{color:var(--ink);border-bottom-color:var(--ink);}
+  .ph{background:var(--paper-2);border:1px solid var(--hairline);position:relative;}
+  .ph::after{content:attr(data-ph);position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Azeret Mono',monospace;font-size:9px;letter-spacing:0.16em;color:#A9A9A0;text-align:center;padding:8px;}
+
+  /* ═══ BIENVENIDA ═══ */
+  .welcome{display:grid;grid-template-columns:1.25fr 0.9fr;gap:54px;align-items:start;margin-top:8px;}
+  @media (max-width:860px){.welcome{grid-template-columns:1fr;gap:30px;}}
+  .welcome-photos{display:grid;gap:14px;}
+  .welcome-photos .ph{aspect-ratio:4/3;}
+  .welcome-photos .ph:nth-child(2){aspect-ratio:1/1;margin-left:32px;}
+  @media (max-width:860px){.welcome-photos{grid-template-columns:1fr 1fr;} .welcome-photos .ph:nth-child(2){margin-left:0;}}
+
+  /* ═══ NOVEDADES ═══ */
+  .news-list{margin-top:36px;border-top:1px solid var(--hairline);}
+  .news-item{display:grid;grid-template-columns:112px 1fr auto;gap:24px;align-items:baseline;padding:21px 0;border-bottom:1px solid var(--hairline);text-decoration:none;}
+  .news-item:hover{background:rgba(31,78,74,0.05);}
+  .news-item .date{font-family:'Azeret Mono',monospace;font-size:11px;letter-spacing:0.08em;color:var(--ink-soft);white-space:nowrap;}
+  .news-item h3{font-family:'Newsreader',serif;font-weight:400;font-size:20px;line-height:1.3;margin:0 0 4px;letter-spacing:-0.01em;}
+  .news-item p{margin:0;font-size:14.5px;color:var(--ink-soft);}
+  .kind{font-family:'Azeret Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--petrol);border:1px solid var(--petrol);padding:3px 8px;white-space:nowrap;}
+  @media (max-width:740px){.news-item{grid-template-columns:1fr;gap:7px;} .news-item .kind{justify-self:start;}}
+
+  /* ═══ EQUIPO ═══ */
+  .team-grid{margin-top:40px;display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
+  @media (max-width:940px){.team-grid{grid-template-columns:repeat(3,1fr);}}
+  @media (max-width:640px){.team-grid{grid-template-columns:repeat(2,1fr);}}
+  .person .face{aspect-ratio:1/1.14;}
+  .person h3{font-family:'Newsreader',serif;font-weight:400;font-size:17px;margin:12px 0 2px;}
+  .person .rango{font-family:'Azeret Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--petrol);margin:0 0 6px;}
+  .person .focus{font-size:13.5px;color:var(--ink-soft);margin:0 0 10px;line-height:1.45;}
+  .plinks{display:flex;gap:8px;flex-wrap:wrap;}
+  .plinks a{font-family:'Azeret Mono',monospace;font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-soft);text-decoration:none;border:1px solid var(--hairline);padding:3px 7px;}
+  .plinks a:hover{border-color:var(--petrol);color:var(--petrol);}
+  .sedes{margin-top:44px;display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:stretch;}
+  @media (max-width:740px){.sedes{grid-template-columns:1fr;}}
+  .sede-map{min-height:230px;background:repeating-linear-gradient(0deg,rgba(23,25,26,0.05) 0 1px,transparent 1px 26px),repeating-linear-gradient(90deg,rgba(23,25,26,0.05) 0 1px,transparent 1px 26px),var(--paper-2);border:1px solid var(--hairline);position:relative;}
+  .pin-map{position:absolute;display:flex;align-items:center;gap:7px;font-family:'Azeret Mono',monospace;font-size:10px;letter-spacing:0.06em;}
+  .pin-map::before{content:'';width:11px;height:11px;border-radius:50%;background:var(--petrol);box-shadow:0 0 0 4px rgba(31,78,74,0.2);flex-shrink:0;}
+  .sede-card{border:1px solid var(--hairline);padding:20px 22px;background:var(--paper);}
+  .sede-card h3{font-family:'Newsreader',serif;font-weight:400;font-size:18px;margin:0 0 4px;}
+  .sede-card p{margin:0 0 16px;font-size:14px;color:var(--ink-soft);}
+
+  /* ═══ PUBLICACIONES ═══ */
+  .pubs{background:var(--petrol);color:#EDF1F0;}
+  .pubs h2.sec{color:#F4F7F6;} .pubs .lbl{color:rgba(237,241,240,0.6);}
+  .pubs .prose p{color:rgba(237,241,240,0.84);}
+  .pub-list{margin-top:36px;border-top:1px solid rgba(237,241,240,0.25);}
+  .pub{display:grid;grid-template-columns:62px 1fr auto;gap:22px;padding:18px 0;border-bottom:1px solid rgba(237,241,240,0.15);align-items:baseline;}
+  .pub .yr{font-family:'Azeret Mono',monospace;font-size:11px;color:rgba(237,241,240,0.6);}
+  .pub h3{font-family:'Newsreader',serif;font-weight:400;font-size:18px;line-height:1.35;margin:0 0 3px;color:#F4F7F6;}
+  .pub .aut{margin:0;font-size:13.5px;color:rgba(237,241,240,0.66);}
+  .pub .acts{display:flex;gap:8px;}
+  .pub .acts a{font-family:'Azeret Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(237,241,240,0.85);text-decoration:none;border:1px solid rgba(237,241,240,0.4);padding:4px 9px;white-space:nowrap;}
+  .pub .acts a:hover{background:#F4F7F6;color:var(--petrol);border-color:#F4F7F6;}
+  @media (max-width:740px){.pub{grid-template-columns:1fr;gap:8px;} .pub .acts{justify-content:flex-start;}}
+  .pubs .more-link{color:rgba(237,241,240,0.9);border-bottom-color:rgba(237,241,240,0.5);}
+  .pubs .more-link:hover{color:#fff;border-bottom-color:#fff;}
+
+  /* ═══ PROYECTOS ═══ */
+  .proy-grid{margin-top:40px;display:grid;grid-template-columns:repeat(3,1fr);gap:26px;}
+  @media (max-width:920px){.proy-grid{grid-template-columns:repeat(2,1fr);}}
+  @media (max-width:620px){.proy-grid{grid-template-columns:1fr;}}
+  .proy .ph{aspect-ratio:16/10;}
+  .proy .body{border:1px solid var(--hairline);border-top:none;padding:16px 17px 18px;background:var(--paper);}
+  .proy .fund{font-family:'Azeret Mono',monospace;font-size:9px;letter-spacing:0.11em;text-transform:uppercase;color:var(--petrol);display:flex;justify-content:space-between;gap:10px;margin-bottom:8px;}
+  .proy h3{font-family:'Newsreader',serif;font-weight:400;font-size:18px;line-height:1.32;margin:0 0 8px;}
+  .proy p{margin:0;font-size:13.5px;color:var(--ink-soft);line-height:1.5;}
+
+  /* ═══ CAMPAÑAS ═══ */
+  .camp-layout{margin-top:40px;display:grid;grid-template-columns:0.82fr 1.18fr;gap:34px;align-items:start;}
+  @media (max-width:900px){.camp-layout{grid-template-columns:1fr;}}
+  .camp-map{position:sticky;top:82px;min-height:420px;background:repeating-linear-gradient(0deg,rgba(23,25,26,0.05) 0 1px,transparent 1px 28px),repeating-linear-gradient(90deg,rgba(23,25,26,0.05) 0 1px,transparent 1px 28px),var(--paper-2);border:1px solid var(--hairline);}
+  .camp-map .note{position:absolute;bottom:10px;left:12px;font-family:'Azeret Mono',monospace;font-size:9px;letter-spacing:0.1em;color:#9A9A92;}
+  .camp-entry{border-top:1px solid var(--hairline);padding:26px 0;}
+  .camp-entry:first-child{border-top:none;padding-top:0;}
+  .camp-entry .shots{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
+  .camp-entry .shots .ph{aspect-ratio:4/3;}
+  .camp-entry h3{font-family:'Newsreader',serif;font-weight:400;font-size:21px;margin:0 0 6px;letter-spacing:-0.01em;}
+  .camp-entry .meta{font-family:'Azeret Mono',monospace;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--petrol);margin:0 0 10px;}
+  .camp-entry p{margin:0;font-size:14.5px;color:var(--ink-soft);}
+
+  /* ═══ DIVULGACIÓN ═══ */
+  .vid-grid{margin-top:36px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  @media (max-width:920px){.vid-grid{grid-template-columns:repeat(2,1fr);}}
+  @media (max-width:600px){.vid-grid{grid-template-columns:1fr;}}
+  .vid{text-decoration:none;display:block;}
+  .vid .thumb{aspect-ratio:16/9;position:relative;overflow:hidden;border:1px solid var(--hairline);background:#1d211f;}
+  .vid .thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+  .vid .thumb::after{content:'';position:absolute;inset:0;background:rgba(10,14,13,0.28);transition:background .15s;}
+  .vid:hover .thumb::after{background:rgba(10,14,13,0.08);}
+  .vid .play{position:absolute;z-index:2;top:50%;left:50%;transform:translate(-50%,-50%);width:46px;height:46px;border-radius:50%;background:rgba(242,242,238,0.92);display:flex;align-items:center;justify-content:center;}
+  .vid .play::before{content:'';border-left:13px solid var(--petrol);border-top:8px solid transparent;border-bottom:8px solid transparent;margin-left:3px;}
+  .vid .badge{position:absolute;z-index:2;top:9px;left:9px;font-family:'Azeret Mono',monospace;font-size:8.5px;letter-spacing:0.1em;text-transform:uppercase;background:rgba(23,25,26,0.8);color:#F2F2EE;padding:3px 7px;}
+  .vid h3{font-family:'Newsreader',serif;font-weight:400;font-size:16.5px;line-height:1.32;margin:11px 0 0;}
+  .div-cols{margin-top:54px;display:grid;grid-template-columns:1fr 1fr;gap:44px;}
+  @media (max-width:780px){.div-cols{grid-template-columns:1fr;gap:32px;}}
+  .div-cols h3{font-family:'Azeret Mono',monospace;font-size:9.5px;letter-spacing:0.13em;text-transform:uppercase;color:var(--petrol);margin:0 0 14px;font-weight:500;}
+  .art-list{list-style:none;margin:0;padding:0;}
+  .art-list li{border-bottom:1px solid var(--hairline);padding:13px 0;font-size:15px;}
+  .art-list li:first-child{border-top:1px solid var(--hairline);}
+  .art-list .tag{font-family:'Azeret Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-soft);display:block;margin-bottom:2px;}
+  .art-list a{text-decoration:none;border-bottom:1px solid var(--hairline);}
+  .art-list a:hover{border-bottom-color:var(--petrol);}
+
+  /* ═══ CONTACTO ═══ */
+  .cta{background:#171C1A;color:#F4F5F1;padding:76px 0;text-align:center;position:relative;overflow:hidden;}
+  .cta .bgph{position:absolute;inset:0;background:radial-gradient(110% 90% at 50% 40%,#3F4C3E 0%,#232B25 50%,#12160F 100%);opacity:0.95;}
+  .cta .wrap{position:relative;z-index:2;}
+  .cta h2{font-family:'Newsreader',serif;font-weight:200;font-size:clamp(27px,4vw,44px);line-height:1.15;letter-spacing:-0.02em;margin:14px auto 16px;max-width:19ch;}
+  .cta p{color:rgba(244,245,241,0.8);max-width:52ch;margin:0 auto 28px;}
+  .cta .lbl{color:rgba(244,245,241,0.6);}
+  .cta-btn{display:inline-block;background:#F4F7F6;color:var(--petrol);text-decoration:none;padding:13px 26px;font-family:'Azeret Mono',monospace;font-size:11px;letter-spacing:0.11em;text-transform:uppercase;}
+  .cta-btn:hover{background:#fff;}
+  .contact-grid{margin-top:40px;display:grid;grid-template-columns:repeat(3,1fr);gap:34px;}
+  @media (max-width:780px){.contact-grid{grid-template-columns:1fr;gap:26px;}}
+  .contact-grid h3{font-family:'Azeret Mono',monospace;font-size:9.5px;letter-spacing:0.13em;text-transform:uppercase;color:var(--petrol);margin:0 0 9px;font-weight:500;}
+  .contact-grid p{margin:0;font-size:15px;line-height:1.6;color:var(--ink-soft);}
+  .contact-grid a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--hairline);}
+  .contact-grid a:hover{border-bottom-color:var(--petrol);}
+  .socials{display:flex;gap:9px;flex-wrap:wrap;margin-top:4px;}
+  .socials a{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border:1px solid var(--hairline);border-bottom:1px solid var(--hairline);color:var(--ink-soft);text-decoration:none;}
+  .socials a:hover{border-color:var(--petrol);color:var(--petrol);}
+  .socials svg{width:17px;height:17px;}
+  .socials a.wide{width:auto;padding:0 12px;font-family:'Azeret Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;}
+
+  footer{border-top:1px solid var(--hairline);padding:26px 0 44px;font-family:'Azeret Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#8E938F;}
+  footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+</style>
+</head>
+<body>
+
+<!-- ═══════ NAV ═══════ -->
+<div class="topbar">
+  <div class="wrap">
+    <a class="logo" href="#portada">
+      <svg viewBox="0 0 40 40" fill="none" stroke="#1F4E4A" stroke-width="1.6">
+        <circle cx="20" cy="20" r="4.5"/>
+        <path d="M20 15.5 V4 M24.5 20 H36 M20 24.5 V36 M15.5 20 H4 M23.2 16.8 L31 9 M23.2 23.2 L31 31 M16.8 23.2 L9 31 M16.8 16.8 L9 9" stroke-width="1.1"/>
+        <circle cx="20" cy="20" r="10.5" stroke-width="0.9"/>
+        <circle cx="20" cy="20" r="16" stroke-width="0.9"/>
+      </svg>
+      <span>Grupo de<br>Aracnología</span>
+    </a>
+    <nav class="navlinks">
+      <a href="#portada">Portada</a>
+      <a href="#novedades">Novedades</a>
+      <a href="#equipo">Equipo</a>
+      <a href="#publicaciones">Publicaciones</a>
+      <a href="#proyectos">Proyectos</a>
+      <a href="#campanas">Campañas</a>
+      <a href="#divulgacion">Divulgación</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <span class="lang"><b>ES</b> / EN</span>
+    <button class="burger">Menú</button>
+  </div>
+</div>
+
+<!-- ═══════ PORTADA ═══════ -->
+<section class="hero" id="portada">
+  <div class="slide"></div><div class="slide"></div><div class="slide"></div>
+  <span class="photo-note">Portada — 3 fotos rotativas</span>
+  <div class="dots"><i></i><i></i><i></i></div>
+  <div class="wrap">
+    <span class="lbl kicker">Sistemática · Biogeografía · Ecología · Comportamiento</span>
+    <h1>El origen y la diversidad de las arañas <em>Mygalomorphae</em></h1>
+    <p class="standfirst">Un grupo de investigación del CERZOS y el Departamento de Agronomía, en Bahía Blanca.</p>
+    <div class="keywords">
+      <span>Migalomorfas</span><span>Filogenia</span><span>Especies nuevas</span>
+      <span>Conservación</span><span>Ecología térmica</span><span>Inventarios</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ BIENVENIDA ═══════ -->
+<section class="band">
+  <div class="wrap">
+    <span class="lbl">Quiénes somos</span>
+    <h2 class="sec" style="max-width:20ch">Migalomorfas como modelo de estudio</h2>
+    <div class="welcome">
+      <div class="prose">
+        <p class="lead">Abordamos estudios para la comprensión del origen y descripción de la diversidad de las arañas <span class="sci">Mygalomorphae</span>, indagando sobre los procesos que dan forma a su dinámica temporal y espacial. Integramos diversos aspectos sistemáticos, biogeográficos, ecológicos y comportamentales.</p>
+        <p class="muted">Las migalomorfas poseen un gran potencial para desarrollar estudios evolutivos integrativos debido a sus características biológicas únicas, que a su vez las ubican entre las principales especies en peligro de extinción. Implementamos enfoques multidisciplinarios utilizando a las migalomorfas como modelos de estudio para los procesos subyacentes en relación a su biodiversidad y a la evolución de los ecosistemas terrestres.</p>
+        <p class="muted">Específicamente, abordamos la descripción de nuevas especies, la realización de inventarios biológicos, bases de datos e imágenes digitales. Además, inferimos sobre la delimitación de especies a partir de análisis de filogenia morfológica y molecular y analizamos patrones biogeográficos y procesos involucrados. También estudiamos su historia natural, ecología térmica, comportamiento y conservación.</p>
+      </div>
+      <div class="welcome-photos">
+        <div class="ph" data-ph="FOTO DEL GRUPO"></div>
+        <div class="ph" data-ph="FOTO DE LABORATORIO"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ NOVEDADES ═══════ -->
+<section class="band band--rule" id="novedades">
+  <div class="wrap">
+    <div class="head-2col">
+      <div><span class="lbl">Novedades</span><h2 class="sec">Lo que está pasando</h2></div>
+      <div class="prose"><p class="muted">Actividades, premios, publicaciones y convocatorias. Cada entrada tiene su propio enlace para poder compartirla suelta.</p></div>
+    </div>
+    <div class="news-list">
+      <a class="news-item" href="/novedades/semana-de-la-ciencia">
+        <span class="date">08 · 09 · 2026</span>
+        <div><h3>Semana de la Ciencia: actividades abiertas</h3>
+          <p>Talleres y muestra de material de colección para escuelas y público general.</p></div>
+        <span class="kind">Divulgación</span>
+      </a>
+      <a class="news-item" href="/novedades/libro-tarantulas-argentina">
+        <span class="date">21 · 08 · 2026</span>
+        <div><h3>Ya salió <em>Tarántulas de Argentina</em></h3>
+          <p>El libro que veníamos preparando, con claves de identificación y fotografías de campo.</p></div>
+        <span class="kind">Libro</span>
+      </a>
+      <a class="news-item" href="/novedades/premio-divulgacion-cerzos">
+        <span class="date">30 · 07 · 2026</span>
+        <div><h3>Premio al mejor artículo de divulgación — Jornadas del CERZOS</h3>
+          <p>Reconocimiento a un trabajo del grupo en las jornadas anuales del centro.</p></div>
+        <span class="kind">Premio</span>
+      </a>
+      <a class="news-item" href="/novedades/pasantia-mai">
+        <span class="date">14 · 06 · 2026</span>
+        <div><h3>Mai comienza su pasantía en el grupo</h3>
+          <p>Se suma al equipo para trabajar en inventarios y procesamiento de material.</p></div>
+        <span class="kind">Equipo</span>
+      </a>
+      <a class="news-item" href="/novedades/resumen-publicaciones-2026">
+        <span class="date">02 · 05 · 2026</span>
+        <div><h3>Resumen de las últimas publicaciones del grupo</h3>
+          <p>Un repaso breve de los trabajos que salieron en los últimos meses, en lenguaje accesible.</p></div>
+        <span class="kind">Publicaciones</span>
+      </a>
+    </div>
+    <a class="more-link" href="/novedades">Ver todas las novedades →</a>
+  </div>
+</section>
+
+<!-- ═══════ EQUIPO ═══════ -->
+<section class="band band--rule band--tint" id="equipo">
+  <div class="wrap">
+    <div class="head-2col">
+      <div><span class="lbl">Equipo</span><h2 class="sec">Quiénes lo hacemos</h2></div>
+      <div class="prose"><p class="muted">Investigadores, becarios, tesistas y pasantes. Si te interesa hacer tu tesis o una pasantía con nosotros, escribinos.</p></div>
+    </div>
+    <div class="team-grid">
+      <div class="person">
+        <div class="ph face" data-ph="FOTO"></div>
+        <h3>Nombre Apellido</h3>
+        <p class="rango">Investigador/a — Director/a</p>
+        <p class="focus">Sistemática y filogenia de Mygalomorphae.</p>
+        <div class="plinks"><a href="#">Mail</a><a href="#">CONICET</a><a href="#">ResearchGate</a></div>
+      </div>
+      <div class="person">
+        <div class="ph face" data-ph="FOTO"></div>
+        <h3>Nombre Apellido</h3>
+        <p class="rango">Investigador/a</p>
+        <p class="focus">Biogeografía y patrones de distribución.</p>
+        <div class="plinks"><a href="#">Mail</a><a href="#">CONICET</a><a href="#">ResearchGate</a></div>
+      </div>
+      <div class="person">
+        <div class="ph face" data-ph="FOTO"></div>
+        <h3>Nombre Apellido</h3>
+        <p class="rango">Posdoc</p>
+        <p class="focus">Ecología térmica y comportamiento.</p>
+        <div class="plinks"><a href="#">Mail</a><a href="#">CONICET</a><a href="#">ResearchGate</a></div>
+      </div>
+      <div class="person">
+        <div class="ph face" data-ph="FOTO"></div>
+        <h3>Nombre Apellido</h3>
+        <p class="rango">Becario/a doctoral</p>
+        <p class="focus">Delimitación de especies con datos moleculares.</p>
+        <div class="plinks"><a href="#">Mail</a><a href="#">CONICET</a><a href="#">ResearchGate</a></div>
+      </div>
+    </div>
+
+    <div class="sedes">
+      <div class="sede-map">
+        <span class="pin-map" style="top:34%;left:28%">CERZOS</span>
+        <span class="pin-map" style="top:62%;left:54%">Dpto. Agronomía</span>
+      </div>
+      <div>
+        <div class="sede-card" style="margin-bottom:16px">
+          <h3>CERZOS</h3>
+          <p>Centro de Recursos Naturales Renovables de la Zona Semiárida<br>CONICET — Universidad Nacional del Sur, Bahía Blanca</p>
+        </div>
+        <div class="sede-card">
+          <h3>Departamento de Agronomía</h3>
+          <p>Universidad Nacional del Sur<br>Bahía Blanca, Buenos Aires</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ PUBLICACIONES ═══════ -->
+<section class="band band--rule pubs" id="publicaciones">
+  <div class="wrap">
+    <div class="head-2col">
+      <div><span class="lbl">Publicaciones</span><h2 class="sec">Trabajos científicos</h2></div>
+      <div class="prose"><p>Artículos revisados por pares, capítulos y libros del grupo. Donde la política de la revista lo permite, el PDF está disponible para descarga; en el resto, el enlace lleva al sitio de la editorial.</p></div>
+    </div>
+    <div class="pub-list">
+      <div class="pub">
+        <span class="yr">2026</span>
+        <div><h3>Título del artículo tal como fue publicado en la revista</h3>
+          <p class="aut">Apellido A., Apellido B., Apellido C. — <em>Nombre de la revista</em>, 48(2)</p></div>
+        <div class="acts"><a href="#">PDF</a><a href="#">DOI ↗</a></div>
+      </div>
+      <div class="pub">
+        <span class="yr">2025</span>
+        <div><h3>Delimitación de especies en un género de migalomorfas del centro argentino</h3>
+          <p class="aut">Apellido A., Apellido D. — <em>Nombre de la revista</em>, 12(4)</p></div>
+        <div class="acts"><a href="#">DOI ↗</a></div>
+      </div>
+      <div class="pub">
+        <span class="yr">2025</span>
+        <div><h3>Inventario de arañas Mygalomorphae de la zona semiárida</h3>
+          <p class="aut">Apellido B., Apellido C., Apellido E. — <em>Nombre de la revista</em>, 30(1)</p></div>
+        <div class="acts"><a href="#">PDF</a><a href="#">DOI ↗</a></div>
+      </div>
+      <div class="pub">
+        <span class="yr">2024</span>
+        <div><h3>Ecología térmica y actividad estacional en tarántulas</h3>
+          <p class="aut">Apellido C., Apellido A. — <em>Nombre de la revista</em>, 19(3)</p></div>
+        <div class="acts"><a href="#">DOI ↗</a></div>
+      </div>
+    </div>
+    <a class="more-link" href="/publicaciones">Ver el listado completo →</a>
+  </div>
+</section>
+
+<!-- ═══════ PROYECTOS ═══════ -->
+<section class="band band--rule" id="proyectos">
+  <div class="wrap">
+    <div class="head-2col">
+      <div><span class="lbl">Proyectos</span><h2 class="sec">Con qué financiamiento trabajamos</h2></div>
+      <div class="prose"><p class="muted">Proyectos vigentes y finalizados, con su fuente de financiamiento.</p></div>
+    </div>
+    <div class="proy-grid">
+      <div class="proy">
+        <div class="ph" data-ph="FOTO DEL PROYECTO"></div>
+        <div class="body">
+          <div class="fund"><span>PICT</span><span>2023 — 2026</span></div>
+          <h3>Título del proyecto financiado por la Agencia</h3>
+          <p>Breve descripción del objetivo general del proyecto y de lo que se espera obtener.</p>
+        </div>
+      </div>
+      <div class="proy">
+        <div class="ph" data-ph="FOTO DEL PROYECTO"></div>
+        <div class="body">
+          <div class="fund"><span>Rufford</span><span>2022 — 2024</span></div>
+          <h3>Título del proyecto de conservación</h3>
+          <p>Breve descripción del objetivo general del proyecto y de lo que se espera obtener.</p>
+        </div>
+      </div>
+      <div class="proy">
+        <div class="ph" data-ph="FOTO DEL PROYECTO"></div>
+        <div class="body">
+          <div class="fund"><span>PNUD</span><span>2021 — 2023</span></div>
+          <h3>Título del proyecto de cooperación</h3>
+          <p>Breve descripción del objetivo general del proyecto y de lo que se espera obtener.</p>
+        </div>
+      </div>
+    </div>
+    <a class="more-link" href="/proyectos">Ver todos los proyectos →</a>
+  </div>
+</section>
+
+<!-- ═══════ CAMPAÑAS ═══════ -->
+<section class="band band--rule band--tint" id="campanas">
+  <div class="wrap">
+    <div class="head-2col">
+      <div><span class="lbl">Campañas</span><h2 class="sec">Dónde salimos a buscar</h2></div>
+      <div class="prose"><p class="muted">El mapa sigue el scroll: al avanzar por las campañas, se desplaza y resalta la que estás leyendo, sin salir de la página.</p></div>
+    </div>
+    <div class="camp-layout">
+      <div class="camp-map">
+        <span class="pin-map" style="top:18%;left:38%">Campaña 1</span>
+        <span class="pin-map" style="top:44%;left:22%">Campaña 2</span>
+        <span class="pin-map" style="top:68%;left:52%">Campaña 3</span>
+        <span class="note">Mapa interactivo — Leaflet + OpenStreetMap</span>
+      </div>
+      <div>
+        <div class="camp-entry">
+          <div class="shots"><div class="ph" data-ph="FOTO 1"></div><div class="ph" data-ph="FOTO 2"></div></div>
+          <h3>Nombre de la campaña</h3>
+          <p class="meta">Localidad, Provincia · Mes 2026 · 00 días</p>
+          <p>Descripción de la campaña: qué se buscó, qué se encontró, quiénes participaron y en qué contexto se hizo la salida.</p>
+        </div>
+        <div class="camp-entry">
+          <div class="shots"><div class="ph" data-ph="FOTO 1"></div><div class="ph" data-ph="FOTO 2"></div></div>
+          <h3>Nombre de la campaña</h3>
+          <p class="meta">Localidad, Provincia · Mes 2025 · 00 días</p>
+          <p>Descripción de la campaña: qué se buscó, qué se encontró, quiénes participaron y en qué contexto se hizo la salida.</p>
+        </div>
+        <div class="camp-entry">
+          <div class="shots"><div class="ph" data-ph="FOTO 1"></div><div class="ph" data-ph="FOTO 2"></div></div>
+          <h3>Nombre de la campaña</h3>
+          <p class="meta">Localidad, Provincia · Mes 2024 · 00 días</p>
+          <p>Descripción de la campaña: qué se buscó, qué se encontró, quiénes participaron y en qué contexto se hizo la salida.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ DIVULGACIÓN ═══════ -->
+<section class="band band--rule" id="divulgacion">
+  <div class="wrap">
+    <div class="head-2col">
+      <div><span class="lbl">Divulgación</span><h2 class="sec">Para salir del paper</h2></div>
+      <div class="prose"><p class="muted">Charlas, notas, videos y actividades de extensión. Los videos se reproducen acá mismo, sin salir del sitio.</p></div>
+    </div>
+
+    <div class="vid-grid">
+      <a class="vid" href="https://www.youtube.com/watch?v=c8wVs0mjo2g" target="_blank" rel="noopener">
+        <div class="thumb"><img src="https://img.youtube.com/vi/c8wVs0mjo2g/hqdefault.jpg" alt=""><span class="play"></span></div>
+        <h3>Título del video</h3>
+      </a>
+      <a class="vid" href="https://www.youtube.com/watch?v=G0rQ4M6Bn2g" target="_blank" rel="noopener">
+        <div class="thumb"><img src="https://img.youtube.com/vi/G0rQ4M6Bn2g/hqdefault.jpg" alt=""><span class="play"></span></div>
+        <h3>Título del video</h3>
+      </a>
+      <a class="vid" href="https://www.youtube.com/watch?v=VmMngNKGHZs" target="_blank" rel="noopener">
+        <div class="thumb"><img src="https://img.youtube.com/vi/VmMngNKGHZs/hqdefault.jpg" alt=""><span class="play"></span></div>
+        <h3>Título del video</h3>
+      </a>
+      <a class="vid" href="https://www.youtube.com/watch?v=AWkgMSYrO58" target="_blank" rel="noopener">
+        <div class="thumb"><img src="https://img.youtube.com/vi/AWkgMSYrO58/hqdefault.jpg" alt=""><span class="play"></span></div>
+        <h3>Título del video</h3>
+      </a>
+      <a class="vid" href="https://www.youtube.com/watch?v=oY8VEKq4E_E" target="_blank" rel="noopener">
+        <div class="thumb"><img src="https://img.youtube.com/vi/oY8VEKq4E_E/hqdefault.jpg" alt=""><span class="play"></span></div>
+        <h3>Título del video</h3>
+      </a>
+      <a class="vid" href="https://www.youtube.com/watch?v=wh_lvrnRE4g&list=PL6qyA57C9DZ1pFmW1XenrqlcDU0navmSq" target="_blank" rel="noopener">
+        <div class="thumb"><img src="https://img.youtube.com/vi/wh_lvrnRE4g/hqdefault.jpg" alt=""><span class="badge">Playlist</span><span class="play"></span></div>
+        <h3>Título de la serie</h3>
+      </a>
+    </div>
+
+    <div class="div-cols">
+      <div>
+        <h3>Artículos de divulgación</h3>
+        <ul class="art-list">
+          <li><span class="tag">Artículo · 2026</span><a href="#">Título del artículo de divulgación</a></li>
+          <li><span class="tag">Artículo · 2025</span><a href="#">Título del artículo de divulgación</a></li>
+          <li><span class="tag">Guía</span><a href="#">Guía de biodiversidad — Suárez</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Extensión y actividades</h3>
+        <ul class="art-list">
+          <li><span class="tag">Actividad anual</span><a href="#">Semana de la Ciencia</a></li>
+          <li><span class="tag">Extensión</span><a href="#">Proyectos de extensión universitaria</a></li>
+          <li><span class="tag">Charlas</span><a href="#">Visitas a escuelas y muestras de colección</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ CONTACTO ═══════ -->
+<section class="cta" id="contacto">
+  <div class="bgph"></div>
+  <div class="wrap">
+    <span class="lbl">Contacto</span>
+    <h2>¿Encontraste una migalomorfa? Contanos</h2>
+    <p>Recibimos consultas de escuelas, colegas y gente que se cruzó con una araña y quiere saber cuál es. También sobre pasantías, tesis y préstamo de material de colección.</p>
+    <a class="cta-btn" href="mailto:contacto@ejemplo.edu.ar">Escribinos</a>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <div class="contact-grid">
+      <div>
+        <h3>Correo</h3>
+        <p><a href="mailto:contacto@ejemplo.edu.ar">contacto@ejemplo.edu.ar</a></p>
+      </div>
+      <div>
+        <h3>Dónde estamos</h3>
+        <p>CERZOS (CONICET — UNS)<br>Camino La Carrindanga km 7<br>Bahía Blanca, Buenos Aires</p>
+      </div>
+      <div>
+        <h3>Seguinos</h3>
+        <div class="socials">
+          <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+          <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 3h-2.5A4.5 4.5 0 0 0 8 7.5V11H5v4h3v6h4v-6h3l1-4h-4V8a1 1 0 0 1 1-1h2z"/></svg></a>
+          <a class="wide" href="#">CERZOS</a>
+          <a class="wide" href="#">ResearchGate</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>Grupo de Aracnología · CERZOS — UNS · 2026</span>
+    <span>Maqueta — contenido de ejemplo</span>
+  </div>
+</footer>
+
+</body>
+</html>

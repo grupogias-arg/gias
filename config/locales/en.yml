@@ -1,0 +1,125 @@
+# English: secondary language. Anything missing here falls back to Spanish
+# (config.i18n.fallbacks in config/application.rb).
+en:
+  activerecord:
+    models:
+      post:
+        one: News item
+        other: News
+      member:
+        one: Member
+        other: Members
+      publication:
+        one: Publication
+        other: Publications
+      project:
+        one: Project
+        other: Projects
+      campaign:
+        one: Field campaign
+        other: Field campaigns
+      outreach_item:
+        one: Outreach item
+        other: Outreach items
+
+    attributes:
+      post:
+        title: Title
+        title_en: Title in English
+        slug: URL
+        kind: Type
+        published_at: Published at
+        excerpt: Excerpt
+        excerpt_en: Excerpt in English
+        body: Body
+        body_en: Body in English
+        documents: Attachments
+      member:
+        name: Name
+        rank: Position
+        rank_en: Position in English
+        focus: Research interest
+        focus_en: Research interest in English
+        bio: Bio
+        bio_en: Bio in English
+        email: Email
+        conicet_url: CONICET profile
+        researchgate_url: ResearchGate profile
+        position: Sort order
+        sede: Workplace
+        photo: Photo
+      publication:
+        title: Title
+        title_en: Title in English
+        authors: Authors
+        year: Year
+        journal: Journal
+        doi: DOI
+        kind: Type
+        pdf: PDF
+      project:
+        title: Title
+        title_en: Title in English
+        funder: Funder
+        year_start: Start year
+        year_end: End year
+        description: Description
+        description_en: Description in English
+        photo: Photo
+      campaign:
+        name: Name
+        name_en: Name in English
+        locality: Locality
+        province: Province
+        lat: Latitude
+        lng: Longitude
+        date: Date
+        days: Days in the field
+        description: Description
+        description_en: Description in English
+        photos: Photos
+      outreach_item:
+        title: Title
+        title_en: Title in English
+        kind: Type
+        url: Link
+        youtube_id: YouTube ID
+        position: Sort order
+
+    errors:
+      models:
+        campaign:
+          attributes:
+            base:
+              incomplete_coordinates: "Enter both latitude and longitude, or leave both blank."
+        outreach_item:
+          attributes:
+            base:
+              url_or_youtube_id_required: "Provide either a link or a YouTube ID."
+
+  enums:
+    post:
+      kind:
+        divulgacion: Outreach
+        libro: Book
+        premio: Award
+        equipo: Team
+        publicaciones: Publications
+        curso: Course
+    publication:
+      kind:
+        cientifica: Scientific
+        divulgacion: Outreach
+    project:
+      funder:
+        pict: PICT
+        rufford: Rufford
+        pnud: UNDP
+        otros: Other
+    outreach_item:
+      kind:
+        video: Video
+        playlist: Playlist
+        articulo: Article
+        guia: Guide
+        actividad: Activity

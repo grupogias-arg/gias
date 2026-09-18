@@ -1,0 +1,144 @@
+# Español: idioma por defecto del sitio.
+#
+# Los mensajes propios de Rails (errores de validación, fechas, números) los
+# aporta la gema rails-i18n. Acá solo van las claves del proyecto y los
+# arreglos puntuales a traducciones de la gema que quedaban mal redactadas:
+# los archivos de la app se cargan después, así que estos valores ganan.
+es:
+  errors:
+    messages:
+      # La gema trae "%{count} carácter exactos" en singular.
+      wrong_length:
+        one: no tiene la longitud correcta (%{count} carácter exacto)
+        other: no tiene la longitud correcta (%{count} caracteres exactos)
+    template:
+      # La gema trae "No se pudo guardar este/a %{model}...". Lo carga gente
+      # no técnica: mejor sin la barra.
+      header:
+        one: "No se pudo guardar: hay %{count} error en el formulario."
+        other: "No se pudo guardar: hay %{count} errores en el formulario."
+      body: "Revisá estos campos:"
+
+  activerecord:
+    models:
+      post:
+        one: Novedad
+        other: Novedades
+      member:
+        one: Integrante
+        other: Integrantes
+      publication:
+        one: Publicación
+        other: Publicaciones
+      project:
+        one: Proyecto
+        other: Proyectos
+      campaign:
+        one: Campaña
+        other: Campañas
+      outreach_item:
+        one: Material de divulgación
+        other: Materiales de divulgación
+
+    attributes:
+      post:
+        title: Título
+        title_en: Título en inglés
+        slug: Dirección web
+        kind: Tipo
+        published_at: Fecha de publicación
+        excerpt: Resumen
+        excerpt_en: Resumen en inglés
+        body: Cuerpo de la nota
+        body_en: Cuerpo en inglés
+        documents: Documentos adjuntos
+      member:
+        name: Nombre
+        rank: Cargo
+        rank_en: Cargo en inglés
+        focus: Línea de interés
+        focus_en: Línea de interés en inglés
+        bio: Descripción
+        bio_en: Descripción en inglés
+        email: Correo electrónico
+        conicet_url: Perfil de CONICET
+        researchgate_url: Perfil de ResearchGate
+        position: Orden en el listado
+        sede: Lugar de trabajo
+        photo: Foto
+      publication:
+        title: Título
+        title_en: Título en inglés
+        authors: Autores
+        year: Año
+        journal: Revista
+        doi: DOI
+        kind: Tipo
+        pdf: PDF
+      project:
+        title: Título
+        title_en: Título en inglés
+        funder: Financiamiento
+        year_start: Año de inicio
+        year_end: Año de cierre
+        description: Descripción
+        description_en: Descripción en inglés
+        photo: Foto
+      campaign:
+        name: Nombre
+        name_en: Nombre en inglés
+        locality: Localidad
+        province: Provincia
+        lat: Latitud
+        lng: Longitud
+        date: Fecha
+        days: Días de campaña
+        description: Descripción
+        description_en: Descripción en inglés
+        photos: Fotos
+      outreach_item:
+        title: Título
+        title_en: Título en inglés
+        kind: Tipo
+        url: Enlace
+        youtube_id: ID de YouTube
+        position: Orden en el listado
+
+    errors:
+      models:
+        campaign:
+          attributes:
+            base:
+              incomplete_coordinates: "Cargá latitud y longitud, o dejá las dos vacías."
+        outreach_item:
+          attributes:
+            base:
+              url_or_youtube_id_required: "Poné un enlace o un ID de YouTube."
+
+  # Etiquetas de los enums, para los selects del panel de carga.
+  enums:
+    post:
+      kind:
+        divulgacion: Divulgación
+        libro: Libro
+        premio: Premio
+        equipo: Equipo
+        publicaciones: Publicaciones
+        curso: Curso
+    publication:
+      kind:
+        cientifica: Científica
+        divulgacion: Divulgación
+    project:
+      funder:
+        pict: PICT
+        rufford: Rufford
+        pnud: PNUD
+        otros: Otros
+    outreach_item:
+      kind:
+        video: Video
+        playlist: Lista de reproducción
+        articulo: Artículo
+        guia: Guía
+        actividad: Actividad
