@@ -1,0 +1,43 @@
+<% content_for :title, "Novedades" %>
+
+<div class="flex flex-wrap items-end justify-between gap-4">
+  <div>
+    <p class="lbl">Panel</p>
+    <h1 class="mt-1 font-serif text-[32px] font-light leading-tight">Novedades</h1>
+  </div>
+  <%= link_to "Nueva novedad", new_admin_post_path, class: "admin-button-primary" %>
+</div>
+
+<% if @posts.empty? %>
+  <p class="mt-10 text-ink-soft">Todavía no hay novedades. Empezá con «Nueva novedad».</p>
+<% else %>
+  <ul class="mt-8 divide-y divide-hairline border-y border-hairline">
+    <% @posts.each do |post| %>
+      <li class="flex flex-col gap-3 py-4 sm:flex-row sm:items-center sm:justify-between">
+        <div class="min-w-0">
+          <div class="flex flex-wrap items-center gap-2">
+            <%= post_status_badge(post) %>
+            <span class="font-mono text-[10.5px] uppercase tracking-[0.1em] text-ink-soft">
+              <%= enum_label(post, :kind) %>
+              <% if post.published_at %>· <%= long_date(post.published_at) %><% end %>
+            </span>
+          </div>
+          <%= link_to post.title, edit_admin_post_path(post.id),
+                      class: "mt-1 block font-serif text-[20px] font-light leading-snug hover:text-accent" %>
+          <% if post.title_en.blank? %>
+            <p class="mt-0.5 text-[13px] text-ink-soft">Sin traducir: en inglés se muestra la versión en español.</p>
+          <% end %>
+        </div>
+
+        <div class="flex shrink-0 gap-2">
+          <%= link_to "Editar", edit_admin_post_path(post.id), class: "admin-button py-1.5 text-[13.5px]" %>
+          <% if post.status == :publicada %>
+            <%= link_to "Ver en el sitio", post_path(slug: post), class: "admin-button py-1.5 text-[13.5px]", **new_tab %>
+          <% else %>
+            <%= link_to "Vista previa", admin_post_path(post.id), class: "admin-button py-1.5 text-[13.5px]", **new_tab %>
+          <% end %>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+<% end %>

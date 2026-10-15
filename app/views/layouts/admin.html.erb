@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <title><%= [ content_for(:title), "Panel", t("site.name") ].compact.join(" · ") %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%# El panel no tiene que aparecer en buscadores. %>
+    <meta name="robots" content="noindex, nofollow">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;1,6..72,300&family=Karla:wght@400;500;600&family=Azeret+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="bg-paper text-ink">
+    <% if authenticated? %>
+      <header class="border-b border-hairline bg-paper">
+        <div class="wrap flex h-[61px] items-center justify-between gap-4">
+          <div class="flex items-center gap-4">
+            <%= link_to admin_root_path, class: "flex shrink-0 items-center", "aria-label": "Panel" do %>
+              <%= image_tag "logo-sintesis.png", alt: "", width: 633, height: 513, class: "h-[28px] w-auto" %>
+            <% end %>
+            <nav class="flex items-center gap-0.5" aria-label="Panel">
+              <%= nav_link_to "Novedades", admin_posts_path %>
+            </nav>
+          </div>
+
+          <div class="flex items-center gap-1">
+            <%# Pestaña nueva a propósito: así el panel queda abierto al ir a mirar el sitio. %>
+            <%= link_to "Ver el sitio", root_path,
+                        class: "hidden px-3 py-2 text-[12.5px] text-ink-soft hover:bg-structure hover:text-paper sm:block",
+                        **new_tab %>
+            <%= button_to "Salir", admin_session_path, method: :delete,
+                          class: "px-3 py-2 text-[12.5px] text-ink-soft hover:bg-structure hover:text-paper cursor-pointer" %>
+          </div>
+        </div>
+      </header>
+    <% end %>
+
+    <main class="wrap py-8 sm:py-12">
+      <%= render "admin/shared/flash" %>
+      <%= yield %>
+    </main>
+  </body>
+</html>

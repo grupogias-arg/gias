@@ -1,0 +1,13 @@
+<%#
+  Vista previa: la nota con el layout del sitio, también si es un borrador.
+  La franja de arriba es lo único que no ve el público.
+%>
+<div class="sticky top-[61px] z-50 bg-structure text-paper">
+  <div class="wrap flex flex-wrap items-center gap-x-4 gap-y-1 py-2 text-[13.5px]">
+    <strong>Vista previa</strong>
+    <span><%= AdminHelper::STATUS_LABELS.fetch(@post.status) %><%= " — todavía no se ve en el sitio" unless @post.status == :publicada %></span>
+    <%= link_to "Editar", edit_admin_post_path(@post.id), class: "underline underline-offset-2 sm:ml-auto" %>
+  </div>
+</div>
+
+<%= render template: "posts/show" %>

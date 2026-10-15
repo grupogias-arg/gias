@@ -69,44 +69,84 @@ publicado, así que el modelo soporta las dos cosas:
 Si se carga a mano: al pegar un DOI se pueden traer título, autores y año
 desde la API de Crossref para no tipear a mano.
 
-#### Sincronización automática — evaluado, falta un dato del grupo
-Evaluado en octubre de 2026: que el listado se actualice solo con un job
-diario, para no cargar cada paper a mano. **Es viable.** Lo que se midió:
+#### Sincronización automática — diseñada, sin implementar
+Evaluado en octubre de 2026: que el listado se actualice solo, para no cargar
+cada paper a mano. **Es viable y no depende de que el grupo mande nada.**
 
-- **ResearchGate no sirve.** No tiene API pública y bloquea el acceso
-  automático: `GET /profile/Nelson-Ferretti` devuelve 403 aun con user-agent
-  de navegador (Cloudflare). Un perfil de grupo no cambia eso — el bloqueo es
-  de infraestructura. Los `researchgate_url` de cada ficha quedan como están.
-- **ORCID es la fuente correcta pero está vacía.** API pública, sin key, y la
-  cura el propio autor (o sea, sin homónimos). Pero depende de que la curen:
-  el ORCID de Ferretti (`0000-0002-2633-5867`) tiene **1 obra cargada**.
-  No alcanza como fuente de datos.
-- **OpenAlex es la fuente real.** Gratis, sin key. Están los 7: Ferretti 165,
-  Schwerdt 33, Nicoletta 25, Signorotto 25, Panchuk 10, Millenpeier 6,
-  Allegue 1. Devuelve DOI, título, revista, año y autores — todo lo que
-  `Publication` ya tiene.
+**Fuente: la ficha de CONICET (BICYT), enriquecida con CONICET Digital.**
 
-El ORCID se pide igual, pero como **llave de identificación**, no como fuente:
-`api.openalex.org/authors/https://orcid.org/<id>` resuelve al registro
-correcto de una. Hace falta porque OpenAlex parte los autores: "Nelson
-Ferretti" tiene 4 fichas distintas, Nicoletta 3, Schwerdt 2.
+- **BICYT** (`bicyt.conicet.gov.ar/fichas/p/nelson-edgardo-ferretti`) es el
+  perfil público del SIGEVA. Lo cargan los propios investigadores porque
+  CONICET los evalúa con eso, así que está curado: en los 107 artículos de
+  Ferretti no hay ningún título repetido. Responde 200, sin Cloudflare ni
+  login. Están los 7 (artículos / congresos): Ferretti 107/83 (+1 libro,
+  5 capítulos), Schwerdt 32/25, Nicoletta 10/5, Panchuk 10/17, Allegue 7/6,
+  Signorotto 5/3, Millenpeier 4/1.
+  - No es una API documentada. La producción se pide con
+    `POST /fichas/persona/cargarListado` (`id=<bicyt_id>&coleccion=produccion`)
+    y vuelve como HTML. **El formato cambia según el tamaño de la lista**: con
+    muchos artículos viene un JSON embebido en
+    `cargarListadoBackgroundAJAX(...)`; con pocos, tarjetas HTML con links
+    `/fichas/produccion/<id>`. El parser tiene que soportar las dos formas.
+  - Trae título, autores, año, mes, editorial, ISSN, páginas y
+    `handle_repositorio`. **No trae DOI, y en el listado tampoco la revista**:
+    el nombre de la revista (y el resumen) está en `/fichas/produccion/<id>`.
+  - El `bicyt_id` de cada integrante es la llave, así que no hay homónimos.
+    Los de los 6 dirigidos salen de la ficha de Ferretti: Ferretti 21413,
+    Schwerdt 52301, Nicoletta 436652, Signorotto 478347, Panchuk 428349,
+    Millenpeier 477881, Allegue 456846. La ficha
+    `bicyt.conicet.gov.ar/fichas/persona/<bicyt_id>` es además el perfil de
+    CONICET, o sea el `conicet_url` que faltaba.
+- **CONICET Digital** (`ri.conicet.gov.ar/handle/<handle>`): 92 de los 107
+  artículos de Ferretti tienen handle. La página del ítem trae `citation_doi`
+  (73 de 92), la licencia y si es `info:eu-repo/semantics/openAccess` (68 de 92).
+  **El PDF se enlaza solo si el registro dice openAccess**: los otros 24 también
+  muestran un link a PDF, pero sin esa marca (probablemente restringidos). El
+  PDF lo aloja CONICET, así que no hace falta alojar nada propio. Su
+  `robots.txt` solo bloquea una lista de bots de IA, no a `*`. Tiene OAI-PMH
+  (`/oai/request`), pero **va atrasado**: un ítem cargado en mayo de 2026
+  todavía no estaba ahí. Usar la página del ítem.
+- **Crossref** completa el DOI de los que no tienen handle (15) o lo tienen sin
+  DOI (19). No pide key. Lo que no aparezca se completa a mano al aprobar.
 
-**Trampa del dominio: el job no puede publicar directo.** En taxonomía cada
-especie nueva se deposita por separado en Plazi, Zenodo, GBIF y Catalogue of
-Life, así que el mismo trabajo aparece 3 o 4 veces y además hay un registro
-por especie descrita. Filtrar `type:article` baja de 164 a 115 y **no
-alcanza**: los más recientes de Ferretti siguen siendo depósitos de Zenodo
-duplicados entre sí. Por eso el diseño es **el job propone, una persona
-aprueba**: lo que llega entra como pendiente y alguien lo acepta o descarta.
-Es una pantalla mucho más chica que un CRUD de publicaciones, pero no es cero
-— el panel no se evita, y además hace falta igual para novedades y campañas.
+**Descartados:**
+- **ResearchGate**: sin API pública, `GET /profile/Nelson-Ferretti` devuelve
+  403 aun con user-agent de navegador (Cloudflare). Los `researchgate_url`
+  quedan como links.
+- **ORCID**: está casi vacío; el de Ferretti (`0000-0002-2633-5867`) tiene 1 obra.
+- **OpenAlex**: parte los autores ("Nelson Ferretti" tiene 4 fichas) y duplica
+  cada trabajo taxonómico con los depósitos de Plazi, Zenodo y GBIF (164
+  registros de Ferretti, 115 con `type:article`, igual con duplicados).
+  Además **ya no es "sin key"**: sin API key el cupo diario se comparte por IP
+  y en octubre de 2026 devolvió 429. Si se usa para algo, sacar una key
+  gratuita.
 
-Infra: ya está. `solid_queue` está en el Gemfile y `config/recurring.yml`
-existe, así que el job diario son unas líneas de YAML. Sin cron ni Sidekiq.
+**Diseño del job:**
+1. `SyncPublicationsJob`, **semanal** en `config/recurring.yml` (lunes 4 AM;
+   el grupo publica poco, unos 10 artículos por año). Encola un job por
+   integrante. Hay un botón "Buscar publicaciones nuevas ahora" en `/admin`
+   que encola el mismo job.
+2. `FetchMemberWorksJob(member)` compara contra lo conocido por ID de
+   producción de BICYT. Lo nuevo entra como `PublicationCandidate` pendiente.
+3. `EnrichCandidateJob(candidate)`: CONICET Digital, Crossref y la revista
+   desde la ficha del trabajo. Si falla, el candidato queda pendiente sin DOI.
+4. En `/admin` alguien aprueba (se crea la `Publication`) o descarta. Lo
+   descartado se recuerda para no volver a proponerlo.
 
-De paso resuelve lo del PDF: OpenAlex marca el link de acceso abierto legal de
-cada paper (`best_oa_location`), así que se enlaza la versión libre donde
-exista en vez de alojar un PDF que la revista quizá no permite.
+**El job propone, una persona aprueba.** El sitio público lee solo de la base,
+nunca de BICYT en vivo.
+
+**Si algo falla:**
+- Errores de red: `retry_on` con espera. Como el job compara contra lo
+  conocido, la corrida siguiente encuentra lo que se perdió.
+- **Solo agrega, nunca borra.** Si el parser devuelve 0 para alguien que tenía
+  trabajos (CONICET cambió el HTML), es un error, no un dato.
+- No hay mails (etapa 2): cada corrida queda en `sync_runs`, y el panel muestra
+  la última corrida exitosa y avisa si pasaron más de 8 días sin una.
+
+Columnas nuevas: `Member.bicyt_id`, `Publication.bicyt_id` y
+`Publication.source`. Tablas nuevas: `publication_candidates` y `sync_runs`.
+`solid_queue` y `config/recurring.yml` ya están: sin cron ni Sidekiq.
 
 ### Fuera de alcance en esta etapa
 **Suscripción por email con envío automático.** El cliente lo pidió, se
@@ -131,6 +171,7 @@ Post            # novedades
 
 Member          # equipo
   name, rank, focus, email, conicet_url, researchgate_url, position, sede
+  bicyt_id                    # llave para la sincronización de publicaciones
   has_one_attached :photo
   # rank: texto libre (Investigador/a, Posdoc, Becario/a doctoral, Pasante)
 
@@ -173,6 +214,36 @@ Prioridad: que sea claro para alguien no técnico. Etiquetas en español,
 campos con ayuda, previsualización de imágenes.
 
 Aviso: van a pegar texto desde Word. Sanitizar el HTML pegado en Trix.
+
+### Estado (octubre de 2026)
+Hecho: login y **Novedades**. Faltan los demás modelos, que siguen el mismo
+patrón (`Admin::BaseController`, helper `admin_field`, clases `admin-*`).
+
+- **Login**: el generador de autenticación de Rails 8, acotado a `/admin`
+  (`Admin::BaseController` incluye `Authentication`; el sitio público no pide
+  login). Sin registro público ni "olvidé mi contraseña", porque no hay mails
+  hasta la etapa 2. Los usuarios se crean y las contraseñas se cambian con
+  `bin/rails admin:usuario` (en producción:
+  `bin/kamal app exec -i --reuse "bin/rails admin:usuario"`).
+- **Rutas por id, no por slug**: `Post#to_param` es el slug y en el panel se
+  puede editar. Usar `edit_admin_post_path(post.id)`.
+- **Estados**: sin `published_at` es borrador, con fecha futura queda
+  programada. Los botones del formulario son "Publicar" y "Guardar como
+  borrador". **El slug solo se edita mientras es borrador**: una nota
+  publicada pudo haberse compartido por WhatsApp.
+- **Vista previa**: `admin/novedades/:id` muestra la nota con el layout
+  público, también en borrador.
+- **Pegado desde Word** (`word_paste_controller.js`, en `trix-before-paste`):
+  Trix 2.1 ya descarta estilos y clases, y resuelve solo el `<b>` envolvente
+  de Google Docs (probado). Lo que no resuelve, y el controller sí, son las
+  viñetas falsas de Word (`mso-list:Ignore`) y los párrafos vacíos.
+- **CSS de Trix**: `actiontext.css` no está en ninguna `@layer`, así que le
+  gana a todo `@layer components`. Las reglas del editor del panel van fuera
+  de capa, al final de `application.css`.
+- **Pendiente para producción: CORS en el bucket de R2.** Los PDF y las fotos
+  del cuerpo se suben directo del navegador a R2 (direct upload). Sin una
+  regla CORS que permita `PUT` desde `https://gias.com.ar`, la subida falla en
+  producción aunque en local ande.
 
 ---
 
@@ -327,12 +398,12 @@ lista las carpetas y los Google Docs y **no devuelve los archivos binarios**
 - Títulos de 4 de los 7 videos (3 vinieron nombrados)
 - Texto de la nota de "Semana de la Ciencia", que el doc "Ideas" menciona pero
   no incluye
-- Perfiles de CONICET del equipo (el modelo tiene `conicet_url`; solo mandaron
-  ResearchGate)
-- **ORCID iD de los 7 integrantes.** Pedido a Fiorela en octubre de 2026; es
-  lo que destraba la sincronización automática de Publicaciones (ver esa
-  sección). Todo investigador de CONICET tiene uno, lo piden en SIGEVA. Si no
-  llegan, el plan B es confirmar a mano las fichas de OpenAlex ya encontradas
+- Perfiles de CONICET del equipo: ya no hace falta pedirlos, son las fichas de
+  BICYT (`/fichas/persona/<bicyt_id>`, ver "Sincronización automática").
+  Falta cargarlos en `conicet_url`
+- **ORCID iD de los 7 integrantes.** Pedido a Fiorela en octubre de 2026. Ya no
+  bloquea la sincronización de Publicaciones (la llave es el `bicyt_id`); sirve
+  solo como dato de la ficha
 - Quién traduce al inglés lo que no sea el equipo
 
 No inventar estos datos en producción. Usar seeds claramente marcados

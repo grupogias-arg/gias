@@ -26,6 +26,17 @@ class Post < ApplicationRecord
   # Las novedades se comparten por WhatsApp y mail: permalink por slug.
   def to_param = slug
 
+  # Sin fecha es un borrador; con fecha futura aparece sola ese día.
+  def status
+    if published_at.nil?
+      :borrador
+    elsif published_at.future?
+      :programada
+    else
+      :publicada
+    end
+  end
+
   private
     def generate_slug
       return if slug.present? || title.blank?

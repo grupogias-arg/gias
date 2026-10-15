@@ -155,3 +155,100 @@
     margin-top: 0.5em;
   }
 }
+
+/*
+ * Panel de carga (/admin). Formularios para gente no técnica: letra grande,
+ * campos anchos, una ayuda debajo de cada etiqueta y el error en rojo vino.
+ */
+@layer components {
+  .admin-field + .admin-field { margin-top: 1.75rem; }
+
+  .admin-label {
+    display: block;
+    font-weight: 600;
+    font-size: 15px;
+  }
+
+  .admin-hint {
+    margin-top: 0.15rem;
+    font-size: 13.5px;
+    line-height: 1.45;
+    color: var(--color-ink-soft);
+  }
+
+  .admin-error {
+    margin-top: 0.4rem;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--color-vino);
+  }
+
+  .admin-input {
+    display: block;
+    width: 100%;
+    margin-top: 0.5rem;
+    border: 1px solid var(--color-hairline);
+    border-radius: 2px;
+    background-color: white;
+    padding: 0.6rem 0.75rem;
+    font-size: 16px; /* 16px o más: iOS no hace zoom al enfocar */
+  }
+  .admin-input:focus {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 0;
+    border-color: transparent;
+  }
+
+  .admin-field:has(.admin-error) .admin-input {
+    border-color: var(--color-vino);
+  }
+
+  .admin-button,
+  .admin-button-primary {
+    display: inline-block;
+    border: 1px solid var(--color-structure);
+    border-radius: 2px;
+    padding: 0.65rem 1.25rem;
+    font-weight: 600;
+    font-size: 15px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.15s, color 0.15s;
+  }
+  .admin-button { color: var(--color-structure); background: transparent; }
+  .admin-button:hover { background-color: var(--color-structure); color: var(--color-paper); }
+  .admin-button-primary { background-color: var(--color-structure); color: var(--color-paper); }
+  .admin-button-primary:hover { background-color: var(--color-ink); border-color: var(--color-ink); }
+
+  /* Bloque de campos (castellano / inglés, adjuntos...). */
+  .admin-fieldset {
+    border-top: 1px solid var(--color-hairline);
+    padding-top: 1.75rem;
+    margin-top: 2.5rem;
+  }
+}
+
+/*
+ * Editor de texto del panel. Va fuera de @layer a propósito: los estilos de
+ * Trix (app/assets/stylesheets/actiontext.css) no están en ninguna capa, y en
+ * CSS lo que no tiene capa le gana a cualquier capa, sin importar la
+ * especificidad. Adentro de @layer components, estas reglas no se aplicarían.
+ */
+.admin-field trix-toolbar { margin-top: 0.5rem; }
+
+.admin-field trix-editor {
+  margin-top: 0.4rem;
+  min-height: 16rem;
+  border: 1px solid var(--color-hairline);
+  border-radius: 2px;
+  background-color: white;
+  padding: 0.6rem 0.75rem;
+  font-size: 16px;
+  line-height: 1.6;
+}
+.admin-field trix-editor:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 0;
+  border-color: transparent;
+}
+.admin-field:has(.admin-error) trix-editor { border-color: var(--color-vino); }

@@ -39,8 +39,15 @@ es:
       outreach_item:
         one: Material de divulgación
         other: Materiales de divulgación
+      user:
+        one: Usuario del panel
+        other: Usuarios del panel
 
     attributes:
+      user:
+        name: Nombre
+        email_address: Correo electrónico
+        password: Contraseña
       post:
         title: Título
         title_en: Título en inglés

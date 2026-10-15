@@ -85,6 +85,10 @@ posts.each do |attributes|
 
   # Las fotos se suben como blobs y se referencian por sgid, que es como Trix
   # las embebe. Así el grupo las ve y las puede mover desde el editor.
+  #
+  # La `url` hace falta para el editor, no para el sitio: el sitio arma la
+  # imagen desde el blob, pero Trix la muestra con esa url. Sin ella, en
+  # /admin la foto aparece como un recuadro vacío.
   fotos = SeedSupport.photos_in(news_index[SeedSupport.normalize(carpeta)])
   sin_fotos << attributes[:title] if fotos.empty?
 
@@ -94,7 +98,8 @@ posts.each do |attributes|
       filename: foto.basename.to_s,
       content_type: Marcel::MimeType.for(foto)
     )
-    cuerpo << %(<action-text-attachment sgid="#{blob.attachable_sgid}" presentation="gallery"></action-text-attachment>)
+    url = Rails.application.routes.url_helpers.rails_blob_path(blob, only_path: true)
+    cuerpo << %(<action-text-attachment sgid="#{blob.attachable_sgid}" url="#{url}" presentation="gallery"></action-text-attachment>)
   end
 
   post.body = cuerpo.join("\n")
