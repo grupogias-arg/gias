@@ -1,0 +1,140 @@
+# Textos de las vistas, en español (idioma por defecto).
+#
+# El párrafo de presentación y las secciones salen de docs/pedido.md: es texto
+# que mandó el grupo, no inventado. Lo que sigue pendiente (datos del equipo,
+# publicaciones, campañas) no vive acá sino en la base, cargado desde el panel.
+es:
+  site:
+    name: GIAS
+    tagline: Grupo de Investigación en Arañas Mygalomorphae
+    institution: CERZOS (CONICET / UNS) · Departamento de Agronomía, Bahía Blanca
+
+  nav:
+    portada: Portada
+    novedades: Novedades
+    equipo: Equipo
+    publicaciones: Publicaciones
+    proyectos: Proyectos
+    campanas: Campañas
+    divulgacion: Divulgación
+    contacto: Contacto
+    abrir_menu: Menú
+    cerrar_menu: Cerrar
+    ir_al_contenido: Ir al contenido
+
+  home:
+    hero_title: Arañas Mygalomorphae, origen y diversidad
+    hero_keywords:
+      - Sistemática
+      - Biogeografía
+      - Ecología
+      - Comportamiento
+      - Conservación
+    intro_label: Quiénes somos
+    intro_title: El grupo
+    intro_body: >
+      Abordamos estudios para la comprensión del origen y descripción de la
+      diversidad de las arañas Mygalomorphae, indagando sobre los procesos que
+      dan forma a su dinámica temporal y espacial. Integramos diversos aspectos
+      sistemáticos, biogeográficos, ecológicos y comportamentales. Las
+      migalomorfas poseen un gran potencial para desarrollar estudios evolutivos
+      integrativos debido a sus características biológicas únicas, que a su vez
+      las ubican entre las principales especies en peligro de extinción.
+    intro_body_2: >
+      Implementamos enfoques multidisciplinarios utilizando a las migalomorfas
+      como modelos de estudio para los procesos subyacentes en relación a su
+      biodiversidad y a la evolución de los ecosistemas terrestres.
+      Específicamente, abordamos la descripción de nuevas especies, la
+      realización de inventarios biológicos, bases de datos e imágenes
+      digitales. Además, inferimos sobre la delimitación de especies a partir de
+      análisis de filogenia morfológica y molecular y analizamos patrones
+      biogeográficos y procesos involucrados. También estudiamos su historia
+      natural, ecología térmica, comportamiento y conservación.
+
+  novedades:
+    title: Novedades
+    subtitle: Lo que va pasando en el grupo
+    ver_todas: Ver todas las novedades
+    leer: Leer la nota
+    volver: Volver a novedades
+    adjuntos: Documentos adjuntos
+    descargar: Descargar
+    sin_publicar: Todavía no hay novedades publicadas.
+    feed: Feed RSS
+
+  equipo:
+    title: Equipo
+    subtitle: Quiénes integran el grupo
+    ver_todo: Ver el equipo completo
+    linea: Línea de interés
+    escribir: Enviar mail
+    conicet: CONICET
+    researchgate: ResearchGate
+    sedes: Lugares de trabajo
+    sin_integrantes: Todavía no se cargaron integrantes.
+
+  publicaciones:
+    title: Publicaciones
+    subtitle: Artículos científicos y de divulgación
+    ver_todas: Ver todas las publicaciones
+    cientificas: Científicas
+    divulgacion: De divulgación
+    ver_editorial: Ver en la editorial
+    descargar_pdf: Descargar PDF
+    sin_publicaciones: Todavía no se cargaron publicaciones.
+
+  proyectos:
+    title: Proyectos
+    subtitle: Proyectos de investigación en curso y finalizados
+    ver_todos: Ver todos los proyectos
+    en_curso: En curso
+    financia: Financia
+    sin_proyectos: Todavía no se cargaron proyectos.
+
+  campanas:
+    title: Campañas
+    subtitle: Salidas de campo del grupo
+    ver_todas: Ver todas las campañas
+    mapa: Mapa de campañas
+    mapa_ayuda: Tocá una campaña en el mapa para ir a su descripción.
+    dias:
+      one: "%{count} día de campaña"
+      other: "%{count} días de campaña"
+    sin_campanas: Todavía no se cargaron campañas.
+    sin_coordenadas: Las campañas todavía no tienen coordenadas cargadas.
+    ubicacion_aproximada: Ubicación aproximada, a confirmar.
+
+  divulgacion:
+    title: Divulgación
+    subtitle: Videos, guías y actividades abiertas
+    ver_todo: Ver todo el material
+    ver_en_youtube: Ver en YouTube
+    reproducir: Reproducir el video
+    materiales: Otros materiales
+    videos: Videos
+    abrir: Abrir
+    sin_material: Todavía no se cargó material de divulgación.
+
+  contacto:
+    title: Contacto
+    subtitle: Escribinos
+    invitacion: >
+      Si te interesa lo que hacemos, querés sumarte a una campaña o proponer una
+      colaboración, escribinos. También recibimos consultas de estudiantes que
+      buscan tema de tesis o pasantía.
+    email: Correo
+    direccion: Dirección
+    redes: Redes
+    instagram: Instagram
+    facebook: Facebook
+    cerzos: CERZOS
+    researchgate: ResearchGate
+    sede_cerzos: CERZOS — Camino La Carrindanga km 7, Bahía Blanca
+    sede_agro: Departamento de Agronomía (UNS) — San Andrés 800, Bahía Blanca
+
+  comun:
+    pendiente: Pendiente de carga
+    foto_pendiente: Foto pendiente
+    idioma: Idioma
+    espanol: Español
+    ingles: Inglés

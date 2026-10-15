@@ -1,0 +1,41 @@
+<%#
+  Mapa de campañas. Solo escritorio: en celular queda oculto (CLAUDE.md), que
+  es donde llega la mayor parte del tráfico y donde menos sirve.
+
+  El contenedor es sticky para que el mapa acompañe mientras se leen las
+  campañas, tal como pidió el grupo ("que esté todo en una misma página").
+%>
+<% puntos = campaigns.map { |campaign|
+     { lat: campaign.lat.to_f, lng: campaign.lng.to_f,
+       name: campaign.localized_name, locality: campaign.locality,
+       anchor: "campana-#{campaign.id}" }
+   } %>
+
+<%# La hoja de Leaflet se carga solo en las páginas que tienen mapa. %>
+<% content_for :head do %>
+  <%= stylesheet_link_tag "leaflet" %>
+<% end %>
+
+<aside class="hidden lg:block">
+  <div class="sticky top-[calc(61px+24px)]">
+    <p class="lbl mb-2"><%= t("campanas.mapa") %></p>
+
+    <% if puntos.any? %>
+      <div class="h-[460px] w-full border border-hairline"
+           data-controller="map"
+           data-map-points-value="<%= puntos.to_json %>"></div>
+      <p class="mt-2 font-mono text-[10px] uppercase tracking-[0.1em] text-ink-soft">
+        <%= t("campanas.mapa_ayuda") %>
+      </p>
+
+      <%# Mientras el grupo no pase las coordenadas reales, el mapa lo dice. %>
+      <% if campaigns.any?(&:coords_estimated?) %>
+        <p class="mt-1 font-mono text-[10px] uppercase tracking-[0.1em] text-accent">
+          <%= t("campanas.ubicacion_aproximada") %>
+        </p>
+      <% end %>
+    <% else %>
+      <%= render "shared/empty", message: t("campanas.sin_coordenadas") %>
+    <% end %>
+  </div>
+</aside>

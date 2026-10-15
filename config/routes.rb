@@ -1,14 +1,27 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
 
-  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
+  # Bilingüe ES/EN con español por defecto (CLAUDE.md).
+  #
+  # El español vive en la raíz (/equipo) y el inglés bajo prefijo (/en/equipo),
+  # así los links que ya se compartieron por WhatsApp siguen funcionando y la
+  # URL corta es la del idioma por defecto.
+  scope "(:locale)", locale: /en/ do
+    root "pages#home"
 
-  # Defines the root path route ("/")
-  # root "posts#index"
+    #
+    # Ojo: con `(:locale)` delante, `post_path(post)` le asigna el post al
+    # segmento :locale y falla. El slug va siempre con nombre:
+    #
+    #   post_path(slug: post)   # sí
+    #   post_path(post)         # no
+    #
+    resources :novedades, only: %i[index show], controller: "posts", param: :slug, as: :posts
+    get "equipo",       to: "members#index",       as: :members
+    get "publicaciones", to: "publications#index",  as: :publications
+    get "proyectos",    to: "projects#index",      as: :projects
+    get "campanas",     to: "campaigns#index",     as: :campaigns
+    get "divulgacion",  to: "outreach_items#index", as: :outreach_items
+    get "contacto",     to: "pages#contact",       as: :contact
+  end
 end

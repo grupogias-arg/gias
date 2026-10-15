@@ -1,24 +1,30 @@
 # =============================================================================
-# DATOS DE EJEMPLO — NO SON CONTENIDO REAL DEL GRUPO
+# SEEDS — mezcla de contenido REAL del grupo y relleno de EJEMPLO
 # =============================================================================
 #
-# Todo lo que se carga acá es relleno para poder ver el sitio funcionando
-# mientras el grupo termina de juntar el material. Cada registro lleva el
-# prefijo "[EJEMPLO]" justamente para que sea imposible confundirlo con
-# contenido real si se cuela en algún lado.
+# Ya NO es todo relleno. Desde que llegó el material del Drive hay dos clases
+# de registro, y hay que no confundirlas:
+#
+#   REAL, en archivos aparte, sin prefijo:
+#     - db/seeds/members.rb    equipo (7 integrantes, bilingüe ES/EN)
+#     - db/seeds/campaigns.rb  campañas (25, con coordenadas APROXIMADAS)
+#
+#   EJEMPLO, acá abajo, con prefijo "[EJEMPLO]" en cada registro para que sea
+#   imposible confundirlo con contenido real si se cuela en algún lado:
+#     - novedades, publicaciones, proyectos, divulgación
 #
 # Sigue pendiente del cliente (CLAUDE.md):
-#   - nombres, rangos y descripciones del equipo
-#   - datos de publicaciones, proyectos y campañas
-#   - títulos de los videos de divulgación
-#   - coordenadas de las campañas
-#   - fotos y logo
+#   - datos de publicaciones y proyectos (el Drive no trae nada de eso)
+#   - descripciones de las campañas y sus coordenadas reales
+#   - títulos de 5 de los 7 videos de divulgación
+#   - fotos de portada (la carpeta PORTADA del Drive está vacía)
 #
-# Lo único real acá son los IDs de YouTube: salieron de docs/pedido.md, los
-# pasó el grupo. Los títulos que los acompañan sí son inventados.
+# Los IDs de YouTube son reales: los pasó el grupo. Los títulos que los
+# acompañan son inventados salvo los dos que vinieron nombrados.
 #
-# No hay imágenes ni PDFs adjuntos: Active Storage necesita archivos de
-# verdad y todavía no los tenemos.
+# Las imágenes son opcionales: si dejás fotos en db/seeds/images/ se adjuntan
+# a estos registros (ver el README de esa carpeta). Si no hay ninguna, el
+# sitio muestra los huecos marcados como "foto pendiente" y sigue andando.
 #
 #   bin/rails db:seed
 #
@@ -39,114 +45,21 @@ end
 
 def example(text) = "#{MARK} #{text}"
 
-puts "Cargando datos de EJEMPLO (no son reales)..."
+load Rails.root.join("db/seeds/support.rb")
+
+puts "Cargando seeds (solo publicaciones y proyectos son de ejemplo)..."
 
 # -- Novedades ---------------------------------------------------------------
-# Los temas salen del pedido del grupo; los textos son inventados.
+# Las novedades NO son de ejemplo: las 3 notas salen de drive/NEWS/, con el
+# texto final del grupo y las fotos embebidas en el cuerpo.
 
-posts = [
-  {
-    slug: "ejemplo-semana-de-la-ciencia",
-    title: example("Semana de la Ciencia"),
-    title_en: example("Science Week"),
-    kind: "divulgacion",
-    published_at: 2.weeks.ago,
-    excerpt: example("Texto de ejemplo: resumen corto de la actividad, dos o tres renglones."),
-    excerpt_en: example("Placeholder: short summary of the activity."),
-    body: "<p>#{example('Cuerpo de ejemplo.')} Acá va la nota completa, escrita desde el panel de carga con el editor de texto. Admite negrita, cursiva, listas e imágenes.</p>"
-  },
-  {
-    slug: "ejemplo-pasantia",
-    title: example("Pasantía en el laboratorio"),
-    kind: "equipo",
-    published_at: 1.month.ago,
-    excerpt: example("Texto de ejemplo: resumen de la pasantía."),
-    body: "<p>#{example('Cuerpo de ejemplo.')} Nota sobre una pasantía en el grupo.</p>"
-  },
-  {
-    slug: "ejemplo-premio-divulgacion",
-    title: example("Premio a mejor artículo de divulgación"),
-    kind: "premio",
-    published_at: 2.months.ago,
-    excerpt: example("Texto de ejemplo: el grupo recibió una distinción."),
-    body: "<p>#{example('Cuerpo de ejemplo.')} Jornada del CERZOS.</p>"
-  },
-  {
-    slug: "ejemplo-libro-tarantulas",
-    title: example("Libro: Tarántulas de Argentina"),
-    kind: "libro",
-    published_at: 3.months.ago,
-    excerpt: example("Texto de ejemplo: salió publicado un libro del grupo."),
-    body: "<p>#{example('Cuerpo de ejemplo.')} Reseña del libro. El PDF, si lo hubiera, iría adjunto al pie y nunca como cuerpo de la nota.</p>"
-  },
-  {
-    slug: "ejemplo-resumen-publicaciones",
-    title: example("Resumen de las últimas publicaciones"),
-    kind: "publicaciones",
-    published_at: 4.months.ago,
-    excerpt: example("Texto de ejemplo: repaso de los artículos del año."),
-    body: "<p>#{example('Cuerpo de ejemplo.')} Repaso de los artículos publicados.</p>"
-  }
-]
-
-posts.each do |attributes|
-  body = attributes.delete(:body)
-  post = Post.find_or_initialize_by(slug: attributes[:slug])
-  post.assign_attributes(attributes)
-  post.body = body
-  post.save!
-end
+load Rails.root.join("db/seeds/posts.rb")
 
 # -- Equipo ------------------------------------------------------------------
-# Nombres, cargos y descripciones: todos inventados. Los reales los manda el grupo.
+# El equipo NO es de ejemplo: los 7 integrantes salen de los .docx que dejaron
+# en drive/EQUIPO/, ya traducidos al inglés por ellos mismos.
 
-members = [
-  {
-    name: example("Nombre Apellido (responsable)"),
-    rank: "Investigador/a responsable",
-    rank_en: "Principal investigator",
-    focus: example("Sistemática y biogeografía de Mygalomorphae."),
-    focus_en: example("Systematics and biogeography of Mygalomorphae."),
-    bio: example("Descripción de ejemplo. Un párrafo corto sobre la trayectoria."),
-    email: "ejemplo@cerzos-conicet.gob.ar",
-    conicet_url: "https://www.conicet.gov.ar/new_scp/ejemplo",
-    researchgate_url: "https://www.researchgate.net/profile/ejemplo",
-    position: 1,
-    sede: "CERZOS"
-  },
-  {
-    name: example("Nombre Apellido (posdoc)"),
-    rank: "Posdoc",
-    rank_en: "Postdoctoral researcher",
-    focus: example("Ecología térmica y comportamiento."),
-    bio: example("Descripción de ejemplo."),
-    email: "ejemplo.posdoc@cerzos-conicet.gob.ar",
-    position: 2,
-    sede: "CERZOS"
-  },
-  {
-    name: example("Nombre Apellido (becario/a)"),
-    rank: "Becario/a doctoral",
-    rank_en: "Doctoral fellow",
-    focus: example("Delimitación de especies con datos moleculares."),
-    bio: example("Descripción de ejemplo."),
-    position: 3,
-    sede: "AGRO"
-  },
-  {
-    name: example("Nombre Apellido (pasante)"),
-    rank: "Pasante",
-    rank_en: "Intern",
-    focus: example("Inventarios biológicos y bases de datos."),
-    bio: example("Descripción de ejemplo."),
-    position: 4,
-    sede: "AGRO"
-  }
-]
-
-members.each do |attributes|
-  Member.find_or_initialize_by(name: attributes[:name]).update!(attributes)
-end
+load Rails.root.join("db/seeds/members.rb")
 
 # -- Publicaciones -----------------------------------------------------------
 # DOIs inventados con prefijo 10.0000 (rango reservado, no resuelve a nada real).
@@ -227,85 +140,88 @@ projects.each do |attributes|
 end
 
 # -- Campañas ----------------------------------------------------------------
-# Coordenadas aproximadas de localidades reales del sudoeste bonaerense, para
-# poder probar el mapa. Las de verdad las pasa el grupo.
+# Las campañas NO son de ejemplo: nombres, años y lugares salen de las carpetas
+# que el grupo dejó en el Drive. Lo aproximado son las coordenadas.
 
-campaigns = [
-  {
-    name: example("Campaña Sierra de la Ventana"),
-    name_en: example("Sierra de la Ventana field campaign"),
-    locality: "Sierra de la Ventana",
-    province: "Buenos Aires",
-    lat: -38.133300,
-    lng: -61.783300,
-    date: Date.new(2025, 3, 10),
-    days: 5,
-    description: example("Descripción de ejemplo: qué se hizo en la campaña."),
-    description_en: example("Placeholder: what the campaign covered.")
-  },
-  {
-    name: example("Campaña Bahía Blanca"),
-    locality: "Bahía Blanca",
-    province: "Buenos Aires",
-    lat: -38.719600,
-    lng: -62.272400,
-    date: Date.new(2024, 11, 2),
-    days: 3,
-    description: example("Descripción de ejemplo.")
-  },
-  {
-    name: example("Campaña Tornquist"),
-    locality: "Tornquist",
-    province: "Buenos Aires",
-    lat: -38.100000,
-    lng: -62.216700,
-    date: Date.new(2024, 4, 18),
-    days: 4,
-    description: example("Descripción de ejemplo.")
-  }
-]
-
-campaigns.each do |attributes|
-  Campaign.find_or_initialize_by(name: attributes[:name]).update!(attributes)
-end
+load Rails.root.join("db/seeds/campaigns.rb")
 
 # -- Divulgación -------------------------------------------------------------
-# Los IDs de YouTube son los que pasó el grupo en docs/pedido.md. Los títulos
-# son inventados: los reales están pendientes.
+# Tampoco es de ejemplo: artículos de los boletines del CERZOS, la guía de
+# Coronel Suárez y los 7 videos, de drive/DIVULGACION/.
 
-outreach_items = [
-  { youtube_id: "c8wVs0mjo2g", kind: "video",    title: example("Video de divulgación 1") },
-  { youtube_id: "G0rQ4M6Bn2g", kind: "video",    title: example("Video de divulgación 2") },
-  { youtube_id: "PL6qyA57C9DZ1pFmW1XenrqlcDU0navmSq", kind: "playlist",
-    title: example("Lista de reproducción del grupo") },
-  { youtube_id: "VmMngNKGHZs", kind: "video",    title: example("Video de divulgación 3") },
-  { youtube_id: "AWkgMSYrO58", kind: "video",    title: example("Video de divulgación 4") },
-  { youtube_id: "oY8VEKq4E_E", kind: "video",    title: example("Video de divulgación 5") },
-  { youtube_id: "R7u8xPvLqO4", kind: "video",    title: example("Video de divulgación 6") },
-  { kind: "guia",      title: example("Guía de biodiversidad de Suárez"),
-    url: "https://ejemplo.invalid/guia-suarez" },
-  { kind: "actividad", title: example("Semana de la Ciencia"),
-    url: "https://ejemplo.invalid/semana-de-la-ciencia" },
-  { kind: "actividad", title: example("Proyectos de extensión"),
-    url: "https://ejemplo.invalid/extension" }
-]
+load Rails.root.join("db/seeds/outreach.rb")
 
-outreach_items.each_with_index do |attributes, index|
-  item = OutreachItem.find_or_initialize_by(title: attributes[:title])
-  item.assign_attributes(attributes.merge(position: index + 1))
-  item.save!
+# -- Imágenes ----------------------------------------------------------------
+# Fotos sueltas para poder ver el sitio armado. Se adjuntan por orden
+# alfabético de nombre de archivo, sin que haga falta saber qué foto va con
+# qué registro (db/seeds/images/README.md).
+#
+# Nada de esto es contenido aprobado: cuando llegue el material de verdad se
+# carga desde el panel, no desde acá.
+
+IMAGES = Rails.root.join("db/seeds/images")
+IMAGE_EXTENSIONS = %w[jpg jpeg png webp avif].freeze
+
+def seed_images(folder)
+  Dir.glob(IMAGES.join(folder, "*.{#{IMAGE_EXTENSIONS.join(',')}}"), File::FNM_CASEFOLD)
+     .sort_by { |path| File.basename(path).downcase }
+     .map { |path| Pathname.new(path) }
 end
+
+# Adjunta un archivo solo si el registro todavía no tiene foto, así volver a
+# correr los seeds no duplica adjuntos.
+def attach_once(attachment, path)
+  return if attachment.attached?
+
+  attachment.attach(io: path.open, filename: path.basename.to_s)
+end
+
+attached = 0
+
+# El equipo tampoco usa estos placeholders: sus fotos son reales y salen de
+# drive/EQUIPO/, se adjuntan en db/seeds/members.rb.
+
+seed_images("proyectos").zip(Project.recent.to_a).each do |path, project|
+  next if path.nil? || project.nil?
+
+  attach_once(project.photo, path)
+  attached += 1
+end
+
+# Las campañas NO usan estos placeholders: sus fotos son reales y salen de
+# drive/CAMPAÑAS/, se adjuntan en db/seeds/campaigns.rb.
+
+# La portada no tiene modelo propio todavía (no está en el modelo de datos de
+# CLAUDE.md), así que sus fotos se copian al pipeline de assets y la vista las
+# levanta del disco. Es provisorio: cuando lleguen las definitivas hay que
+# decidir dónde viven para que el grupo pueda cambiarlas desde el panel.
+portada_destino = Rails.root.join("app/assets/images/portada")
+portada = seed_images("portada")
+
+if portada.any?
+  FileUtils.mkdir_p(portada_destino)
+  portada.each { |path| FileUtils.cp(path, portada_destino.join(path.basename)) }
+end
+
+# Logo del grupo, si lo dejaron. El del menú es un placeholder (CLAUDE.md).
+logo = Dir.glob(IMAGES.join("logo", "logo.{svg,png,jpg,jpeg,webp}"), File::FNM_CASEFOLD).min
+if logo
+  FileUtils.mkdir_p(Rails.root.join("app/assets/images"))
+  FileUtils.cp(logo, Rails.root.join("app/assets/images", File.basename(logo)))
+end
+
+puts "  Imágenes adjuntadas: #{attached} · portada: #{portada.size} · logo: #{logo ? 'sí' : 'no'}"
 
 puts <<~SUMMARY
 
-  Listo. Datos de EJEMPLO cargados:
+  Listo.
 
-    Novedades .......... #{Post.count}
-    Equipo ............. #{Member.count}
-    Publicaciones ...... #{Publication.count}
-    Proyectos .......... #{Project.count}
-    Campañas ........... #{Campaign.count}
-    Divulgación ........ #{OutreachItem.count}
+    Novedades .......... #{Post.count}  real (drive/NEWS)
+    Equipo ............. #{Member.count}  real (drive/EQUIPO)
+    Publicaciones ...... #{Publication.count}  EJEMPLO — el cliente no mandó nada
+    Proyectos .......... #{Project.count}  EJEMPLO — el cliente no mandó nada
+    Campañas ........... #{Campaign.count}  real (drive/CAMPAÑAS), coordenadas aproximadas
+    Divulgación ........ #{OutreachItem.count}  real (drive/DIVULGACION + títulos de YouTube)
 
-  Nada de esto es contenido real. Reemplazar cuando llegue el material.
+  Lo marcado EJEMPLO no es contenido del grupo: reemplazar cuando llegue.
 SUMMARY

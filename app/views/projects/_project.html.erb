@@ -1,0 +1,33 @@
+<%# Proyecto: año, título, financiamiento, descripción breve y foto (pedido). %>
+<article class="border-t border-hairline py-6">
+  <div class="grid gap-4 sm:grid-cols-[180px_1fr] sm:gap-6">
+    <div>
+      <% if project.photo.attached? %>
+        <%= responsive_image_tag project.photo,
+                                 sizes: "(min-width: 640px) 180px, 100vw",
+                                 widths: ApplicationHelper::WIDE_VARIANT_WIDTHS,
+                                 alt: project.localized_title,
+                                 class: "aspect-[4/3] w-full border border-hairline object-cover" %>
+      <% else %>
+        <%= photo_placeholder css_class: "aspect-[4/3] w-full" %>
+      <% end %>
+    </div>
+
+    <div class="min-w-0">
+      <p class="lbl">
+        <%= enum_label(project, :funder) %>
+        <% if project.year_start.present? %>
+          · <%= project.year_start %>–<%= project.ongoing? ? t("proyectos.en_curso") : project.year_end %>
+        <% end %>
+      </p>
+
+      <h3 class="mt-1 font-serif text-[20px] font-light leading-snug tracking-[-0.012em]">
+        <%= project.localized_title %>
+      </h3>
+
+      <% if project.localized_description.present? %>
+        <p class="mt-2 max-w-[62ch] text-[15px] text-ink-soft"><%= project.localized_description %></p>
+      <% end %>
+    </div>
+  </div>
+</article>

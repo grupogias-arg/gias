@@ -1,0 +1,139 @@
+# View copy in English. Anything missing here falls back to Spanish, so a
+# partial translation never leaves a blank page (CLAUDE.md).
+#
+# The intro paragraphs are a working translation of the group's own Spanish
+# text from docs/pedido.md. Who translates the site is still pending with the
+# client, so treat this as a draft to be reviewed, not final copy.
+en:
+  site:
+    name: GIAS
+    tagline: Mygalomorph Spider Research Group
+    institution: CERZOS (CONICET / UNS) · Department of Agronomy, Bahía Blanca
+
+  nav:
+    portada: Home
+    novedades: News
+    equipo: Team
+    publicaciones: Publications
+    proyectos: Projects
+    campanas: Field campaigns
+    divulgacion: Outreach
+    contacto: Contact
+    abrir_menu: Menu
+    cerrar_menu: Close
+    ir_al_contenido: Skip to content
+
+  home:
+    hero_title: Mygalomorph spiders, origin and diversity
+    hero_keywords:
+      - Systematics
+      - Biogeography
+      - Ecology
+      - Behaviour
+      - Conservation
+    intro_label: About us
+    intro_title: The group
+    intro_body: >
+      We study the origin and diversity of Mygalomorphae spiders, investigating
+      the processes that shape their temporal and spatial dynamics. Our work
+      brings together systematics, biogeography, ecology and behaviour.
+      Mygalomorphs hold great potential for integrative evolutionary studies
+      because of their unique biological traits — the same traits that place
+      them among the most endangered spider species.
+    intro_body_2: >
+      We take multidisciplinary approaches, using mygalomorphs as model
+      organisms for the processes underlying their biodiversity and the
+      evolution of terrestrial ecosystems. Specifically, we describe new
+      species and build biological inventories, databases and digital imaging.
+      We also delimit species through morphological and molecular phylogenetic
+      analysis, and examine biogeographic patterns and the processes behind
+      them, alongside natural history, thermal ecology, behaviour and
+      conservation.
+
+  novedades:
+    title: News
+    subtitle: What the group has been up to
+    ver_todas: See all news
+    leer: Read the story
+    volver: Back to news
+    adjuntos: Attachments
+    descargar: Download
+    sin_publicar: No news published yet.
+    feed: RSS feed
+
+  equipo:
+    title: Team
+    subtitle: Who works in the group
+    ver_todo: See the whole team
+    linea: Research interest
+    escribir: Email
+    conicet: CONICET
+    researchgate: ResearchGate
+    sedes: Workplaces
+    sin_integrantes: No members added yet.
+
+  publicaciones:
+    title: Publications
+    subtitle: Scientific articles and outreach pieces
+    ver_todas: See all publications
+    cientificas: Scientific
+    divulgacion: Outreach
+    ver_editorial: View at the publisher
+    descargar_pdf: Download PDF
+    sin_publicaciones: No publications added yet.
+
+  proyectos:
+    title: Projects
+    subtitle: Ongoing and completed research projects
+    ver_todos: See all projects
+    en_curso: Ongoing
+    financia: Funded by
+    sin_proyectos: No projects added yet.
+
+  campanas:
+    title: Field campaigns
+    subtitle: The group in the field
+    ver_todas: See all campaigns
+    mapa: Campaign map
+    mapa_ayuda: Tap a campaign on the map to jump to its description.
+    dias:
+      one: "%{count} day in the field"
+      other: "%{count} days in the field"
+    sin_campanas: No campaigns added yet.
+    sin_coordenadas: No campaign has coordinates yet.
+    ubicacion_aproximada: Approximate location, to be confirmed.
+
+  divulgacion:
+    title: Outreach
+    subtitle: Videos, guides and public activities
+    ver_todo: See all material
+    ver_en_youtube: Watch on YouTube
+    reproducir: Play the video
+    materiales: Other material
+    videos: Videos
+    abrir: Open
+    sin_material: No outreach material added yet.
+
+  contacto:
+    title: Contact
+    subtitle: Get in touch
+    invitacion: >
+      If our work interests you, if you would like to join a field campaign or
+      propose a collaboration, write to us. We also welcome enquiries from
+      students looking for a thesis topic or an internship.
+    email: Email
+    direccion: Address
+    redes: Social
+    instagram: Instagram
+    facebook: Facebook
+    cerzos: CERZOS
+    researchgate: ResearchGate
+    sede_cerzos: CERZOS — Camino La Carrindanga km 7, Bahía Blanca
+    sede_agro: Department of Agronomy (UNS) — San Andrés 800, Bahía Blanca
+
+  comun:
+    pendiente: Pending
+    foto_pendiente: Photo pending
+    idioma: Language
+    espanol: Spanish
+    ingles: English

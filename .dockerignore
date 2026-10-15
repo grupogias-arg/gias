@@ -49,3 +49,7 @@
 # Ignore Docker-related files
 /.dockerignore
 /Dockerfile*
+
+# Copia local del Drive del grupo (cientos de MB, sin aprobar). No va a la
+# imagen: los seeds que la leen se corren desde la Mac contra producción.
+/drive/

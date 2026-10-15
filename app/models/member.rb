@@ -1,7 +1,13 @@
 class Member < ApplicationRecord
   include Translatable
 
-  has_one_attached :photo
+  # Variantes para srcset: la foto original puede venir de cámara y pesar
+  # varios MB, y el celular no tiene que bajar eso (CLAUDE.md).
+  has_one_attached :photo do |attachable|
+    attachable.variant :sm, resize_to_limit: [ 320, 400 ], format: :webp, saver: { quality: 80 }
+    attachable.variant :md, resize_to_limit: [ 640, 800 ], format: :webp, saver: { quality: 80 }
+    attachable.variant :lg, resize_to_limit: [ 960, 1200 ], format: :webp, saver: { quality: 80 }
+  end
 
   # `rank` es texto libre a pedido del grupo (Investigador/a, Posdoc,
   # Becario/a doctoral, Pasante), no un enum.

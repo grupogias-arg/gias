@@ -1,0 +1,31 @@
+<% content_for :title, t("divulgacion.title") %>
+<% content_for :description, t("divulgacion.subtitle") %>
+
+<%= render "shared/page_header",
+           label: t("nav.divulgacion"),
+           title: t("divulgacion.title"),
+           subtitle: t("divulgacion.subtitle") %>
+
+<div class="wrap py-10 sm:py-14">
+  <% if @videos.empty? && @materiales.empty? %>
+    <%= render "shared/empty", message: t("divulgacion.sin_material") %>
+  <% end %>
+
+  <% if @videos.any? %>
+    <section>
+      <p class="lbl"><%= t("divulgacion.videos") %></p>
+      <div class="mt-4 grid gap-8 sm:grid-cols-2">
+        <% @videos.each do |item| %>
+          <%= render "outreach_items/video", item: item %>
+        <% end %>
+      </div>
+    </section>
+  <% end %>
+
+  <% if @materiales.any? %>
+    <section class="mt-14">
+      <p class="lbl"><%= t("divulgacion.materiales") %></p>
+      <div class="mt-3"><%= render @materiales %></div>
+    </section>
+  <% end %>
+</div>

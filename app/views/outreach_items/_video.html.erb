@@ -1,0 +1,45 @@
+<%#
+  Video con carga diferida: hasta el click solo se baja la miniatura, no el
+  iframe. Son 6+ videos y con iframes normales la página pesaría varios megas
+  (CLAUDE.md). El embed va contra youtube-nocookie.com.
+%>
+<figure>
+  <% if item.youtube_embed_url.present? %>
+    <div class="relative aspect-video w-full overflow-hidden border border-hairline bg-ink"
+         data-controller="youtube"
+         data-youtube-embed-url-value="<%= item.youtube_embed_url %>"
+         data-video-title="<%= item.localized_title %>">
+      <button type="button"
+              class="group absolute inset-0 h-full w-full cursor-pointer"
+              data-action="youtube#play"
+              aria-label="<%= t("divulgacion.reproducir") %>: <%= item.localized_title %>">
+        <% if item.video? %>
+          <%# Miniatura servida por YouTube: una imagen en vez de todo el reproductor. %>
+          <img src="https://i.ytimg.com/vi/<%= item.youtube_id %>/hqdefault.jpg"
+               alt=""
+               loading="lazy"
+               decoding="async"
+               class="h-full w-full object-cover opacity-85 transition-opacity group-hover:opacity-100">
+        <% end %>
+
+        <span class="absolute inset-0 flex items-center justify-center">
+          <span class="flex h-14 w-14 items-center justify-center rounded-full border border-paper/70 bg-ink/55 text-paper transition-colors group-hover:bg-accent">
+            <svg viewBox="0 0 24 24" fill="currentColor" class="ml-1 h-6 w-6" aria-hidden="true">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+          </span>
+        </span>
+      </button>
+    </div>
+  <% end %>
+
+  <figcaption class="mt-2">
+    <p class="lbl"><%= enum_label(item, :kind) %></p>
+    <p class="mt-1 text-[15px]"><%= item.localized_title %></p>
+    <% if item.url.present? %>
+      <%= link_to t("divulgacion.ver_en_youtube"), item.url,
+                  class: "mt-1 inline-block font-mono text-[10px] uppercase tracking-[0.1em] text-accent hover:underline",
+                  **new_tab %>
+    <% end %>
+  </figcaption>
+</figure>

@@ -1,0 +1,27 @@
+<% content_for :title, t("publicaciones.title") %>
+<% content_for :description, t("publicaciones.subtitle") %>
+
+<%= render "shared/page_header",
+           label: t("nav.publicaciones"),
+           title: t("publicaciones.title"),
+           subtitle: t("publicaciones.subtitle") %>
+
+<div class="wrap py-10 sm:py-14">
+  <% if @cientificas.empty? && @divulgacion.empty? %>
+    <%= render "shared/empty", message: t("publicaciones.sin_publicaciones") %>
+  <% end %>
+
+  <% if @cientificas.any? %>
+    <section>
+      <p class="lbl"><%= t("publicaciones.cientificas") %></p>
+      <div class="mt-3"><%= render @cientificas %></div>
+    </section>
+  <% end %>
+
+  <% if @divulgacion.any? %>
+    <section class="mt-12">
+      <p class="lbl"><%= t("publicaciones.divulgacion") %></p>
+      <div class="mt-3"><%= render @divulgacion %></div>
+    </section>
+  <% end %>
+</div>

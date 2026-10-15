@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_17_221933) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_06_153526) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -53,6 +53,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_221933) do
   end
 
   create_table "campaigns", force: :cascade do |t|
+    t.boolean "coords_estimated", default: false, null: false
     t.datetime "created_at", null: false
     t.date "date"
     t.integer "days"
@@ -65,7 +66,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_221933) do
     t.string "name_en"
     t.string "province"
     t.datetime "updated_at", null: false
+    t.integer "year_end"
+    t.integer "year_start"
     t.index ["date"], name: "index_campaigns_on_date"
+    t.index ["year_start"], name: "index_campaigns_on_year_start"
   end
 
   create_table "members", force: :cascade do |t|
@@ -87,6 +91,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_221933) do
   end
 
   create_table "outreach_items", force: :cascade do |t|
+    t.string "authors"
     t.datetime "created_at", null: false
     t.string "kind", default: "video", null: false
     t.integer "position", default: 0, null: false

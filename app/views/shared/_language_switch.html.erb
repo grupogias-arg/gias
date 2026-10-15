@@ -1,0 +1,16 @@
+<%# ES / EN. El español es el idioma por defecto y va sin prefijo en la URL. %>
+<div class="font-mono text-[10.5px] uppercase tracking-[0.1em] text-ink-soft"
+     role="group"
+     aria-label="<%= t("comun.idioma") %>">
+  <% I18n.available_locales.each_with_index do |locale, index| %>
+    <span aria-hidden="true"><%= " / " if index.positive? %></span>
+    <% if locale == I18n.locale %>
+      <b class="text-ink" aria-current="true"><%= locale.to_s.upcase %></b>
+    <% else %>
+      <%= link_to locale.to_s.upcase, locale_switch_url(locale),
+                  class: "hover:text-accent",
+                  lang: locale,
+                  title: t(locale == :en ? "comun.ingles" : "comun.espanol") %>
+    <% end %>
+  <% end %>
+</div>

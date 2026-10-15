@@ -1,0 +1,14 @@
+# Datos de contacto y redes del grupo.
+#
+# PENDIENTE DEL CLIENTE: todavía no los pasaron (CLAUDE.md). Lo que quede
+# vacío simplemente no se muestra en la página de contacto: no se inventa.
+#
+# Cuando estén, se completan acá y listo. Más adelante, cuando exista el panel
+# de administración, conviene moverlos a la base para que los edite el grupo
+# sin tocar el código.
+shared:
+  email:
+  instagram:
+  facebook:
+  cerzos:
+  researchgate:

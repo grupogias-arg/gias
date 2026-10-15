@@ -1,0 +1,19 @@
+<% content_for :title, t("campanas.title") %>
+<% content_for :description, t("campanas.subtitle") %>
+
+<%= render "shared/page_header",
+           label: t("nav.campanas"),
+           title: t("campanas.title"),
+           subtitle: t("campanas.subtitle") %>
+
+<div class="wrap grid gap-10 py-10 sm:py-14 lg:grid-cols-[1fr_420px]">
+  <div>
+    <% if @campaigns.any? %>
+      <%= render @campaigns %>
+    <% else %>
+      <%= render "shared/empty", message: t("campanas.sin_campanas") %>
+    <% end %>
+  </div>
+
+  <%= render "campaigns/map", campaigns: @mapped_campaigns %>
+</div>

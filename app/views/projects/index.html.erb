@@ -1,0 +1,15 @@
+<% content_for :title, t("proyectos.title") %>
+<% content_for :description, t("proyectos.subtitle") %>
+
+<%= render "shared/page_header",
+           label: t("nav.proyectos"),
+           title: t("proyectos.title"),
+           subtitle: t("proyectos.subtitle") %>
+
+<div class="wrap py-10 sm:py-14">
+  <% if @projects.any? %>
+    <%= render @projects %>
+  <% else %>
+    <%= render "shared/empty", message: t("proyectos.sin_proyectos") %>
+  <% end %>
+</div>

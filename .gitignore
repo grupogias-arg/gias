@@ -38,3 +38,22 @@
 /node_modules
 /config/credentials/*.key
 .DS_Store
+
+# Fotos de ejemplo para los seeds: material pesado y sin aprobar del grupo.
+# Se versiona solo el README con la convención de nombres.
+/db/seeds/images/**/*
+!/db/seeds/images/README.md
+
+/app/assets/builds/*
+!/app/assets/builds/.keep
+
+# Fotos de portada de ejemplo que los seeds copian desde db/seeds/images/.
+/app/assets/images/portada/
+
+# El logo SÍ se versiona: desde que llegó el material del grupo, logo.png y
+# logo-sintesis.png son la marca aprobada del "Manual de marca GIAS" (2021),
+# no un placeholder. Pesan 71 KB entre los dos.
+
+# Copia local de la carpeta "Contenido para web" del Drive del grupo.
+# Material pesado y sin aprobar: se consulta, no se versiona.
+/drive/

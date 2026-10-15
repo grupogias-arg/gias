@@ -1,0 +1,26 @@
+<% content_for :title, t("equipo.title") %>
+<% content_for :description, t("equipo.subtitle") %>
+
+<%= render "shared/page_header",
+           label: t("nav.equipo"),
+           title: t("equipo.title"),
+           subtitle: t("equipo.subtitle") %>
+
+<div class="wrap py-10 sm:py-14">
+  <% if @members.any? %>
+    <%= render @members %>
+  <% else %>
+    <%= render "shared/empty", message: t("equipo.sin_integrantes") %>
+  <% end %>
+
+  <%#
+    "Lugar de trabajo: un mapita con la ubicación de CERZOS y AGRO"
+    (docs/pedido.md). Falta la dirección exacta confirmada por el grupo, así
+    que por ahora van los domicilios como texto.
+  %>
+  <section class="mt-12 border-t border-hairline pt-6">
+    <p class="lbl"><%= t("equipo.sedes") %></p>
+    <p class="mt-2 text-[15px] text-ink-soft"><%= t("contacto.sede_cerzos") %></p>
+    <p class="mt-1 text-[15px] text-ink-soft"><%= t("contacto.sede_agro") %></p>
+  </section>
+</div>

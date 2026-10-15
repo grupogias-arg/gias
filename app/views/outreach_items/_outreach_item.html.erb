@@ -1,0 +1,17 @@
+<%# Material de divulgación que no es video: guías, artículos, actividades. %>
+<article class="border-t border-hairline py-4">
+  <p class="lbl"><%= enum_label(outreach_item, :kind) %></p>
+
+  <h3 class="mt-1 font-serif text-[18px] font-light leading-snug">
+    <% if outreach_item.url.present? %>
+      <%= link_to outreach_item.localized_title, outreach_item.url,
+                  class: "hover:text-accent", rel: "noopener", target: "_blank" %>
+    <% else %>
+      <%= outreach_item.localized_title %>
+    <% end %>
+  </h3>
+
+  <% if outreach_item.authors.present? %>
+    <p class="mt-1 text-[14px] text-ink-soft"><%= outreach_item.authors %></p>
+  <% end %>
+</article>

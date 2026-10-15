@@ -1,0 +1,29 @@
+<%#
+  Entrada de publicación. El DOI siempre lleva a la editorial; el PDF aparece
+  solo donde la política de la revista dejó alojarlo (CLAUDE.md).
+%>
+<article class="border-t border-hairline py-5">
+  <div class="flex flex-col gap-1 sm:flex-row sm:gap-6">
+    <p class="shrink-0 font-mono text-[11px] tracking-[0.08em] text-ink-soft sm:w-16"><%= publication.year %></p>
+
+    <div class="min-w-0">
+      <h3 class="font-serif text-[18px] font-light leading-snug"><%= publication.localized_title %></h3>
+
+      <p class="mt-1 text-[14px] text-ink-soft">
+        <%= publication.authors %><%= " · " if publication.authors.present? && publication.journal.present? %>
+        <% if publication.journal.present? %><span class="italic"><%= publication.journal %></span><% end %>
+      </p>
+
+      <div class="mt-2 flex flex-wrap gap-x-4 gap-y-1 font-mono text-[10.5px] uppercase tracking-[0.1em]">
+        <% if publication.doi_url.present? %>
+          <%= link_to t("publicaciones.ver_editorial"), publication.doi_url,
+                      class: "text-accent hover:underline", **new_tab %>
+        <% end %>
+        <% if publication.pdf.attached? %>
+          <%= link_to t("publicaciones.descargar_pdf"), rails_blob_path(publication.pdf, disposition: "attachment"),
+                      class: "text-accent hover:underline", **new_tab %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</article>

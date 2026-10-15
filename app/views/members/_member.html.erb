@@ -1,0 +1,53 @@
+<%#
+  Ficha de integrante: foto, nombre, cargo debajo, línea de interés y
+  descripción, con links al mail, CONICET y ResearchGate (docs/pedido.md).
+%>
+<article class="flex gap-4 border-t border-hairline py-6 sm:gap-6">
+  <%#
+    En celular la foto crece poco: la ficha es una fila y el texto necesita el
+    ancho. En escritorio sí se agranda, que es donde sobra lugar.
+  %>
+  <div class="w-28 shrink-0 sm:w-44 lg:w-52">
+    <% if member.photo.attached? %>
+      <%= responsive_image_tag member.photo,
+                               sizes: "(min-width: 1024px) 208px, (min-width: 640px) 176px, 112px",
+                               alt: member.name,
+                               class: "aspect-[4/5] w-full border border-hairline object-cover" %>
+    <% else %>
+      <%= photo_placeholder css_class: "aspect-[4/5] w-full" %>
+    <% end %>
+  </div>
+
+  <div class="min-w-0">
+    <h3 class="font-serif text-[20px] font-light leading-tight tracking-[-0.012em]"><%= member.name %></h3>
+
+    <% if member.localized_rank.present? %>
+      <p class="lbl mt-1"><%= member.localized_rank %><%= " · #{member.sede}" if member.sede.present? %></p>
+    <% end %>
+
+    <% if member.localized_focus.present? %>
+      <p class="mt-3 text-[15px]">
+        <span class="text-ink-soft"><%= t("equipo.linea") %>:</span>
+        <%= sci_text(member.localized_focus) %>
+      </p>
+    <% end %>
+
+    <% if member.localized_bio.present? %>
+      <p class="mt-2 max-w-[62ch] text-[15px] text-ink-soft"><%= sci_text(member.localized_bio) %></p>
+    <% end %>
+
+    <div class="mt-3 flex flex-wrap gap-x-4 gap-y-1 font-mono text-[10.5px] uppercase tracking-[0.1em]">
+      <% if member.email.present? %>
+        <%= link_to t("equipo.escribir"), "mailto:#{member.email}", class: "text-accent hover:underline" %>
+      <% end %>
+      <% if member.conicet_url.present? %>
+        <%= link_to t("equipo.conicet"), member.conicet_url, class: "text-accent hover:underline",
+                    rel: "noopener", target: "_blank" %>
+      <% end %>
+      <% if member.researchgate_url.present? %>
+        <%= link_to t("equipo.researchgate"), member.researchgate_url, class: "text-accent hover:underline",
+                    rel: "noopener", target: "_blank" %>
+      <% end %>
+    </div>
+  </div>
+</article>

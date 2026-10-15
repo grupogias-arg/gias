@@ -1,0 +1,19 @@
+<% content_for :title, t("novedades.title") %>
+<% content_for :description, t("novedades.subtitle") %>
+
+<%= render "shared/page_header",
+           label: t("nav.novedades"),
+           title: t("novedades.title"),
+           subtitle: t("novedades.subtitle") %>
+
+<div class="wrap py-10 sm:py-14">
+  <% if @posts.any? %>
+    <%= render @posts %>
+  <% else %>
+    <%= render "shared/empty", message: t("novedades.sin_publicar") %>
+  <% end %>
+
+  <%= link_to t("novedades.feed"), posts_path(format: :rss),
+              class: "mt-10 inline-block font-mono text-[10.5px] uppercase tracking-[0.11em] text-accent hover:underline",
+              **new_tab %>
+</div>

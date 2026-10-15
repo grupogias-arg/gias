@@ -89,6 +89,10 @@ production:
     <<: *default
     database: gias_production
     username: gias
+    # En el servidor es el contenedor de Postgres (gias-db); desde la Mac, el
+    # túnel SSH que se usa para cargar los seeds.
+    host: <%= ENV.fetch("DB_HOST", "localhost") %>
+    port: <%= ENV.fetch("DB_PORT", 5432) %>
     password: <%= ENV["GIAS_DATABASE_PASSWORD"] %>
   cache:
     <<: *primary_production

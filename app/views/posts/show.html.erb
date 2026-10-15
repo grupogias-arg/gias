@@ -1,0 +1,54 @@
+<% content_for :title, @post.localized_title %>
+<% content_for :description, @post.localized_excerpt %>
+
+<article class="wrap py-10 sm:py-16">
+  <p class="lbl"><%= enum_label(@post, :kind) %></p>
+
+  <h1 class="mt-2 max-w-[24ch] font-serif text-[30px] font-light leading-[1.1] tracking-[-0.02em] sm:text-[42px]">
+    <%= @post.localized_title %>
+  </h1>
+
+  <p class="mt-3 font-mono text-[11px] tracking-[0.08em] text-ink-soft">
+    <%= long_date(@post.published_at) %>
+  </p>
+
+  <% if @post.localized_excerpt.present? %>
+    <p class="mt-6 max-w-[62ch] border-l-2 border-accent pl-4 text-[17px] text-ink-soft">
+      <%= @post.localized_excerpt %>
+    </p>
+  <% end %>
+
+  <%# rich_body itálica los taxones y abre en pestaña nueva los links del
+      cuerpo. Las dos cosas hay que hacerlas al renderizar: el grupo escribe
+      desde Trix y no marca los taxones a mano (CLAUDE.md), y Action Text
+      descarta el `target` de los <a> al guardar. %>
+  <div class="prose-gias mt-8 text-[16.5px]">
+    <%= rich_body(@post.localized_body) %>
+  </div>
+
+  <%#
+    El PDF va como adjunto descargable al pie, nunca como cuerpo de la nota:
+    no refluye en celular y no deja sacar un resumen para el índice (CLAUDE.md).
+  %>
+  <% if @post.documents.attached? %>
+    <section class="mt-12 border-t border-hairline pt-6">
+      <p class="lbl"><%= t("novedades.adjuntos") %></p>
+      <ul class="mt-3 space-y-2">
+        <% @post.documents.each do |document| %>
+          <li>
+            <%= link_to rails_blob_path(document, disposition: "attachment"),
+                        class: "text-[15px] text-accent hover:underline", **new_tab do %>
+              <%= document.filename %>
+              <span class="font-mono text-[10.5px] uppercase tracking-[0.1em] text-ink-soft">
+                (<%= number_to_human_size(document.byte_size) %>)
+              </span>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </section>
+  <% end %>
+
+  <%= link_to t("novedades.volver"), posts_path,
+              class: "mt-12 inline-block font-mono text-[10.5px] uppercase tracking-[0.11em] text-accent hover:underline" %>
+</article>

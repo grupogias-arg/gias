@@ -1,0 +1,157 @@
+@import "tailwindcss";
+
+/*
+ * Tokens de diseño del grupo.
+ *
+ * La paleta sale del "Manual de marca GIAS" (2021), página 5 — no del borrador
+ * docs/mockup.html, que proponía un petróleo que no es de la marca. Los dos
+ * colores del isologotipo son pizarra (cuerpo de la araña + "GIAS") y ocre
+ * (abdomen + bajada); terracota y vino son la paleta extendida del manual.
+ *
+ * Las tipografías sí siguen a CLAUDE.md: el manual especifica DIN Bold y
+ * Raleway Medium, pero solo para la construcción del isologotipo, no para el
+ * cuerpo del sitio. Newsreader además hace falta para los nombres científicos
+ * en serif itálica.
+ *
+ * Todo el sitio es mobile-first: las variantes de Tailwind (sm:, md:, lg:)
+ * son min-width por definición, que es justo lo que pide CLAUDE.md.
+ */
+@theme {
+  /* Marca — Manual de marca GIAS, p.5. No modificar arbitrariamente (p.9). */
+  --color-pizarra: #495155;
+  --color-ocre: #BF8862;
+  --color-terracota: #9E584E;
+  --color-vino: #793B51;
+
+  /* Neutros derivados de la marca. */
+  --color-paper: #F2F2EE;
+  --color-paper-2: #E9E6E0;
+  --color-ink: #23282B;
+  --color-ink-soft: #5E6468;
+  --color-hairline: #D5D2CA;
+
+  /*
+   * Roles. El ocre del logo da 2.71:1 sobre el papel: alcanza para rellenos y
+   * titulares grandes, no para texto chico. Por eso los links usan terracota
+   * (4.73:1, AA) y la estructura usa pizarra (7.22:1, AAA).
+   */
+  --color-accent: #9E584E;
+  --color-accent-soft: #BF8862;
+  --color-structure: #495155;
+
+  --font-sans: "Karla", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Newsreader", ui-serif, Georgia, serif;
+  --font-mono: "Azeret Mono", ui-monospace, monospace;
+
+  /* El menú fijo mide 61px; el scroll a un ancla tiene que frenar debajo. */
+  --spacing-topbar: 61px;
+
+  /*
+   * Punto de corte del menú: abajo de 1060px van 8 links y no entran, así que
+   * aparece la hamburguesa (CLAUDE.md). No coincide con ningún breakpoint de
+   * Tailwind, por eso se define acá y se usa como variante `menu:`.
+   */
+  --breakpoint-menu: 1060px;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--spacing-topbar) + 12px);
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Accesibilidad: el carrusel de portada y el scroll suave se apagan. */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+}
+
+@layer components {
+  /* Ancho útil del sitio. Se repite en todas las secciones y en el menú. */
+  .wrap {
+    max-width: 1160px;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 64rem) {
+    .wrap { padding-inline: 2rem; }
+  }
+
+  /* Franja de sección: separación vertical pareja entre bloques de la home. */
+  .band { padding-block: 3.5rem; }
+  @media (min-width: 48rem) {
+    .band { padding-block: 5rem; }
+  }
+
+  /* Etiqueta monoespaciada de sección ("NOVEDADES", "EQUIPO", ...). */
+  .lbl {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  /*
+   * Nombre científico: serif itálica, siempre (CLAUDE.md).
+   * No se escribe a mano en las vistas, se usa el helper `sci`.
+   */
+  .sci {
+    font-family: var(--font-serif);
+    font-style: italic;
+  }
+
+  /* Cuerpo de las novedades, que viene de Action Text (Trix). */
+  .prose-gias { max-width: 68ch; }
+  .prose-gias p { margin-bottom: 1.1em; }
+  .prose-gias h1, .prose-gias h2, .prose-gias h3 {
+    font-family: var(--font-serif);
+    font-weight: 300;
+    letter-spacing: -0.015em;
+    margin: 1.6em 0 0.5em;
+  }
+  .prose-gias h1 { font-size: 1.7rem; }
+  .prose-gias h2 { font-size: 1.4rem; }
+  .prose-gias h3 { font-size: 1.15rem; }
+  .prose-gias ul, .prose-gias ol { margin: 0 0 1.1em 1.3em; }
+  .prose-gias ul { list-style: disc; }
+  .prose-gias ol { list-style: decimal; }
+  .prose-gias li { margin-bottom: 0.3em; }
+  .prose-gias a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .prose-gias blockquote {
+    border-left: 2px solid var(--color-accent);
+    padding-left: 1em;
+    margin: 0 0 1.1em;
+    color: var(--color-ink-soft);
+  }
+  .prose-gias img, .prose-gias figure { margin: 1.4em 0; max-width: 100%; height: auto; }
+  .prose-gias figcaption {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--color-ink-soft);
+    margin-top: 0.5em;
+  }
+}

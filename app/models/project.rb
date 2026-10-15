@@ -5,7 +5,11 @@ class Project < ApplicationRecord
 
   enum :funder, FUNDERS.index_by(&:itself), validate: true
 
-  has_one_attached :photo
+  has_one_attached :photo do |attachable|
+    attachable.variant :sm, resize_to_limit: [ 480, 360 ], format: :webp, saver: { quality: 80 }
+    attachable.variant :md, resize_to_limit: [ 900, 675 ], format: :webp, saver: { quality: 80 }
+    attachable.variant :lg, resize_to_limit: [ 1600, 1200 ], format: :webp, saver: { quality: 80 }
+  end
 
   translates :title, :description
 

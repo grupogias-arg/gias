@@ -1,0 +1,21 @@
+<%#
+  Encabezado de sección: etiqueta monoespaciada + título en serif + bajada.
+  `link` es el "ver todo" que lleva a la página propia de la sección.
+%>
+<div class="flex flex-wrap items-end justify-between gap-4">
+  <div>
+    <p class="lbl"><%= label %></p>
+    <h2 class="mt-2 font-serif text-[26px] font-light leading-[1.12] tracking-[-0.018em] sm:text-[32px] lg:text-[37px]">
+      <%= title %>
+    </h2>
+    <% if local_assigns[:subtitle].present? %>
+      <p class="mt-2 max-w-[52ch] text-ink-soft"><%= subtitle %></p>
+    <% end %>
+  </div>
+
+  <% if local_assigns[:link].present? %>
+    <%= link_to link_label, link,
+                class: "shrink-0 border-b border-accent pb-[3px] font-mono text-[11px] uppercase tracking-[0.11em] text-accent hover:border-b-2",
+                **new_tab %>
+  <% end %>
+</div>

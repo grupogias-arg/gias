@@ -1,0 +1,239 @@
+<%#
+  Home con las 8 secciones en scroll largo, en el orden que definió el grupo:
+  Portada · Novedades · Equipo · Publicaciones · Proyectos · Campañas ·
+  Divulgación · Contacto (CLAUDE.md — no reordenar).
+
+  Cada sección muestra un adelanto y enlaza a su página propia: lo que crece
+  no vive solo dentro de un ancla.
+%>
+<% content_for :description, t("home.hero_title") %>
+
+<%# ── Portada ─────────────────────────────────────────────────────────── %>
+<section id="portada"
+         class="relative flex min-h-[72vh] items-end overflow-hidden bg-[#171C1A] sm:min-h-[80vh]"
+         data-controller="carousel">
+  <% fotos = hero_images %>
+
+  <% if fotos.any? %>
+    <% fotos.each_with_index do |foto, index| %>
+      <div class="absolute inset-0 transition-opacity duration-1000 <%= index.zero? ? "opacity-100" : "opacity-0" %>"
+           data-carousel-target="slide">
+        <%= image_tag foto, alt: "", loading: (index.zero? ? "eager" : "lazy"),
+                      class: "h-full w-full object-cover opacity-70" %>
+      </div>
+    <% end %>
+  <% else %>
+    <%# Sin fotos todavía: un fondo sobrio, no un hueco roto. %>
+    <div class="absolute inset-0 bg-gradient-to-br from-vino via-structure to-ink"></div>
+    <p class="absolute right-5 top-5 border border-dashed border-paper/30 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.12em] text-paper/50">
+      <%= t("comun.foto_pendiente") %>
+    </p>
+  <% end %>
+
+  <div class="wrap relative z-10 py-14 sm:py-20">
+    <p class="font-mono text-[10.5px] uppercase tracking-[0.14em] text-paper/75">
+      <%= t("home.hero_keywords").join(" · ") %>
+    </p>
+
+    <h1 class="mt-4 max-w-[17ch] font-serif text-[34px] font-extralight leading-[1.05] tracking-[-0.022em] text-[#F4F5F1] sm:text-[52px] lg:text-[66px]">
+      <%= t("home.hero_title") %>
+    </h1>
+
+    <p class="mt-4 max-w-[46ch] text-[16px] text-paper/80">
+      <%= t("site.institution") %>
+    </p>
+
+    <% if fotos.size > 1 %>
+      <div class="mt-8 flex gap-2">
+        <% fotos.each_with_index do |_foto, index| %>
+          <button type="button"
+                  class="h-1.5 w-8 <%= index.zero? ? "bg-paper" : "bg-paper/35" %>"
+                  data-carousel-target="dot"
+                  data-index="<%= index %>"
+                  data-action="carousel#goTo"
+                  aria-label="<%= index + 1 %>"></button>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</section>
+
+<%# ── Bienvenida ──────────────────────────────────────────────────────── %>
+<section class="band">
+  <div class="wrap grid gap-8 lg:grid-cols-[1fr_320px] lg:gap-14">
+    <div>
+      <p class="lbl"><%= t("home.intro_label") %></p>
+      <h2 class="mt-2 font-serif text-[26px] font-light leading-[1.12] tracking-[-0.018em] sm:text-[32px]">
+        <%= t("home.intro_title") %>
+      </h2>
+      <p class="mt-5 max-w-[66ch] text-[16.5px]"><%= t("home.intro_body") %></p>
+      <p class="mt-4 max-w-[66ch] text-[16.5px] text-ink-soft"><%= t("home.intro_body_2") %></p>
+    </div>
+
+    <%# "Fotos que pasen al lado del texto del grupo" (docs/pedido.md). %>
+    <div class="grid grid-cols-2 gap-3 lg:grid-cols-1">
+      <% hero_images.first(2).each do |foto| %>
+        <%= image_tag foto, alt: "", loading: "lazy",
+                      class: "aspect-[4/3] w-full border border-hairline object-cover" %>
+      <% end %>
+      <% (2 - hero_images.first(2).size).times do %>
+        <%= photo_placeholder css_class: "aspect-[4/3] w-full" %>
+      <% end %>
+    </div>
+  </div>
+</section>
+
+<%# ── Novedades ───────────────────────────────────────────────────────── %>
+<section id="novedades" class="band border-t border-hairline">
+  <div class="wrap">
+    <%= render "shared/section_header",
+               label: t("nav.novedades"),
+               title: t("novedades.title"),
+               subtitle: t("novedades.subtitle"),
+               link: posts_path,
+               link_label: t("novedades.ver_todas") %>
+
+    <div class="mt-8">
+      <% if @posts.any? %>
+        <%= render @posts %>
+      <% else %>
+        <%= render "shared/empty", message: t("novedades.sin_publicar") %>
+      <% end %>
+    </div>
+  </div>
+</section>
+
+<%# ── Equipo ──────────────────────────────────────────────────────────── %>
+<section id="equipo" class="band border-t border-hairline bg-paper-2/50">
+  <div class="wrap">
+    <%= render "shared/section_header",
+               label: t("nav.equipo"),
+               title: t("equipo.title"),
+               subtitle: t("equipo.subtitle"),
+               link: members_path,
+               link_label: t("equipo.ver_todo") %>
+
+    <div class="mt-8">
+      <% if @members.any? %>
+        <%= render @members %>
+      <% else %>
+        <%= render "shared/empty", message: t("equipo.sin_integrantes") %>
+      <% end %>
+    </div>
+  </div>
+</section>
+
+<%# ── Publicaciones ───────────────────────────────────────────────────── %>
+<section id="publicaciones" class="band border-t border-hairline">
+  <div class="wrap">
+    <%= render "shared/section_header",
+               label: t("nav.publicaciones"),
+               title: t("publicaciones.title"),
+               subtitle: t("publicaciones.subtitle"),
+               link: publications_path,
+               link_label: t("publicaciones.ver_todas") %>
+
+    <div class="mt-8">
+      <% if @publications.any? %>
+        <%= render @publications %>
+      <% else %>
+        <%= render "shared/empty", message: t("publicaciones.sin_publicaciones") %>
+      <% end %>
+    </div>
+  </div>
+</section>
+
+<%# ── Proyectos ───────────────────────────────────────────────────────── %>
+<section id="proyectos" class="band border-t border-hairline bg-paper-2/50">
+  <div class="wrap">
+    <%= render "shared/section_header",
+               label: t("nav.proyectos"),
+               title: t("proyectos.title"),
+               subtitle: t("proyectos.subtitle"),
+               link: projects_path,
+               link_label: t("proyectos.ver_todos") %>
+
+    <div class="mt-8">
+      <% if @projects.any? %>
+        <%= render @projects %>
+      <% else %>
+        <%= render "shared/empty", message: t("proyectos.sin_proyectos") %>
+      <% end %>
+    </div>
+  </div>
+</section>
+
+<%# ── Campañas ────────────────────────────────────────────────────────── %>
+<section id="campanas" class="band border-t border-hairline">
+  <div class="wrap">
+    <%= render "shared/section_header",
+               label: t("nav.campanas"),
+               title: t("campanas.title"),
+               subtitle: t("campanas.subtitle"),
+               link: campaigns_path,
+               link_label: t("campanas.ver_todas") %>
+
+    <div class="mt-8 grid gap-10 lg:grid-cols-[1fr_420px]">
+      <div>
+        <% if @campaigns.any? %>
+          <%= render @campaigns %>
+        <% else %>
+          <%= render "shared/empty", message: t("campanas.sin_campanas") %>
+        <% end %>
+      </div>
+
+      <%= render "campaigns/map", campaigns: @mapped_campaigns %>
+    </div>
+  </div>
+</section>
+
+<%# ── Divulgación ─────────────────────────────────────────────────────── %>
+<section id="divulgacion" class="band border-t border-hairline bg-paper-2/50">
+  <div class="wrap">
+    <%= render "shared/section_header",
+               label: t("nav.divulgacion"),
+               title: t("divulgacion.title"),
+               subtitle: t("divulgacion.subtitle"),
+               link: outreach_items_path,
+               link_label: t("divulgacion.ver_todo") %>
+
+    <% videos = @outreach_items.select(&:embedded_video?).first(2) %>
+    <% materiales = @outreach_items.reject(&:embedded_video?) %>
+
+    <div class="mt-8">
+      <% if @outreach_items.any? %>
+        <% if videos.any? %>
+          <div class="grid gap-6 sm:grid-cols-2">
+            <% videos.each do |item| %>
+              <%= render "outreach_items/video", item: item %>
+            <% end %>
+          </div>
+        <% end %>
+
+        <% if materiales.any? %>
+          <div class="mt-10">
+            <p class="lbl mb-2"><%= t("divulgacion.materiales") %></p>
+            <%= render materiales %>
+          </div>
+        <% end %>
+      <% else %>
+        <%= render "shared/empty", message: t("divulgacion.sin_material") %>
+      <% end %>
+    </div>
+  </div>
+</section>
+
+<%# ── Contacto ────────────────────────────────────────────────────────── %>
+<section id="contacto" class="band border-t border-hairline bg-accent text-paper">
+  <div class="wrap">
+    <p class="font-mono text-[10.5px] uppercase tracking-[0.14em] text-paper/70"><%= t("nav.contacto") %></p>
+    <h2 class="mt-2 font-serif text-[28px] font-light leading-[1.12] tracking-[-0.018em] sm:text-[36px]">
+      <%= t("contacto.subtitle") %>
+    </h2>
+    <p class="mt-4 max-w-[58ch] text-[16.5px] text-paper/85"><%= t("contacto.invitacion") %></p>
+
+    <%= link_to t("contacto.title"), contact_path,
+                class: "mt-6 inline-block border border-paper/60 px-5 py-2.5 font-mono text-[11px] uppercase tracking-[0.11em] hover:bg-paper hover:text-accent",
+                **new_tab %>
+  </div>
+</section>

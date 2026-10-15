@@ -1,0 +1,83 @@
+<%#
+  Menú fijo arriba, logo fijo a la izquierda, resaltado fuerte en hover
+  (fondo sólido, no subrayado) — CLAUDE.md.
+
+  Abajo de 1060px los 8 links no entran: aparece la hamburguesa. El corte es
+  la variante `menu:`, definida en app/assets/tailwind/application.css.
+
+  En la portada los links van a las anclas de la misma página; desde cualquier
+  otra página van a la página propia de cada sección.
+%>
+<% en_portada = current_page?(root_path) %>
+<% secciones = [
+     [ t("nav.portada"),       en_portada ? "#portada"      : root_path ],
+     [ t("nav.novedades"),     en_portada ? "#novedades"    : posts_path ],
+     [ t("nav.equipo"),        en_portada ? "#equipo"       : members_path ],
+     [ t("nav.publicaciones"), en_portada ? "#publicaciones" : publications_path ],
+     [ t("nav.proyectos"),     en_portada ? "#proyectos"    : projects_path ],
+     [ t("nav.campanas"),      en_portada ? "#campanas"     : campaigns_path ],
+     [ t("nav.divulgacion"),   en_portada ? "#divulgacion"  : outreach_items_path ],
+     [ t("nav.contacto"),      en_portada ? "#contacto"     : contact_path ]
+   ] %>
+
+<header class="sticky top-0 z-60 border-b border-hairline bg-paper/95 backdrop-blur-[10px]"
+        data-controller="menu"
+        data-menu-open-value="false"
+        data-action="keydown.esc->menu#close">
+  <div class="wrap flex h-[61px] items-center justify-between gap-4">
+    <%#
+      Isologotipo del "Manual de marca GIAS". El manual prohíbe re-tipografiar
+      el nombre (p.9, uso indebido 2), así que acá no va texto al lado: el
+      nombre ya está dentro de la imagen.
+
+      En celular entra solo la síntesis de imagen (la araña), porque a la altura
+      de la barra la bajada del isologotipo quedaría ilegible y el manual pide
+      no achicar la marca hasta ese punto (p.9, uso indebido 5). El manual
+      habilita ese uso de la síntesis sola (p.10) a condición de que la marca
+      completa aparezca visible en la página: está en el pie.
+    %>
+    <%= link_to (en_portada ? "#portada" : root_path),
+                class: "flex shrink-0 items-center no-underline",
+                "aria-label": t("site.name") do %>
+      <%= image_tag "logo-sintesis.png", alt: "", width: 633, height: 513,
+                    class: "h-[30px] w-auto sm:hidden" %>
+      <%= image_tag "logo.png", alt: t("site.name"), width: 1285, height: 602,
+                    class: "hidden h-[38px] w-auto sm:block" %>
+    <% end %>
+
+    <nav class="hidden items-center gap-0.5 menu:flex" aria-label="<%= t("nav.portada") %>">
+      <% secciones.each do |label, path| %>
+        <%= nav_link_to label, path %>
+      <% end %>
+    </nav>
+
+    <div class="flex shrink-0 items-center gap-3">
+      <%= render "shared/language_switch" %>
+
+      <button type="button"
+              class="border border-hairline px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.1em] menu:hidden"
+              data-action="menu#toggle"
+              data-menu-target="button"
+              aria-expanded="false"
+              aria-controls="menu-movil">
+        <span data-menu-target="label"
+              data-open-label="<%= t("nav.abrir_menu") %>"
+              data-close-label="<%= t("nav.cerrar_menu") %>"><%= t("nav.abrir_menu") %></span>
+      </button>
+    </div>
+  </div>
+
+  <%# Panel del menú en celular. Se muestra solo cuando el botón lo abre. %>
+  <nav id="menu-movil"
+       class="hidden border-t border-hairline bg-paper menu:hidden"
+       data-menu-target="panel"
+       aria-label="<%= t("nav.portada") %>">
+    <div class="wrap py-3">
+      <% secciones.each do |label, path| %>
+        <%= link_to label, path,
+                    class: "block border-b border-hairline/60 py-3 text-[15px] text-ink last:border-0 hover:text-accent",
+                    data: { action: "menu#close" } %>
+      <% end %>
+    </div>
+  </nav>
+</header>
