@@ -2,15 +2,16 @@
   Ficha de integrante: foto, nombre, cargo debajo, línea de interés y
   descripción, con links al mail, CONICET y ResearchGate (docs/pedido.md).
 %>
-<article class="flex gap-4 border-t border-hairline py-6 sm:gap-6">
+<article class="flex flex-col gap-4 border-t border-hairline py-6 sm:flex-row sm:gap-6">
   <%#
-    En celular la foto crece poco: la ficha es una fila y el texto necesita el
-    ancho. En escritorio sí se agranda, que es donde sobra lugar.
+    En celular la foto va arriba y el texto abajo: al lado del texto quedaba
+    chiquita. Tiene tope de ancho para que un retrato 4:5 no ocupe la pantalla
+    entera. Desde sm, foto y texto en fila.
   %>
-  <div class="w-28 shrink-0 sm:w-44 lg:w-52">
+  <div class="w-full max-w-[260px] shrink-0 sm:w-44 lg:w-52">
     <% if member.photo.attached? %>
       <%= responsive_image_tag member.photo,
-                               sizes: "(min-width: 1024px) 208px, (min-width: 640px) 176px, 112px",
+                               sizes: "(min-width: 1024px) 208px, (min-width: 640px) 176px, 260px",
                                alt: member.name,
                                class: "aspect-[4/5] w-full border border-hairline object-cover" %>
     <% else %>
