@@ -9,49 +9,65 @@
 <% content_for :description, t("home.hero_title") %>
 
 <%# ── Portada ─────────────────────────────────────────────────────────── %>
-<section id="portada"
-         class="relative flex min-h-[72vh] items-end overflow-hidden bg-[#171C1A] sm:min-h-[80vh]"
+<%#
+  Logo fijo y fotos que rotan al lado (docs/pedido.md; el grupo mandó un
+  ejemplo de cómo se lo imaginan). En celular el logo va arriba y la foto
+  abajo; desde lg, uno al lado del otro.
+
+  El logo entero es la marca completa que el manual pide ver en la página
+  (p.10), además de la del pie. Es el <h1>: el nombre está dentro de la imagen
+  y el manual prohíbe re-tipografiarlo, así que va en el alt.
+
+  Las fotos son de estudio, sobre fondo blanco. `mix-blend-multiply` funde
+  ese blanco con el papel. Va en el div de cada slide y no en el <img>: el
+  div tiene opacidad (el fundido), y eso aísla al <img> del fondo.
+%>
+<% fotos = @cover_photos %>
+
+<section id="portada" class="border-b border-hairline bg-paper"
          data-controller="carousel">
-  <% fotos = hero_images %>
-
-  <% if fotos.any? %>
-    <% fotos.each_with_index do |foto, index| %>
-      <div class="absolute inset-0 transition-opacity duration-1000 <%= index.zero? ? "opacity-100" : "opacity-0" %>"
-           data-carousel-target="slide">
-        <%= image_tag foto, alt: "", loading: (index.zero? ? "eager" : "lazy"),
-                      class: "h-full w-full object-cover opacity-70" %>
-      </div>
-    <% end %>
-  <% else %>
-    <%# Sin fotos todavía: un fondo sobrio, no un hueco roto. %>
-    <div class="absolute inset-0 bg-gradient-to-br from-vino via-structure to-ink"></div>
-    <p class="absolute right-5 top-5 border border-dashed border-paper/30 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.12em] text-paper/50">
-      <%= t("comun.foto_pendiente") %>
-    </p>
-  <% end %>
-
-  <div class="wrap relative z-10 py-14 sm:py-20">
-    <p class="font-mono text-[10.5px] uppercase tracking-[0.14em] text-paper/75">
-      <%= t("home.hero_keywords").join(" · ") %>
-    </p>
-
-    <h1 class="mt-4 max-w-[17ch] font-serif text-[34px] font-extralight leading-[1.05] tracking-[-0.022em] text-[#F4F5F1] sm:text-[52px] lg:text-[66px]">
-      <%= t("home.hero_title") %>
+  <div class="wrap grid items-center gap-4 py-8 sm:gap-6 sm:py-14 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-14 lg:py-16">
+    <h1>
+      <%= image_tag "logo.png", alt: t("site.full_name"), width: 1285, height: 602,
+                    fetchpriority: "high",
+                    class: "mx-auto h-auto w-full max-w-[400px] lg:max-w-none" %>
     </h1>
 
-    <p class="mt-4 max-w-[46ch] text-[16px] text-paper/80">
-      <%= t("site.institution") %>
-    </p>
+    <% if fotos.any? %>
+      <div>
+        <div class="relative aspect-[4/3]">
+          <% fotos.each_with_index do |foto, index| %>
+            <%#
+              Solo la primera se muestra de entrada. Las otras arrancan con
+              `hidden`, y un <img loading="lazy"> oculto no se descarga: el
+              controller destapa la que sigue un turno antes de mostrarla.
+              Así el celular no baja todas las fotos de golpe.
+            %>
+            <div class="absolute inset-0 mix-blend-multiply transition-opacity duration-700 <%= index.zero? ? "opacity-100" : "hidden opacity-0" %>"
+                 data-carousel-target="slide">
+              <%= responsive_image_tag foto.image, widths: ApplicationHelper::WIDE_VARIANT_WIDTHS,
+                                       sizes: "(min-width: 1024px) 55vw, calc(100vw - 32px)",
+                                       alt: "", loading: (index.zero? ? "eager" : "lazy"),
+                                       class: "h-full w-full object-contain" %>
+            </div>
+          <% end %>
+        </div>
 
-    <% if fotos.size > 1 %>
-      <div class="mt-8 flex gap-2">
-        <% fotos.each_with_index do |_foto, index| %>
-          <button type="button"
-                  class="h-1.5 w-8 <%= index.zero? ? "bg-paper" : "bg-paper/35" %>"
-                  data-carousel-target="dot"
-                  data-index="<%= index %>"
-                  data-action="carousel#goTo"
-                  aria-label="<%= index + 1 %>"></button>
+        <% if fotos.size > 1 %>
+          <div class="mt-3 flex flex-wrap justify-center gap-1">
+            <% fotos.each_with_index do |_foto, index| %>
+              <%# El área de toque es más grande que la rayita que se ve. %>
+              <button type="button"
+                      class="group cursor-pointer px-0.5 py-2"
+                      data-carousel-target="dot"
+                      data-index="<%= index %>"
+                      data-action="carousel#goTo"
+                      aria-current="<%= index.zero? %>"
+                      aria-label="<%= t("home.foto_n", n: index + 1) %>">
+                <span class="block h-1 w-3 bg-hairline sm:w-4 group-hover:bg-ink-soft group-aria-[current=true]:bg-structure"></span>
+              </button>
+            <% end %>
+          </div>
         <% end %>
       </div>
     <% end %>
@@ -70,13 +86,17 @@
       <p class="mt-4 max-w-[66ch] text-[16.5px] text-ink-soft"><%= t("home.intro_body_2") %></p>
     </div>
 
-    <%# "Fotos que pasen al lado del texto del grupo" (docs/pedido.md). %>
+    <%#
+      Dos fotos de campo al lado de la presentación. Las de estudio ya rotan
+      en la portada; acá van las campañas, que muestran dónde se trabaja.
+    %>
     <div class="grid grid-cols-2 gap-3 lg:grid-cols-1">
-      <% hero_images.first(2).each do |foto| %>
-        <%= image_tag foto, alt: "", loading: "lazy",
-                      class: "aspect-[4/3] w-full border border-hairline object-cover" %>
+      <% @intro_photos.each do |foto| %>
+        <%= responsive_image_tag foto, widths: ApplicationHelper::WIDE_VARIANT_WIDTHS,
+                                 sizes: "(min-width: 1024px) 320px, 50vw",
+                                 alt: "", class: "aspect-[4/3] w-full border border-hairline object-cover" %>
       <% end %>
-      <% (2 - hero_images.first(2).size).times do %>
+      <% (2 - @intro_photos.size).times do %>
         <%= photo_placeholder css_class: "aspect-[4/3] w-full" %>
       <% end %>
     </div>

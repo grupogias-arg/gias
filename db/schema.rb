@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_15_175245) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_15_190000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -70,6 +70,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_15_175245) do
     t.integer "year_start"
     t.index ["date"], name: "index_campaigns_on_date"
     t.index ["year_start"], name: "index_campaigns_on_year_start"
+  end
+
+  create_table "cover_photos", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "position", default: 0, null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "members", force: :cascade do |t|

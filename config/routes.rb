@@ -13,6 +13,9 @@ Rails.application.routes.draw do
 
     resource :session, only: %i[new create destroy], path: "sesion", path_names: { new: "ingresar" }
     resources :posts, path: "novedades", path_names: { new: "nueva", edit: "editar" }
+    resources :cover_photos, path: "portada", only: %i[index create destroy] do
+      patch :move, on: :member, path: "mover"
+    end
   end
 
   # Bilingüe ES/EN con español por defecto (CLAUDE.md).

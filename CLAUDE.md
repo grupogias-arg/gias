@@ -193,6 +193,10 @@ Campaign        # campañas
   coords_estimated            # true mientras la coordenada sea aproximada
   has_many_attached :photos   # 2 por campaña
 
+CoverPhoto      # portada: fotos que rotan al lado del logo fijo
+  position
+  has_one_attached :image     # fotos de estudio, araña sobre fondo blanco
+
 OutreachItem    # divulgación
   title, kind, url, youtube_id, position
   authors                     # los artículos de los boletines vienen firmados
@@ -216,8 +220,9 @@ campos con ayuda, previsualización de imágenes.
 Aviso: van a pegar texto desde Word. Sanitizar el HTML pegado en Trix.
 
 ### Estado (octubre de 2026)
-Hecho: login y **Novedades**. Faltan los demás modelos, que siguen el mismo
-patrón (`Admin::BaseController`, helper `admin_field`, clases `admin-*`).
+Hecho: login, **Novedades** y **Portada** (`/admin/portada`: subir varias
+fotos de una vez, flechas para reordenar, sacar). Faltan los demás modelos,
+que siguen el mismo patrón (`Admin::BaseController`, helper `admin_field`, clases `admin-*`).
 
 - **Login**: el generador de autenticación de Rails 8, acotado a `/admin`
   (`Admin::BaseController` incluye `Authentication`; el sitio público no pide
@@ -384,11 +389,17 @@ lista las carpetas y los Google Docs y **no devuelve los archivos binarios**
   dos de Comodoro Rivadavia tienen la carpeta vacía en el Drive). **No llevan
   el prefijo `[EJEMPLO]`**: el dato es real, a diferencia del resto.
 - **Marca** — manual, isologotipo y paleta (ver "Diseño visual").
+- **Portada** — 16 fotos candidatas en `drive/PORTADA/` (arañas de estudio
+  sobre fondo blanco) y `ejemplo_portada.png`, el boceto del grupo: logo fijo
+  a la izquierda y la foto rotando al lado. Cargadas como `CoverPhoto` en
+  `db/seeds/cover_photos.rb`, todas y en orden numérico; el grupo elige
+  desde el panel cuáles quedan. La vista las funde con el papel con
+  `mix-blend-multiply` (por eso conviene fondo blanco, no fotos de campo).
 
 ### Sigue pendiente
 
-- **Fotos de portada** — la carpeta PORTADA del Drive está vacía. Es la única
-  sección que todavía muestra los degradés de relleno de `db/seeds/images/`
+- **Qué fotos de portada quedan** — mandaron 16 candidatas y el pedido original
+  hablaba de "dos o tres". Hoy rotan las 16; que Fiorela saque las que sobren.
 - **Proyectos** (PICT, Rufford, PNUD) — no existe la carpeta, cero datos
 - **Publicaciones científicas** — no existe la carpeta, cero datos
 - Descripciones de las campañas

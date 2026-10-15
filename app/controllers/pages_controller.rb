@@ -6,6 +6,8 @@ class PagesController < ApplicationController
   PREVIEW = 3
 
   def home
+    @cover_photos = CoverPhoto.ordered.with_attached_image
+    @intro_photos = Campaign.recent.with_attached_photos.flat_map { |campaign| campaign.photos.first(1) }.first(2)
     @posts = Post.published.recent.with_attached_documents.limit(PREVIEW)
     @members = Member.ordered.with_attached_photo
     @publications = Publication.recent.limit(4)

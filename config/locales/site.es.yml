@@ -6,6 +6,7 @@
 es:
   site:
     name: GIAS
+    full_name: GIAS — Grupo de Investigaciones Aracnológicas del Sur
     tagline: Grupo de Investigación en Arañas Mygalomorphae
     institution: CERZOS (CONICET / UNS) · Departamento de Agronomía, Bahía Blanca
 
@@ -24,12 +25,7 @@ es:
 
   home:
     hero_title: Arañas Mygalomorphae, origen y diversidad
-    hero_keywords:
-      - Sistemática
-      - Biogeografía
-      - Ecología
-      - Comportamiento
-      - Conservación
+    foto_n: Foto %{n}
     intro_label: Quiénes somos
     intro_title: El grupo
     intro_body: >

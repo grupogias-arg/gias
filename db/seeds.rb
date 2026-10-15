@@ -17,7 +17,6 @@
 #   - datos de publicaciones y proyectos (el Drive no trae nada de eso)
 #   - descripciones de las campañas y sus coordenadas reales
 #   - títulos de 5 de los 7 videos de divulgación
-#   - fotos de portada (la carpeta PORTADA del Drive está vacía)
 #
 # Los IDs de YouTube son reales: los pasó el grupo. Los títulos que los
 # acompañan son inventados salvo los dos que vinieron nombrados.
@@ -191,17 +190,10 @@ end
 # Las campañas NO usan estos placeholders: sus fotos son reales y salen de
 # drive/CAMPAÑAS/, se adjuntan en db/seeds/campaigns.rb.
 
-# La portada no tiene modelo propio todavía (no está en el modelo de datos de
-# CLAUDE.md), así que sus fotos se copian al pipeline de assets y la vista las
-# levanta del disco. Es provisorio: cuando lleguen las definitivas hay que
-# decidir dónde viven para que el grupo pueda cambiarlas desde el panel.
-portada_destino = Rails.root.join("app/assets/images/portada")
-portada = seed_images("portada")
+# La portada NO usa estos placeholders: sus fotos son reales y salen de
+# drive/PORTADA/, se cargan en db/seeds/cover_photos.rb.
 
-if portada.any?
-  FileUtils.mkdir_p(portada_destino)
-  portada.each { |path| FileUtils.cp(path, portada_destino.join(path.basename)) }
-end
+load Rails.root.join("db/seeds/cover_photos.rb")
 
 # Logo del grupo, si lo dejaron. El del menú es un placeholder (CLAUDE.md).
 logo = Dir.glob(IMAGES.join("logo", "logo.{svg,png,jpg,jpeg,webp}"), File::FNM_CASEFOLD).min
@@ -210,7 +202,7 @@ if logo
   FileUtils.cp(logo, Rails.root.join("app/assets/images", File.basename(logo)))
 end
 
-puts "  Imágenes adjuntadas: #{attached} · portada: #{portada.size} · logo: #{logo ? 'sí' : 'no'}"
+puts "  Imágenes adjuntadas: #{attached} · portada: #{CoverPhoto.count} · logo: #{logo ? 'sí' : 'no'}"
 
 puts <<~SUMMARY
 

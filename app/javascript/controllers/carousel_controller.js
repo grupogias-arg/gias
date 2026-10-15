@@ -1,14 +1,18 @@
 import { Controller } from "@hotwired/stimulus"
 
-// Portada con dos o tres imágenes rotativas, como pidió el grupo
-// (docs/pedido.md). La rotación se apaga si el sistema pide menos movimiento.
+// Fotos que rotan en la portada, al lado del logo fijo (docs/pedido.md).
+// La rotación se apaga si el sistema pide menos movimiento.
+//
+// Las fotos que no se ven arrancan con `hidden`, para que el navegador no las
+// descargue todas de entrada. Cada vez que cambia la foto se destapa la que
+// sigue (todavía transparente), así ya está bajada cuando le toca.
 export default class extends Controller {
   static targets = ["slide", "dot"]
-  static values = { interval: { type: Number, default: 7000 } }
+  static values = { interval: { type: Number, default: 3000 } }
 
   connect() {
     this.index = 0
-    this.show(0)
+    this.reveal(1)
 
     if (this.slideTargets.length < 2) return
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
@@ -27,13 +31,25 @@ export default class extends Controller {
   // Click en un puntito: va a esa foto y corta la rotación automática, para
   // no arrastrar a quien eligió mirar una.
   goTo(event) {
-    const index = Number(event.currentTarget.dataset.index)
     if (this.timer) clearInterval(this.timer)
-    this.show(index)
+
+    const index = Number(event.currentTarget.dataset.index)
+    const slide = this.slideTargets[index]
+
+    // Si estaba oculta, el fundido necesita un cuadro con la foto ya en
+    // pantalla (transparente) antes de cambiarle la opacidad.
+    if (slide.classList.contains("hidden")) {
+      this.reveal(index)
+      requestAnimationFrame(() => requestAnimationFrame(() => this.show(index)))
+    } else {
+      this.show(index)
+    }
   }
 
   show(index) {
     this.index = index
+    this.reveal(index)
+    this.reveal((index + 1) % this.slideTargets.length)
 
     this.slideTargets.forEach((slide, i) => {
       slide.classList.toggle("opacity-0", i !== index)
@@ -41,9 +57,11 @@ export default class extends Controller {
     })
 
     this.dotTargets.forEach((dot, i) => {
-      dot.classList.toggle("bg-paper", i === index)
-      dot.classList.toggle("bg-paper/35", i !== index)
       dot.setAttribute("aria-current", String(i === index))
     })
+  }
+
+  reveal(index) {
+    this.slideTargets[index]?.classList.remove("hidden")
   }
 }

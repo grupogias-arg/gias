@@ -7,6 +7,7 @@
 en:
   site:
     name: GIAS
+    full_name: GIAS — Grupo de Investigaciones Aracnológicas del Sur
     tagline: Mygalomorph Spider Research Group
     institution: CERZOS (CONICET / UNS) · Department of Agronomy, Bahía Blanca
 
@@ -25,12 +26,7 @@ en:
 
   home:
     hero_title: Mygalomorph spiders, origin and diversity
-    hero_keywords:
-      - Systematics
-      - Biogeography
-      - Ecology
-      - Behaviour
-      - Conservation
+    foto_n: Photo %{n}
     intro_label: About us
     intro_title: The group
     intro_body: >

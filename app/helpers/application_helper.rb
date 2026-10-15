@@ -144,18 +144,6 @@ module ApplicationHelper
     root_path(locale: (locale == I18n.default_locale ? nil : locale))
   end
 
-  # Fotos rotativas de la portada.
-  #
-  # PROVISORIO: hoy salen del disco, de lo que los seeds copiaron desde
-  # db/seeds/images/portada/. No hay modelo para la portada en CLAUDE.md, así
-  # que cuando lleguen las fotos definitivas hay que decidir dónde viven para
-  # que el grupo pueda cambiarlas desde el panel sin tocar código.
-  def hero_images
-    Rails.root.glob("app/assets/images/portada/*.{jpg,jpeg,png,webp,avif}")
-         .sort_by { |path| path.basename.to_s }
-         .map { |path| "portada/#{path.basename}" }
-  end
-
   # Logo del grupo, si ya lo mandaron. Mientras tanto, el menú dibuja un
   # placeholder (CLAUDE.md: el logo sigue pendiente del cliente).
   def site_logo

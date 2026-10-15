@@ -47,9 +47,6 @@
 /app/assets/builds/*
 !/app/assets/builds/.keep
 
-# Fotos de portada de ejemplo que los seeds copian desde db/seeds/images/.
-/app/assets/images/portada/
-
 # El logo SÍ se versiona: desde que llegó el material del grupo, logo.png y
 # logo-sintesis.png son la marca aprobada del "Manual de marca GIAS" (2021),
 # no un placeholder. Pesan 71 KB entre los dos.

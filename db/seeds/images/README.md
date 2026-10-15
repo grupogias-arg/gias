@@ -14,7 +14,6 @@ sin fotos y el sitio sigue funcionando (hay placeholders en las vistas).
 alfabético de nombre de archivo, así que alcanza con numerarlas:
 
 ```
-portada/     1.jpg  2.jpg  3.jpg        → rotan en la portada (2 o 3)
 equipo/      1.jpg  2.jpg  3.jpg  4.jpg → una por integrante, en orden de listado
 proyectos/   1.jpg  2.jpg  3.jpg        → una por proyecto, en orden
 campanas/    1.jpg  2.jpg  3.jpg  4.jpg → de a dos por campaña (1+2, 3+4, 5+6)
