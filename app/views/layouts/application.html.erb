@@ -21,6 +21,10 @@
     <link rel="alternate" hreflang="es" href="<%= locale_switch_url(:es) %>">
     <link rel="alternate" hreflang="en" href="<%= locale_switch_url(:en) %>">
 
+    <%# El feed reemplaza a la suscripción por mail, que quedó para la etapa 2
+        (CLAUDE.md). Va solo acá, sin link visible: quien no conoce RSS y hace
+        clic ve un XML crudo y parece un error. Los lectores de RSS lo
+        encuentran igual a partir de esta etiqueta. %>
     <%= auto_discovery_link_tag :rss, posts_url(format: :rss), title: "#{t("site.name")} — #{t("novedades.title")}" %>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
