@@ -1,9 +1,10 @@
 class Campaign < ApplicationRecord
   include Translatable
 
-  # El pedido habla de 2 fotos por campaña. Es una guía de carga, no un tope
-  # duro: no se valida para no bloquear a quien sube el contenido.
-  EXPECTED_PHOTOS = 2
+  # El grupo dejó 3 fotos por campaña en el Drive (el pedido original hablaba
+  # de 2). Es una guía de carga, no un tope duro: no se valida para no bloquear
+  # a quien sube el contenido.
+  EXPECTED_PHOTOS = 3
 
   has_many_attached :photos do |attachable|
     attachable.variant :sm, resize_to_limit: [ 480, 360 ], format: :webp, saver: { quality: 80 }

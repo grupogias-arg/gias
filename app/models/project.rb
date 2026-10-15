@@ -1,7 +1,9 @@
 class Project < ApplicationRecord
   include Translatable
 
-  FUNDERS = %w[pict rufford pnud otros].freeze
+  # Los que aparecen en drive/PROYECTOS/Proyectos.docx. El pedido original
+  # mencionaba PNUD, pero ninguno de los 18 proyectos lo tiene.
+  FUNDERS = %w[pict sgcyt_uns aas rufford bts isa ngc otros].freeze
 
   enum :funder, FUNDERS.index_by(&:itself), validate: true
 

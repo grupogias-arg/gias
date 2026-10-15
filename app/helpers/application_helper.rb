@@ -31,13 +31,22 @@ module ApplicationHelper
   # propósito: detectar nombres científicos por forma (mayúscula inicial, latín)
   # da falsos positivos con apellidos y topónimos, que abundan en estas bios.
   #
-  # Si el grupo empieza a trabajar con otro género, se agrega acá.
-  TAXA = %w[
-    Mygalomorphae Theraphosidae Migidae Nemesiidae Pycnothelidae
-    Acanthogonatus Catumiri Euathlus Grammostola Phrixotrichus Plesiopelma
+  # Si el grupo empieza a trabajar con otro género, se agrega acá. Las especies
+  # van completas (género + epíteto): sin eso solo se itálica el género, y
+  # adivinar el epíteto por forma tomaría "Grammostola de Argentina".
+  TAXA = [
+    "Acanthogonatus centralis", "Calathotarsus simoni", "Grammostola vachoni",
+    "Mecicobothrium thorelli", "Xenonemesia platensis",
+    *%w[
+      Mygalomorphae Theraphosidae Migidae Nemesiidae Pycnothelidae
+      Mecicobothriidae
+      Acanthogonatus Calathotarsus Catumiri Euathlus Grammostola Mecicobothrium
+      Phrixotrichus Plesiopelma Xenonemesia
+    ]
   ].freeze
 
-  TAXA_PATTERN = /\b(#{Regexp.union(TAXA).source})\b/
+  # Más largos primero, para que "Grammostola vachoni" gane sobre "Grammostola".
+  TAXA_PATTERN = /\b(#{Regexp.union(TAXA.sort_by { -it.length }).source})\b/
 
   # Itálica automática para los taxones dentro de un texto plano cargado desde
   # el panel (bios del equipo, descripciones). Fiorela pega desde Word y no va a

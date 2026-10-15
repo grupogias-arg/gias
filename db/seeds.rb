@@ -2,28 +2,18 @@
 # SEEDS — mezcla de contenido REAL del grupo y relleno de EJEMPLO
 # =============================================================================
 #
-# Ya NO es todo relleno. Desde que llegó el material del Drive hay dos clases
-# de registro, y hay que no confundirlas:
+# Casi todo es real y sale del material del Drive (drive/, ver CLAUDE.md), en
+# archivos aparte y sin prefijo:
+#     - db/seeds/members.rb       equipo (7 integrantes, bilingüe ES/EN)
+#     - db/seeds/posts.rb         novedades
+#     - db/seeds/projects.rb      proyectos (18)
+#     - db/seeds/campaigns.rb     campañas (25, con coordenadas APROXIMADAS)
+#     - db/seeds/outreach.rb      divulgación
+#     - db/seeds/cover_photos.rb  portada
 #
-#   REAL, en archivos aparte, sin prefijo:
-#     - db/seeds/members.rb    equipo (7 integrantes, bilingüe ES/EN)
-#     - db/seeds/campaigns.rb  campañas (25, con coordenadas APROXIMADAS)
-#
-#   EJEMPLO, acá abajo, con prefijo "[EJEMPLO]" en cada registro para que sea
-#   imposible confundirlo con contenido real si se cuela en algún lado:
-#     - novedades, publicaciones, proyectos, divulgación
-#
-# Sigue pendiente del cliente (CLAUDE.md):
-#   - datos de publicaciones y proyectos (el Drive no trae nada de eso)
-#   - descripciones de las campañas y sus coordenadas reales
-#   - títulos de 5 de los 7 videos de divulgación
-#
-# Los IDs de YouTube son reales: los pasó el grupo. Los títulos que los
-# acompañan son inventados salvo los dos que vinieron nombrados.
-#
-# Las imágenes son opcionales: si dejás fotos en db/seeds/images/ se adjuntan
-# a estos registros (ver el README de esa carpeta). Si no hay ninguna, el
-# sitio muestra los huecos marcados como "foto pendiente" y sigue andando.
+# Lo único de EJEMPLO son las publicaciones, acá abajo, con prefijo
+# "[EJEMPLO]" para que sea imposible confundirlas con contenido real. Las
+# reales van a llegar por la sincronización con BICYT (CLAUDE.md).
 #
 #   bin/rails db:seed
 #
@@ -46,7 +36,7 @@ def example(text) = "#{MARK} #{text}"
 
 load Rails.root.join("db/seeds/support.rb")
 
-puts "Cargando seeds (solo publicaciones y proyectos son de ejemplo)..."
+puts "Cargando seeds (solo publicaciones son de ejemplo)..."
 
 # -- Novedades ---------------------------------------------------------------
 # Las novedades NO son de ejemplo: las 3 notas salen de drive/NEWS/, con el
@@ -106,37 +96,9 @@ publications.each do |attributes|
 end
 
 # -- Proyectos ---------------------------------------------------------------
-# Los financiadores (PICT, Rufford, PNUD) sí son los que mencionó el grupo.
+# Real: los 18 proyectos y sus fotos, de drive/PROYECTOS/.
 
-projects = [
-  {
-    title: example("Diversidad y evolución de Mygalomorphae"),
-    title_en: example("Diversity and evolution of Mygalomorphae"),
-    funder: "pict",
-    year_start: 2023,
-    year_end: 2026,
-    description: example("Descripción de ejemplo del proyecto, dos o tres renglones."),
-    description_en: example("Placeholder project description.")
-  },
-  {
-    title: example("Conservación de migalomorfas amenazadas"),
-    funder: "rufford",
-    year_start: 2022,
-    year_end: 2024,
-    description: example("Descripción de ejemplo del proyecto.")
-  },
-  {
-    title: example("Inventario de biodiversidad en pastizales"),
-    funder: "pnud",
-    year_start: 2024,
-    # Sin year_end: proyecto en curso.
-    description: example("Descripción de ejemplo del proyecto.")
-  }
-]
-
-projects.each do |attributes|
-  Project.find_or_initialize_by(title: attributes[:title]).update!(attributes)
-end
+load Rails.root.join("db/seeds/projects.rb")
 
 # -- Campañas ----------------------------------------------------------------
 # Las campañas NO son de ejemplo: nombres, años y lugares salen de las carpetas
@@ -150,50 +112,14 @@ load Rails.root.join("db/seeds/campaigns.rb")
 
 load Rails.root.join("db/seeds/outreach.rb")
 
-# -- Imágenes ----------------------------------------------------------------
-# Fotos sueltas para poder ver el sitio armado. Se adjuntan por orden
-# alfabético de nombre de archivo, sin que haga falta saber qué foto va con
-# qué registro (db/seeds/images/README.md).
-#
-# Nada de esto es contenido aprobado: cuando llegue el material de verdad se
-# carga desde el panel, no desde acá.
-
-IMAGES = Rails.root.join("db/seeds/images")
-IMAGE_EXTENSIONS = %w[jpg jpeg png webp avif].freeze
-
-def seed_images(folder)
-  Dir.glob(IMAGES.join(folder, "*.{#{IMAGE_EXTENSIONS.join(',')}}"), File::FNM_CASEFOLD)
-     .sort_by { |path| File.basename(path).downcase }
-     .map { |path| Pathname.new(path) }
-end
-
-# Adjunta un archivo solo si el registro todavía no tiene foto, así volver a
-# correr los seeds no duplica adjuntos.
-def attach_once(attachment, path)
-  return if attachment.attached?
-
-  attachment.attach(io: path.open, filename: path.basename.to_s)
-end
-
-attached = 0
-
-# El equipo tampoco usa estos placeholders: sus fotos son reales y salen de
-# drive/EQUIPO/, se adjuntan en db/seeds/members.rb.
-
-seed_images("proyectos").zip(Project.recent.to_a).each do |path, project|
-  next if path.nil? || project.nil?
-
-  attach_once(project.photo, path)
-  attached += 1
-end
-
-# Las campañas NO usan estos placeholders: sus fotos son reales y salen de
-# drive/CAMPAÑAS/, se adjuntan en db/seeds/campaigns.rb.
-
-# La portada NO usa estos placeholders: sus fotos son reales y salen de
-# drive/PORTADA/, se cargan en db/seeds/cover_photos.rb.
+# -- Portada -----------------------------------------------------------------
+# Real: las fotos de drive/PORTADA/. Todas las fotos del sitio salen ya del
+# Drive (equipo, proyectos, campañas, portada); db/seeds/images/ queda solo
+# para el logo.
 
 load Rails.root.join("db/seeds/cover_photos.rb")
+
+IMAGES = Rails.root.join("db/seeds/images")
 
 # Logo del grupo, si lo dejaron. El del menú es un placeholder (CLAUDE.md).
 logo = Dir.glob(IMAGES.join("logo", "logo.{svg,png,jpg,jpeg,webp}"), File::FNM_CASEFOLD).min
@@ -202,7 +128,7 @@ if logo
   FileUtils.cp(logo, Rails.root.join("app/assets/images", File.basename(logo)))
 end
 
-puts "  Imágenes adjuntadas: #{attached} · portada: #{CoverPhoto.count} · logo: #{logo ? 'sí' : 'no'}"
+puts "  Portada: #{CoverPhoto.count} · logo: #{logo ? 'sí' : 'no'}"
 
 puts <<~SUMMARY
 
@@ -210,8 +136,8 @@ puts <<~SUMMARY
 
     Novedades .......... #{Post.count}  real (drive/NEWS)
     Equipo ............. #{Member.count}  real (drive/EQUIPO)
-    Publicaciones ...... #{Publication.count}  EJEMPLO — el cliente no mandó nada
-    Proyectos .......... #{Project.count}  EJEMPLO — el cliente no mandó nada
+    Publicaciones ...... #{Publication.count}  EJEMPLO — las reales llegan con la sincronización de BICYT
+    Proyectos .......... #{Project.count}  real (drive/PROYECTOS)
     Campañas ........... #{Campaign.count}  real (drive/CAMPAÑAS), coordenadas aproximadas
     Divulgación ........ #{OutreachItem.count}  real (drive/DIVULGACION + títulos de YouTube)
 

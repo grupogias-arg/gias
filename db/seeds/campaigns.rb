@@ -15,11 +15,10 @@
 # Tampoco hay descripciones: las carpetas del Drive solo tenían fotos. Quedan
 # en blanco a propósito — la vista omite el párrafo cuando falta.
 #
-# Dos campañas tienen la carpeta vacía en el Drive (Comodoro Rivadavia 2019 y
-# 2022): se cargan igual porque el dato es real, pero van a salir sin fotos.
+# Las fotos son las primeras 3 de cada carpeta en orden alfabético: el grupo
+# dejó 3 en casi todas (la de 2022 del noroeste tiene 8).
 #
-# Los nombres corrigen erratas de las carpetas: "Bosues" → "Bosques",
-# "SIerras" → "Sierras", "BUenos" → "Buenos", "Uruguaí" → "Urugua-í".
+# Los nombres corrigen erratas de las carpetas: "SIerras" → "Sierras", "BUenos" → "Buenos", "Uruguaí" → "Urugua-í".
 # =============================================================================
 
 campaigns = [
@@ -131,7 +130,7 @@ campaigns = [
 # [nombre, año de inicio]. Los nombres de carpeta van tal cual, con sus erratas.
 DRIVE_FOLDERS = {
   [ "Sierra de la Ventana", 2006 ] => "28-10-2006 - 2011 - Sierra de la Ventana BUenos Aires",
-  [ "Bosques Andino-Patagónicos", 2011 ] => "2011 - Bosues Andino-Patagónicos - Neuquén",
+  [ "Bosques Andino-Patagónicos", 2011 ] => "2011 - Bosques Andino-Patagónicos - Neuquén",
   [ "Isla Martín García", 2011 ] => "2011 - Isla Martin Garcia - Buenos Aires",
   [ "Parque Nacional Lihué Calel", 2011 ] => "2011 - Parque Nacional Lihue Calel - La Pampa",
   [ "Precordillera de Mendoza", 2013 ] => "2013 - Precordillera Mendoza",

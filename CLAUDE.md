@@ -183,7 +183,8 @@ Publication
 Project         # proyectos
   title, funder, year_start, year_end, description
   has_one_attached :photo
-  # funder: PICT, Rufford, PNUD, otros
+  # funder: pict, sgcyt_uns, aas, rufford, bts, isa, ngc, otros
+  #   (los del Drive; PNUD lo mencionaba el pedido, pero ningún proyecto lo tiene)
 
 Campaign        # campañas
   name, locality, province, lat, lng, date, days, description
@@ -191,7 +192,7 @@ Campaign        # campañas
                               # campañas abarcan un rango ("2013-2015").
                               # `date` solo donde se conoce la fecha exacta.
   coords_estimated            # true mientras la coordenada sea aproximada
-  has_many_attached :photos   # 2 por campaña
+  has_many_attached :photos   # 3 por campaña (Campaign::EXPECTED_PHOTOS)
 
 CoverPhoto      # portada: fotos que rotan al lado del logo fijo
   position
@@ -362,11 +363,16 @@ configurados en el dominio.
 
 El grupo dejó su contenido en el Drive de `grupogias.arg@gmail.com`, carpeta
 "Pagina Web / Contenido para web". Hay una copia local en `drive/`, **ignorada
-por git** (647 MB): se consulta, no se versiona.
+por git** (~680 MB): se consulta, no se versiona.
 
 Se puede leer el Drive directo con el conector de Google Drive (`/mcp`), pero
 lista las carpetas y los Google Docs y **no devuelve los archivos binarios**
 (fotos, `.docx`, `.pdf`). Para esos hay que ir a la copia local.
+
+Actualizado el 15/10/2026 con un zip nuevo del Drive. La copia anterior quedó
+en la Papelera (`drive-anterior-2026-10-15`). Para la próxima actualización:
+bajar el zip a otra carpeta, comparar contra `drive/` y recién después
+reemplazar, porque el grupo no avisa qué cambió.
 
 ### Ya llegó
 
@@ -382,12 +388,18 @@ lista las carpetas y los Google Docs y **no devuelve los archivos binarios**
 - **Divulgación** — en `db/seeds/outreach.rb`: 7 artículos de los boletines del
   CERZOS con autores y link al PDF, la guía de Coronel Suárez, y los 7 videos.
   Los IDs de YouTube ya estaban en `docs/pedido.md` y coinciden con los del
-  Drive. **4 de los 7 videos siguen sin título del grupo**: van con un nombre
-  que dice "(título pendiente)" en vez de uno inventado que parezca real.
+  Drive. Los títulos son los de YouTube (oEmbed). El orden es el de
+  `videos.docx`; ahí algunos links están como hipervínculo detrás del título,
+  así que extraer el texto del Word no alcanza para verlos.
 - **Campañas** — 25 campañas reales con año, localidad y provincia, cargadas
-  en `db/seeds/campaigns.rb`, con sus fotos de `drive/CAMPAÑAS/` (23 de 25; las
-  dos de Comodoro Rivadavia tienen la carpeta vacía en el Drive). **No llevan
+  en `db/seeds/campaigns.rb`, con sus fotos de `drive/CAMPAÑAS/`: las 3
+  primeras de cada carpeta (Martín García y Lihué Calel 2016 tienen 2). **No llevan
   el prefijo `[EJEMPLO]`**: el dato es real, a diferencia del resto.
+- **Proyectos** — 18 proyectos con título, año, descripción y foto, en
+  `db/seeds/projects.rb` (de `drive/PROYECTOS/`). El documento da un solo año
+  por proyecto: `year_end = year_start` y la vista muestra el año solo. Los
+  títulos de subsidios internacionales vinieron en inglés y van tal cual.
+- **Contacto** — mail, teléfono e Instagram en `config/site.yml`.
 - **Marca** — manual, isologotipo y paleta (ver "Diseño visual").
 - **Portada** — 16 fotos candidatas en `drive/PORTADA/` (arañas de estudio
   sobre fondo blanco) y `ejemplo_portada.png`, el boceto del grupo: logo fijo
@@ -400,14 +412,15 @@ lista las carpetas y los Google Docs y **no devuelve los archivos binarios**
 
 - **Qué fotos de portada quedan** — mandaron 16 candidatas y el pedido original
   hablaba de "dos o tres". Hoy rotan las 16; que Fiorela saque las que sobren.
-- **Proyectos** (PICT, Rufford, PNUD) — no existe la carpeta, cero datos
-- **Publicaciones científicas** — no existe la carpeta, cero datos
+- **Publicaciones científicas** — `drive/PUBLICACIONES/` trae solo el CV
+  SIGEVA de Ferretti. Se decidió no cargarlo a mano: las reales llegan con la
+  sincronización de BICYT. Mientras tanto quedan las de `[EJEMPLO]`.
 - Descripciones de las campañas
 - **Coordenadas reales de las campañas.** Las cargadas son estimadas a partir
   de la localidad: van con `coords_estimated: true` y el mapa avisa que la
   ubicación es aproximada. Al reemplazarlas por las del grupo, bajar el flag.
-- Títulos de 4 de los 7 videos (3 vinieron nombrados)
-- Texto de la nota de "Semana de la Ciencia", que el doc "Ideas" menciona pero
+- Texto de la nota de "Semana de la Ciencia" (las fotos y el video ya están en
+  `drive/DIVULGACION/`), que el doc "Ideas" menciona pero
   no incluye
 - Perfiles de CONICET del equipo: ya no hace falta pedirlos, son las fichas de
   BICYT (`/fichas/persona/<bicyt_id>`, ver "Sincronización automática").

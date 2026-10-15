@@ -14,11 +14,11 @@ sin fotos y el sitio sigue funcionando (hay placeholders en las vistas).
 alfabético de nombre de archivo, así que alcanza con numerarlas:
 
 ```
-equipo/      1.jpg  2.jpg  3.jpg  4.jpg → una por integrante, en orden de listado
-proyectos/   1.jpg  2.jpg  3.jpg        → una por proyecto, en orden
-campanas/    1.jpg  2.jpg  3.jpg  4.jpg → de a dos por campaña (1+2, 3+4, 5+6)
 logo/        logo.svg  (o logo.png)     → reemplaza el placeholder del menú
 ```
+
+Es lo único que queda: las fotos del equipo, los proyectos, las campañas y la
+portada ya son reales y salen de `drive/` (cada una en su seed de `db/seeds/`).
 
 Formatos: `.jpg`, `.jpeg`, `.png`, `.webp`, `.avif`. Para el logo también `.svg`.
 

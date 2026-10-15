@@ -18,6 +18,14 @@
       </div>
     <% end %>
 
+    <% phone = Rails.application.config.site[:phone] %>
+    <% if phone.present? %>
+      <div class="mt-8">
+        <p class="lbl"><%= t("contacto.telefono") %></p>
+        <%= link_to phone, "tel:#{phone.delete('^+0-9')}", class: "mt-1 inline-block text-[17px] text-accent hover:underline" %>
+      </div>
+    <% end %>
+
     <%# Redes: se muestran solo las que el grupo ya pasó (config/site.yml). %>
     <% redes = %i[instagram facebook cerzos researchgate]
                  .index_with { |red| Rails.application.config.site[red] }

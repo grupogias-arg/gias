@@ -16,17 +16,20 @@
     <div class="min-w-0">
       <p class="lbl">
         <%= enum_label(project, :funder) %>
-        <% if project.year_start.present? %>
+        <%# Los subsidios del Drive vinieron con un solo año: ahí no va rango. %>
+        <% if project.year_start.present? && project.year_end == project.year_start %>
+          · <%= project.year_start %>
+        <% elsif project.year_start.present? %>
           · <%= project.year_start %>–<%= project.ongoing? ? t("proyectos.en_curso") : project.year_end %>
         <% end %>
       </p>
 
       <h3 class="mt-1 font-serif text-[20px] font-light leading-snug tracking-[-0.012em]">
-        <%= project.localized_title %>
+        <%= sci_text(project.localized_title) %>
       </h3>
 
       <% if project.localized_description.present? %>
-        <p class="mt-2 max-w-[62ch] text-[15px] text-ink-soft"><%= project.localized_description %></p>
+        <p class="mt-2 max-w-[62ch] text-[15px] text-ink-soft"><%= sci_text(project.localized_description) %></p>
       <% end %>
     </div>
   </div>

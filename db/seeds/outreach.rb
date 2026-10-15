@@ -3,7 +3,7 @@
 # =============================================================================
 #
 # Sale de drive/DIVULGACION/:
-#   - Untitled document.docx → artículos de los boletines del CERZOS
+#   - Artículos de divulgación.docx → artículos de los boletines del CERZOS
 #   - videos.docx            → los videos de YouTube
 #
 # Los IDs de YouTube ya estaban en docs/pedido.md (la transcripción del pedido
@@ -34,33 +34,37 @@ outreach_items = [
   #
   # Tampoco llevan `title_en`: son títulos propios de videos en español, no
   # hay nada que traducir. El fallback del Translatable muestra el español.
+  #
+  # El orden es el de videos.docx. El de BBC Earth no es del grupo, pero lo
+  # agregaron ellos a la lista.
   {
-    youtube_id: "c8wVs0mjo2g", kind: "video", position: 1,
-    title: "Científicos Industria Argentina - Arañas migalomorfas (Sierra de la Ventana) - 19-04-14 (1 de 2)"
-  },
-  {
-    youtube_id: "G0rQ4M6Bn2g", kind: "video", position: 2,
-    title: "Científicos Industria Argentina - Arañas migalomorfas (Sierra de la Ventana) - 19-04-14 (2 de 2)"
-  },
-  {
-    youtube_id: "VmMngNKGHZs", kind: "video", position: 3,
+    youtube_id: "VmMngNKGHZs", kind: "video", position: 1,
     title: "Todo a Conciencia N° 14 - Radio UNS | CERZOS 2"
   },
   {
-    youtube_id: "AWkgMSYrO58", kind: "video", position: 4,
-    title: "Micaela - Maite - Micaela - Carolina - GIAS | #FuturoPerfecto - 13/09 | Vorterix Bahía"
-  },
-  {
-    youtube_id: "oY8VEKq4E_E", kind: "video", position: 5,
+    youtube_id: "oY8VEKq4E_E", kind: "video", position: 2,
     title: "MITOS Y VERDADES DE LAS ARAÑAS EN BAHÍA BLANCA"
   },
   {
-    youtube_id: "R7u8xPvLqO4", kind: "video", position: 6,
-    title: "CRÁNEOS - EPISODIO 13: CÓMO PERDER EL MIEDO A LAS ARAÑAS"
+    # En videos.docx el link está como hipervínculo detrás del título.
+    youtube_id: "AWkgMSYrO58", kind: "video", position: 3,
+    title: "Micaela - Maite - Micaela - Carolina - GIAS | #FuturoPerfecto - 13/09 | Vorterix Bahía"
   },
   {
-    youtube_id: "PL6qyA57C9DZ1pFmW1XenrqlcDU0navmSq", kind: "playlist", position: 7,
-    title: "Futuro Perfecto - Vorterix Bahía"
+    youtube_id: "6p8VTZJm7UE", kind: "video", position: 4,
+    title: "Don't Lose Your Head! Tarantula Mating | Wild Patagonia | BBC Earth"
+  },
+  {
+    youtube_id: "c8wVs0mjo2g", kind: "video", position: 5,
+    title: "Científicos Industria Argentina - Arañas migalomorfas (Sierra de la Ventana) - 19-04-14 (1 de 2)"
+  },
+  {
+    youtube_id: "G0rQ4M6Bn2g", kind: "video", position: 6,
+    title: "Científicos Industria Argentina - Arañas migalomorfas (Sierra de la Ventana) - 19-04-14 (2 de 2)"
+  },
+  {
+    youtube_id: "R7u8xPvLqO4", kind: "video", position: 7,
+    title: "CRÁNEOS - EPISODIO 13: CÓMO PERDER EL MIEDO A LAS ARAÑAS"
   },
 
   # -- Artículos de los boletines del CERZOS ---------------------------------
@@ -111,6 +115,10 @@ outreach_items = [
 
 # Hasta que llegó el material del Drive, esta sección era toda inventada.
 OutreachItem.where("title LIKE ?", "#{MARK}%").destroy_all
+
+# La playlist de Futuro Perfecto estaba en la primera versión de videos.docx
+# y el grupo la sacó.
+OutreachItem.where(youtube_id: "PL6qyA57C9DZ1pFmW1XenrqlcDU0navmSq").destroy_all
 
 outreach_items.each do |attributes|
   # Los videos se identifican por su ID de YouTube: varios comparten el título

@@ -138,9 +138,13 @@ es:
         divulgacion: Divulgación
     project:
       funder:
-        pict: PICT
-        rufford: Rufford
-        pnud: PNUD
+        pict: PICT (FONCyT)
+        sgcyt_uns: SGCyT (UNS)
+        aas: American Arachnological Society
+        rufford: Rufford Foundation
+        bts: British Tarantula Society
+        isa: International Society of Arachnology
+        ngc: Neotropical Grassland Conservancy
         otros: Otros
     outreach_item:
       kind:
