@@ -52,7 +52,7 @@ gem "aws-sdk-s3", require: false
 # Con json 3 se rompe cualquier columna serializada en JSON, entre ellas el
 # `metadata` de los blobs de Active Storage: no se puede adjuntar una imagen.
 # Se destraba cuando Rails se adapte a json 3.
-gem "json", "~> 2.19"
+gem "json", "~> 3.0"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
