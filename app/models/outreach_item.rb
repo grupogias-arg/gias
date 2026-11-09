@@ -8,7 +8,7 @@ class OutreachItem < ApplicationRecord
   translates :title
 
   validates :title, presence: true
-  validates :url, format: { with: %r{\Ahttps?://}i }, allow_blank: true
+  validates :url, format: { with: %r{\Ahttps?://\S+\z}i }, allow_blank: true
   validates :youtube_id, format: { with: /\A[\w-]+\z/ }, allow_blank: true
   validate :url_or_youtube_id_present
 

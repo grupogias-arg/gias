@@ -16,7 +16,7 @@ class Member < ApplicationRecord
   validates :name, presence: true
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }, allow_blank: true
   validates :conicet_url, :researchgate_url,
-            format: { with: %r{\Ahttps?://}i }, allow_blank: true
+            format: { with: %r{\Ahttps?://\S+\z}i }, allow_blank: true
   validates :position, numericality: { only_integer: true }
 
   scope :ordered, -> { order(:position, :name) }
