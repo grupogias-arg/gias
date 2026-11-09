@@ -220,10 +220,23 @@ campos con ayuda, previsualización de imágenes.
 
 Aviso: van a pegar texto desde Word. Sanitizar el HTML pegado en Trix.
 
-### Estado (octubre de 2026)
-Hecho: login, **Novedades** y **Portada** (`/admin/portada`: subir varias
-fotos de una vez, flechas para reordenar, sacar). Faltan los demás modelos,
-que siguen el mismo patrón (`Admin::BaseController`, helper `admin_field`, clases `admin-*`).
+### Estado (noviembre de 2026)
+Hecho: login y todas las secciones. **Novedades**, **Portada** (subir varias
+fotos de una vez, flechas para reordenar, sacar), **Equipo**,
+**Publicaciones**, **Proyectos**, **Campañas** y **Divulgación**. Patrón:
+`Admin::BaseController`, helper `admin_field`, clases `admin-*` y los
+parciales de `admin/shared/` (errores, bloque "En inglés", foto con vista
+previa, borrar).
+
+- **Orden a mano** (Portada, Equipo, Divulgación): flechas ↑↓ con el concern
+  `Admin::Reorderable`. Lo nuevo entra al final.
+- **Foto única** (`has_one_attached`): campo vacío es "no cambiar"; para
+  sacarla hay una casilla (`removing_attachment` en `Admin::BaseController`).
+- **Campañas**: mapa en el formulario (`coords_picker_controller.js`): un toque
+  completa latitud y longitud. También acepta el par pegado de Google Maps.
+- **Se pegan links, no IDs**: `OutreachItem` saca el ID de cualquier link de
+  YouTube y `Publication` normaliza el DOI pegado como `https://doi.org/…`.
+- Falta: traer título, autores y año desde Crossref al pegar un DOI.
 
 - **Login**: el generador de autenticación de Rails 8, acotado a `/admin`
   (`Admin::BaseController` incluye `Authentication`; el sitio público no pide

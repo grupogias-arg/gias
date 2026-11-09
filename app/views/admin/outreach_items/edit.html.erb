@@ -1,0 +1,12 @@
+<% content_for :title, "Editar: #{@outreach_item.title_in_database}" %>
+
+<div class="max-w-3xl">
+  <%= link_to "← Divulgación", admin_outreach_items_path, class: "font-mono text-[10.5px] uppercase tracking-[0.11em] text-accent hover:underline" %>
+  <h1 class="mt-3 mb-8 font-serif text-[28px] font-light leading-tight"><%= @outreach_item.title_in_database %></h1>
+
+  <%= render "form", outreach_item: @outreach_item %>
+
+  <%= render "admin/shared/destroy", label: "Borrar el material", name: @outreach_item.title_in_database,
+             hint: "Deja de aparecer en el sitio. El video o el archivo original no se tocan.",
+             path: admin_outreach_item_path(@outreach_item) %>
+</div>

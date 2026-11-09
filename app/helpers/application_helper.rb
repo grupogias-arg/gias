@@ -132,14 +132,16 @@ module ApplicationHelper
   end
 
   # Link del menú: resaltado fuerte en hover, fondo sólido (CLAUDE.md).
-  def nav_link_to(label, path, **options)
-    active = current_page?(path)
-
+  #
+  # `active:` marca el link a mano, para cuando la página actual no es
+  # exactamente `path` (el panel resalta la sección también al editar).
+  def nav_link_to(label, path, active: current_page?(path), css_class: nil, **options)
     link_to label, path,
             class: [
               "block px-3 py-2 text-[12.5px] rounded-[2px] transition-colors",
               ("bg-structure text-paper" if active),
-              ("text-ink-soft hover:bg-structure hover:text-paper" unless active)
+              ("text-ink-soft hover:bg-structure hover:text-paper" unless active),
+              css_class
             ],
             **options
   end

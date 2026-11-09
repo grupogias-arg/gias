@@ -1,0 +1,12 @@
+<%# Encabezado de los listados del panel: título, para qué sirve y el botón de agregar. %>
+<div class="flex flex-wrap items-end justify-between gap-4">
+  <div>
+    <p class="lbl">Panel</p>
+    <h1 class="mt-1 font-serif text-[32px] font-light leading-tight"><%= title %></h1>
+    <p class="mt-2 max-w-[62ch] text-ink-soft">
+      <%= intro %>
+      <%= link_to "Ver la página en el sitio", site_path, class: "text-accent hover:underline", **new_tab %>
+    </p>
+  </div>
+  <%= link_to new_label, new_path, class: "admin-button-primary" %>
+</div>

@@ -1,0 +1,133 @@
+<% content_for :head do %>
+  <%= stylesheet_link_tag "leaflet" %>
+<% end %>
+
+<%= form_with model: [ :admin, campaign ] do |form| %>
+  <%= render "admin/shared/errors", record: campaign %>
+
+  <%= admin_field form, :name, hint: "Por ejemplo «Sierra de la Ventana» o «Reserva de Biósfera Ñacuñán»." do %>
+    <%= form.text_field :name, class: "admin-input", required: true %>
+  <% end %>
+
+  <div class="admin-row sm:grid-cols-2">
+    <%= admin_field form, :locality do %>
+      <%= form.text_field :locality, class: "admin-input" %>
+    <% end %>
+
+    <%= admin_field form, :province do %>
+      <%= form.text_field :province, class: "admin-input" %>
+    <% end %>
+  </div>
+
+  <div class="admin-field">
+    <p class="admin-label">Cuándo</p>
+    <p class="admin-hint">
+      Alcanza con el año. Si la campaña se repitió varios años, poné el primero y el último.
+      La fecha exacta y los días son opcionales; si hay fecha, el sitio muestra esa en vez del año.
+    </p>
+    <div class="mt-2 grid grid-cols-2 gap-4 sm:grid-cols-4">
+      <div>
+        <%= form.label :year_start, "Año", class: "text-[13.5px] text-ink-soft" %>
+        <%= form.number_field :year_start, class: "admin-input", min: 1901 %>
+      </div>
+      <div>
+        <%= form.label :year_end, "Hasta (opcional)", class: "text-[13.5px] text-ink-soft" %>
+        <%= form.number_field :year_end, class: "admin-input", min: 1901 %>
+      </div>
+      <div>
+        <%= form.label :date, "Fecha exacta", class: "text-[13.5px] text-ink-soft" %>
+        <%= form.date_field :date, class: "admin-input" %>
+      </div>
+      <div>
+        <%= form.label :days, "Días", class: "text-[13.5px] text-ink-soft" %>
+        <%= form.number_field :days, class: "admin-input", min: 1 %>
+      </div>
+    </div>
+    <% if (errors = %i[year_start year_end date days].flat_map { |name| campaign.errors.full_messages_for(name) }).any? %>
+      <p class="admin-error"><%= errors.to_sentence %></p>
+    <% end %>
+  </div>
+
+  <%= admin_field form, :description, hint: "Opcional. Qué se hizo, qué especies se buscaron, quiénes fueron." do %>
+    <%= form.text_area :description, rows: 5, class: "admin-input" %>
+  <% end %>
+
+  <%= render layout: "admin/shared/english", locals: { record: campaign } do %>
+    <%= admin_field form, :name_en do %>
+      <%= form.text_field :name_en, class: "admin-input" %>
+    <% end %>
+
+    <%= admin_field form, :description_en do %>
+      <%= form.text_area :description_en, rows: 5, class: "admin-input" %>
+    <% end %>
+  <% end %>
+
+  <div class="admin-fieldset" data-controller="coords-picker">
+    <div class="admin-field">
+      <p class="admin-label">Ubicación en el mapa</p>
+      <p class="admin-hint">
+        Tocá el mapa donde fue la campaña y se completan solas la latitud y la longitud. También se
+        pueden pegar los números (por ejemplo, de Google Maps). Para sacarla del mapa, borrá los dos.
+      </p>
+      <div class="mt-3 h-[340px] w-full border border-hairline" data-coords-picker-target="map"></div>
+
+      <div class="mt-3 grid grid-cols-2 gap-4 sm:max-w-md">
+        <div>
+          <%= form.label :lat, class: "text-[13.5px] text-ink-soft" %>
+          <%= form.text_field :lat, inputmode: "decimal", class: "admin-input font-mono", placeholder: "-38.1333",
+                              data: { coords_picker_target: "lat", action: "change->coords-picker#sync" } %>
+        </div>
+        <div>
+          <%= form.label :lng, class: "text-[13.5px] text-ink-soft" %>
+          <%= form.text_field :lng, inputmode: "decimal", class: "admin-input font-mono", placeholder: "-61.7833",
+                              data: { coords_picker_target: "lng", action: "change->coords-picker#sync" } %>
+        </div>
+      </div>
+      <% if (errors = campaign.errors.full_messages_for(:lat) + campaign.errors.full_messages_for(:lng)).any? %>
+        <p class="admin-error"><%= errors.to_sentence %></p>
+      <% end %>
+
+      <label class="mt-4 flex items-start gap-2 text-[15px]">
+        <%= form.check_box :coords_estimated, class: "mt-1 size-4 shrink-0 accent-structure" %>
+        <span>
+          Es una ubicación aproximada
+          <span class="admin-hint block">El sitio avisa que la ubicación es aproximada. Destildalo cuando sea el lugar real.</span>
+        </span>
+      </label>
+    </div>
+  </div>
+
+  <div class="admin-fieldset">
+    <%= admin_field form, :photos,
+                    hint: "El sitio muestra las #{Campaign::EXPECTED_PHOTOS} primeras. Podés elegir varias a la vez. No hace falta achicarlas." do %>
+      <%# Sin este campo vacío, destildar todas las fotos no borraría ninguna. %>
+      <%= hidden_field_tag "campaign[photos][]", "", id: nil %>
+
+      <div data-controller="image-preview">
+        <% if campaign.photos.any?(&:persisted?) %>
+          <ul class="mt-3 flex flex-wrap gap-3">
+            <% campaign.photos.select(&:persisted?).each do |photo| %>
+              <li>
+                <label class="block cursor-pointer">
+                  <%= image_tag url_for(photo.variant(:sm)), alt: photo.filename.to_s, class: "aspect-[4/3] w-36 border border-hairline object-cover" %>
+                  <span class="mt-1 flex items-center gap-2 text-[13.5px]">
+                    <%= check_box_tag "campaign[photos][]", photo.signed_id, true, id: nil, class: "size-4 accent-structure" %>
+                    Queda
+                  </span>
+                </label>
+              </li>
+            <% end %>
+          </ul>
+          <p class="admin-hint mt-2">Destildá una foto para sacarla. Las nuevas se agregan después de estas.</p>
+        <% end %>
+
+        <%= form.file_field :photos, multiple: true, direct_upload: true, accept: "image/jpeg,image/png,image/webp",
+                            class: "admin-input text-[14.5px]",
+                            data: { image_preview_target: "input", action: "image-preview#show" } %>
+        <div class="mt-3 flex flex-wrap gap-3" data-image-preview-target="preview"></div>
+      </div>
+    <% end %>
+  </div>
+
+  <%= render "admin/shared/form_actions", form: form, cancel_path: admin_campaigns_path %>
+<% end %>

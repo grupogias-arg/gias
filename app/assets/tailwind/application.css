@@ -163,6 +163,13 @@
 @layer components {
   .admin-field + .admin-field { margin-top: 1.75rem; }
 
+  /* Campos lado a lado (localidad y provincia, año y revista). Las columnas
+     se ponen en la vista; en celular quedan uno abajo del otro. */
+  .admin-row { display: grid; gap: 1.75rem 1.5rem; }
+  .admin-field + .admin-row,
+  .admin-row + .admin-field { margin-top: 1.75rem; }
+  .admin-row > .admin-field { margin-top: 0; }
+
   .admin-label {
     display: block;
     font-weight: 600;

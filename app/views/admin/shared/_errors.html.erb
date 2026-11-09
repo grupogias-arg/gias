@@ -1,0 +1,11 @@
+<%# Resumen de errores arriba del formulario. Cada campo repite el suyo abajo. %>
+<% if record.errors.any? %>
+  <div class="mb-8 border-l-2 border-vino bg-paper-2 px-4 py-3" role="alert">
+    <p class="font-semibold text-vino"><%= t("errors.template.header", count: record.errors.count) %></p>
+    <ul class="mt-1 list-disc pl-5 text-[14.5px]">
+      <% record.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

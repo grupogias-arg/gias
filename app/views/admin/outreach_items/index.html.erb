@@ -1,0 +1,36 @@
+<% content_for :title, "Divulgación" %>
+
+<%= render "admin/shared/index_header", title: "Divulgación",
+           intro: "Videos, artículos, guías y actividades. En el sitio los videos van arriba y el resto abajo, cada grupo en este orden.",
+           new_label: "Agregar material", new_path: new_admin_outreach_item_path, site_path: outreach_items_path %>
+
+<% if @outreach_items.empty? %>
+  <p class="mt-10 text-ink-soft">Todavía no hay material. Empezá con «Agregar material».</p>
+<% else %>
+  <ol class="mt-8 divide-y divide-hairline border-y border-hairline">
+    <% @outreach_items.each_with_index do |item, index| %>
+      <li class="flex flex-col gap-3 py-4 sm:flex-row sm:items-center">
+        <div class="flex min-w-0 flex-1 items-center gap-4">
+          <% if item.video? && item.youtube_id.present? %>
+            <%= image_tag "https://i.ytimg.com/vi/#{item.youtube_id}/mqdefault.jpg", alt: "", loading: "lazy",
+                          class: "aspect-video w-24 shrink-0 border border-hairline object-cover" %>
+          <% end %>
+          <div class="min-w-0">
+            <p class="font-mono text-[10.5px] uppercase tracking-[0.1em] text-ink-soft"><%= enum_label(item, :kind) %></p>
+            <%= link_to item.title, edit_admin_outreach_item_path(item),
+                        class: "mt-1 block font-serif text-[18px] font-light leading-snug hover:text-accent" %>
+            <% if item.authors.present? %>
+              <p class="mt-0.5 text-[13.5px] text-ink-soft"><%= item.authors %></p>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="flex shrink-0 items-center gap-1.5">
+          <%= render "admin/shared/move_buttons", first: index.zero?, last: index == @outreach_items.size - 1,
+                     path: ->(direction) { move_admin_outreach_item_path(item, direction: direction) } %>
+          <%= link_to "Editar", edit_admin_outreach_item_path(item), class: "admin-button ml-1.5 py-1.5 text-[13.5px]" %>
+        </div>
+      </li>
+    <% end %>
+  </ol>
+<% end %>

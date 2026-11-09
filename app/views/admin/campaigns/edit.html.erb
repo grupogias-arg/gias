@@ -1,0 +1,12 @@
+<% content_for :title, "Editar: #{@campaign.name_in_database}" %>
+
+<div class="max-w-3xl">
+  <%= link_to "← Campañas", admin_campaigns_path, class: "font-mono text-[10.5px] uppercase tracking-[0.11em] text-accent hover:underline" %>
+  <h1 class="mt-3 mb-8 font-serif text-[28px] font-light leading-tight"><%= @campaign.name_in_database %></h1>
+
+  <%= render "form", campaign: @campaign %>
+
+  <%= render "admin/shared/destroy", label: "Borrar la campaña", name: @campaign.name_in_database,
+             hint: "Se borra del sitio y del mapa, con sus fotos.",
+             path: admin_campaign_path(@campaign) %>
+</div>

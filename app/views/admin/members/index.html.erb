@@ -1,0 +1,36 @@
+<% content_for :title, "Equipo" %>
+
+<%= render "admin/shared/index_header", title: "Equipo",
+           intro: "Las personas del grupo, en el orden en que aparecen en el sitio. Con las flechas se cambia el orden.",
+           new_label: "Agregar integrante", new_path: new_admin_member_path, site_path: members_path %>
+
+<% if @members.empty? %>
+  <p class="mt-10 text-ink-soft">Todavía no hay integrantes. Empezá con «Agregar integrante».</p>
+<% else %>
+  <ol class="mt-8 divide-y divide-hairline border-y border-hairline">
+    <% @members.each_with_index do |member, index| %>
+      <li class="flex flex-col gap-3 py-4 sm:flex-row sm:items-center">
+        <div class="flex min-w-0 flex-1 items-center gap-4">
+          <% if member.photo.attached? %>
+            <%= image_tag url_for(member.photo.variant(:sm)), alt: "", class: "size-14 shrink-0 border border-hairline object-cover" %>
+          <% else %>
+            <%= photo_placeholder "Sin foto", css_class: "size-14 shrink-0" %>
+          <% end %>
+          <div class="min-w-0">
+            <%= link_to member.name, edit_admin_member_path(member),
+                        class: "block font-serif text-[20px] font-light leading-snug hover:text-accent" %>
+            <p class="font-mono text-[10.5px] uppercase tracking-[0.1em] text-ink-soft">
+              <%= [ member.rank, member.sede ].compact_blank.join(" · ") %>
+            </p>
+          </div>
+        </div>
+
+        <div class="flex shrink-0 items-center gap-1.5">
+          <%= render "admin/shared/move_buttons", first: index.zero?, last: index == @members.size - 1,
+                     path: ->(direction) { move_admin_member_path(member, direction: direction) } %>
+          <%= link_to "Editar", edit_admin_member_path(member), class: "admin-button ml-1.5 py-1.5 text-[13.5px]" %>
+        </div>
+      </li>
+    <% end %>
+  </ol>
+<% end %>

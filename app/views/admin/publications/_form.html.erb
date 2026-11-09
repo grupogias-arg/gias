@@ -1,0 +1,54 @@
+<%= form_with model: [ :admin, publication ] do |form| %>
+  <%= render "admin/shared/errors", record: publication %>
+
+  <%= admin_field form, :kind do %>
+    <%= form.select :kind, Publication::KINDS.map { |kind| [ t("enums.publication.kind.#{kind}"), kind ] }, {}, class: "admin-input sm:w-60" %>
+  <% end %>
+
+  <%= admin_field form, :doi,
+                  hint: "Obligatorio en las científicas: es el link a la revista. Se puede pegar el link entero (https://doi.org/10.…) o solo el número que empieza con «10.»." do %>
+    <%= form.text_field :doi, class: "admin-input font-mono", placeholder: "10.1234/abcd.5678" %>
+  <% end %>
+
+  <%= admin_field form, :title, hint: "Tal cual se publicó. Los nombres de especies se ponen en cursiva solos." do %>
+    <%= form.text_area :title, rows: 2, class: "admin-input", required: true %>
+  <% end %>
+
+  <%= admin_field form, :authors, hint: "Como aparecen en el artículo, por ejemplo «Ferretti N., Schwerdt L.»." do %>
+    <%= form.text_field :authors, class: "admin-input" %>
+  <% end %>
+
+  <div class="admin-row sm:grid-cols-[10rem_1fr]">
+    <%= admin_field form, :year do %>
+      <%= form.number_field :year, class: "admin-input", min: 1901, max: Date.current.year + 1 %>
+    <% end %>
+
+    <%= admin_field form, :journal do %>
+      <%= form.text_field :journal, class: "admin-input" %>
+    <% end %>
+  </div>
+
+  <%= render layout: "admin/shared/english", locals: { record: publication } do %>
+    <%= admin_field form, :title_en, hint: "Solo si el artículo está en español y tiene título en inglés." do %>
+      <%= form.text_area :title_en, rows: 2, class: "admin-input" %>
+    <% end %>
+  <% end %>
+
+  <div class="admin-fieldset">
+    <%= admin_field form, :pdf,
+                    hint: "Opcional. Subilo solo si la revista permite compartir el PDF publicado (muchas no lo permiten). Si no, alcanza con el DOI." do %>
+      <% if publication.pdf.attached? && publication.pdf.persisted? %>
+        <label class="mt-3 flex items-center gap-2 text-[15px]">
+          <%= check_box_tag "sacar_pdf", "1", false, class: "size-4 accent-structure" %>
+          Sacar <%= publication.pdf.filename %>
+          <span class="font-mono text-[10.5px] text-ink-soft">(<%= number_to_human_size(publication.pdf.byte_size) %>)</span>
+        </label>
+        <p class="admin-hint mt-2">Para cambiarlo, elegí otro abajo: reemplaza al actual.</p>
+      <% end %>
+
+      <%= form.file_field :pdf, direct_upload: true, accept: "application/pdf", class: "admin-input text-[14.5px]" %>
+    <% end %>
+  </div>
+
+  <%= render "admin/shared/form_actions", form: form, cancel_path: admin_publications_path %>
+<% end %>

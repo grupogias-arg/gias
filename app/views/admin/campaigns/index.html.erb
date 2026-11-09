@@ -1,0 +1,38 @@
+<% content_for :title, "Campañas" %>
+
+<%= render "admin/shared/index_header", title: "Campañas",
+           intro: "Las salidas de campo, de la más nueva a la más vieja. Cada una lleva hasta #{Campaign::EXPECTED_PHOTOS} fotos y un punto en el mapa.",
+           new_label: "Agregar campaña", new_path: new_admin_campaign_path, site_path: campaigns_path %>
+
+<% if @campaigns.empty? %>
+  <p class="mt-10 text-ink-soft">Todavía no hay campañas. Empezá con «Agregar campaña».</p>
+<% else %>
+  <ul class="mt-8 divide-y divide-hairline border-y border-hairline">
+    <% @campaigns.each do |campaign| %>
+      <li class="flex flex-col gap-3 py-4 sm:flex-row sm:items-center">
+        <div class="flex min-w-0 flex-1 items-center gap-4">
+          <% if (photo = campaign.photos.first) %>
+            <%= image_tag url_for(photo.variant(:sm)), alt: "", class: "aspect-[4/3] w-20 shrink-0 border border-hairline object-cover" %>
+          <% else %>
+            <%= photo_placeholder "Sin fotos", css_class: "aspect-[4/3] w-20 shrink-0" %>
+          <% end %>
+          <div class="min-w-0">
+            <p class="font-mono text-[10.5px] uppercase tracking-[0.1em] text-ink-soft">
+              <%= campaign.multi_year? ? "#{campaign.year_start}–#{campaign.year_end}" : campaign.year_start %>
+              <%= "· #{campaign.province}" if campaign.province.present? %>
+            </p>
+            <%= link_to campaign.name, edit_admin_campaign_path(campaign),
+                        class: "mt-1 block font-serif text-[18px] font-light leading-snug hover:text-accent" %>
+            <p class="mt-0.5 text-[13px] text-ink-soft">
+              <%= pluralize(campaign.photos.size, "foto") %>
+              · <% if !campaign.mappable? %>sin ubicación en el mapa<% elsif campaign.coords_estimated? %>ubicación aproximada<% else %>ubicación exacta<% end %>
+              <% if campaign.description.blank? %>· sin descripción<% end %>
+            </p>
+          </div>
+        </div>
+
+        <%= link_to "Editar", edit_admin_campaign_path(campaign), class: "admin-button shrink-0 self-start py-1.5 text-[13.5px] sm:self-center" %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>

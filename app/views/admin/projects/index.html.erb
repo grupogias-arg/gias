@@ -1,0 +1,35 @@
+<% content_for :title, "Proyectos" %>
+
+<%= render "admin/shared/index_header", title: "Proyectos",
+           intro: "Proyectos y subsidios, del más nuevo al más viejo.",
+           new_label: "Agregar proyecto", new_path: new_admin_project_path, site_path: projects_path %>
+
+<% if @projects.empty? %>
+  <p class="mt-10 text-ink-soft">Todavía no hay proyectos. Empezá con «Agregar proyecto».</p>
+<% else %>
+  <ul class="mt-8 divide-y divide-hairline border-y border-hairline">
+    <% @projects.each do |project| %>
+      <li class="flex flex-col gap-3 py-4 sm:flex-row sm:items-center">
+        <div class="flex min-w-0 flex-1 items-center gap-4">
+          <% if project.photo.attached? %>
+            <%= image_tag url_for(project.photo.variant(:sm)), alt: "", class: "aspect-[4/3] w-20 shrink-0 border border-hairline object-cover" %>
+          <% else %>
+            <%= photo_placeholder "Sin foto", css_class: "aspect-[4/3] w-20 shrink-0" %>
+          <% end %>
+          <div class="min-w-0">
+            <p class="font-mono text-[10.5px] uppercase tracking-[0.1em] text-ink-soft">
+              <%= enum_label(project, :funder) %>
+              <% if project.year_start.present? %>
+                · <%= project.year_start %><%= "–#{project.year_end || 'en curso'}" unless project.year_end == project.year_start %>
+              <% end %>
+            </p>
+            <%= link_to project.title, edit_admin_project_path(project),
+                        class: "mt-1 block font-serif text-[18px] font-light leading-snug hover:text-accent" %>
+          </div>
+        </div>
+
+        <%= link_to "Editar", edit_admin_project_path(project), class: "admin-button shrink-0 self-start py-1.5 text-[13.5px] sm:self-center" %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>

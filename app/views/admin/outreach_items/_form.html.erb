@@ -1,0 +1,36 @@
+<%= form_with model: [ :admin, outreach_item ] do |form| %>
+  <%= render "admin/shared/errors", record: outreach_item %>
+
+  <%= admin_field form, :kind,
+                  hint: "Los videos y las listas de YouTube se ven en el sitio con su reproductor. El resto va como link." do %>
+    <%= form.select :kind, OutreachItem::KINDS.map { |kind| [ t("enums.outreach_item.kind.#{kind}"), kind ] }, {}, class: "admin-input sm:w-72" %>
+  <% end %>
+
+  <%= admin_field form, :title, hint: "En los videos, el mismo título que tienen en YouTube." do %>
+    <%= form.text_field :title, class: "admin-input", required: true %>
+  <% end %>
+
+  <%= admin_field form, :authors, hint: "Opcional. Para los artículos firmados, por ejemplo «Schwerdt L. y Ferretti N.»." do %>
+    <%= form.text_field :authors, class: "admin-input" %>
+  <% end %>
+
+  <div class="admin-fieldset">
+    <%= admin_field form, :youtube_id, label: "Link de YouTube",
+                    hint: "Para videos y listas: pegá el link tal cual lo copiás de YouTube (botón «Compartir»). Para el resto, dejalo vacío." do %>
+      <%= form.text_field :youtube_id, value: youtube_link(outreach_item), class: "admin-input font-mono", placeholder: "https://youtu.be/…" %>
+    <% end %>
+
+    <%= admin_field form, :url, label: "Link a otro sitio",
+                    hint: "Para artículos, guías y actividades: el link al PDF o a la página donde está publicado, con https://." do %>
+      <%= form.url_field :url, class: "admin-input", placeholder: "https://…" %>
+    <% end %>
+  </div>
+
+  <%= render layout: "admin/shared/english", locals: { record: outreach_item } do %>
+    <%= admin_field form, :title_en, hint: "Solo si el material tiene título en inglés. Si es un video en español, dejalo vacío." do %>
+      <%= form.text_field :title_en, class: "admin-input" %>
+    <% end %>
+  <% end %>
+
+  <%= render "admin/shared/form_actions", form: form, cancel_path: admin_outreach_items_path %>
+<% end %>

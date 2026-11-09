@@ -1,0 +1,21 @@
+<%#
+  Campos en inglés, plegados: son opcionales y casi siempre quedan para
+  después. Se abre solo si ya hay algo cargado o si alguno tiene un error.
+  Se usa con `render layout: "admin/shared/english", locals: { record: … }`
+  y los campos _en adentro del bloque.
+%>
+<% fields = record.class.translated_attribute_names.map { |name| :"#{name}_en" }.select { |name| record.has_attribute?(name) } %>
+<% open = fields.any? { |name| record.public_send(name).present? || record.errors.include?(name) } %>
+
+<details class="admin-fieldset group" <%= "open" if open %>>
+  <summary class="cursor-pointer list-none">
+    <span class="admin-label inline">En inglés <span class="font-normal text-ink-soft">(opcional)</span></span>
+    <span class="ml-1 text-ink-soft group-open:hidden">▸ Abrir</span>
+    <span class="ml-1 hidden text-ink-soft group-open:inline">▾ Cerrar</span>
+    <p class="admin-hint">Lo que quede vacío se muestra en español en la versión en inglés del sitio.</p>
+  </summary>
+
+  <div class="mt-6">
+    <%= yield %>
+  </div>
+</details>

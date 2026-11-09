@@ -108,7 +108,8 @@ es:
         title_en: Título en inglés
         kind: Tipo
         url: Enlace
-        youtube_id: ID de YouTube
+        youtube_id: Link de YouTube
+        authors: Autores
         position: Orden en el listado
 
     errors:
@@ -120,7 +121,7 @@ es:
         outreach_item:
           attributes:
             base:
-              url_or_youtube_id_required: "Poné un enlace o un ID de YouTube."
+              url_or_youtube_id_required: "Poné un link de YouTube o un link a otro sitio."
 
   # Etiquetas de los enums, para los selects del panel de carga.
   enums:

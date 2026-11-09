@@ -1,0 +1,12 @@
+<% content_for :title, "Editar: #{@project.title_in_database}" %>
+
+<div class="max-w-3xl">
+  <%= link_to "← Proyectos", admin_projects_path, class: "font-mono text-[10.5px] uppercase tracking-[0.11em] text-accent hover:underline" %>
+  <h1 class="mt-3 mb-8 font-serif text-[28px] font-light leading-tight"><%= @project.title_in_database %></h1>
+
+  <%= render "form", project: @project %>
+
+  <%= render "admin/shared/destroy", label: "Borrar el proyecto", name: @project.title_in_database,
+             hint: "Se borra del sitio, con su foto.",
+             path: admin_project_path(@project) %>
+</div>

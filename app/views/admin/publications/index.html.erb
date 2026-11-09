@@ -1,0 +1,29 @@
+<% content_for :title, "Publicaciones" %>
+
+<%= render "admin/shared/index_header", title: "Publicaciones",
+           intro: "Artículos científicos y de divulgación, del más nuevo al más viejo.",
+           new_label: "Agregar publicación", new_path: new_admin_publication_path, site_path: publications_path %>
+
+<% if @publications.empty? %>
+  <p class="mt-10 text-ink-soft">Todavía no hay publicaciones. Empezá con «Agregar publicación».</p>
+<% else %>
+  <ul class="mt-8 divide-y divide-hairline border-y border-hairline">
+    <% @publications.each do |publication| %>
+      <li class="flex flex-col gap-3 py-4 sm:flex-row sm:items-center sm:justify-between">
+        <div class="min-w-0">
+          <p class="font-mono text-[10.5px] uppercase tracking-[0.1em] text-ink-soft">
+            <%= [ enum_label(publication, :kind), publication.year, publication.journal ].compact_blank.join(" · ") %>
+            <% if publication.pdf.attached? %>· con PDF<% end %>
+          </p>
+          <%= link_to publication.title, edit_admin_publication_path(publication),
+                      class: "mt-1 block font-serif text-[18px] font-light leading-snug hover:text-accent" %>
+          <% if publication.authors.present? %>
+            <p class="mt-0.5 text-[13.5px] text-ink-soft"><%= publication.authors %></p>
+          <% end %>
+        </div>
+
+        <%= link_to "Editar", edit_admin_publication_path(publication), class: "admin-button shrink-0 py-1.5 text-[13.5px]" %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>

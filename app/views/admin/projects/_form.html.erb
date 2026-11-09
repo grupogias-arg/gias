@@ -1,0 +1,53 @@
+<%= form_with model: [ :admin, project ] do |form| %>
+  <%= render "admin/shared/errors", record: project %>
+
+  <%= admin_field form, :title, hint: "Los nombres de especies se ponen en cursiva solos." do %>
+    <%= form.text_area :title, rows: 2, class: "admin-input", required: true %>
+  <% end %>
+
+  <%= admin_field form, :funder, hint: "Quién financia. Si no está en la lista, elegí «Otros»." do %>
+    <%= form.select :funder, Project::FUNDERS.map { |funder| [ t("enums.project.funder.#{funder}"), funder ] }, {}, class: "admin-input sm:w-96" %>
+  <% end %>
+
+  <div class="admin-field">
+    <p class="admin-label">Años</p>
+    <p class="admin-hint">
+      Si duró un solo año, poné el mismo en los dos. Si sigue en curso, dejá vacío el de cierre
+      y el sitio muestra «en curso».
+    </p>
+    <div class="mt-2 grid max-w-md grid-cols-2 gap-4">
+      <div>
+        <%= form.label :year_start, "Inicio", class: "text-[13.5px] text-ink-soft" %>
+        <%= form.number_field :year_start, class: "admin-input", min: 1901 %>
+      </div>
+      <div>
+        <%= form.label :year_end, "Cierre", class: "text-[13.5px] text-ink-soft" %>
+        <%= form.number_field :year_end, class: "admin-input", min: 1901 %>
+      </div>
+    </div>
+    <% if (errors = project.errors.full_messages_for(:year_start) + project.errors.full_messages_for(:year_end)).any? %>
+      <p class="admin-error"><%= errors.to_sentence %></p>
+    <% end %>
+  </div>
+
+  <%= admin_field form, :description, hint: "Un párrafo breve sobre de qué se trata." do %>
+    <%= form.text_area :description, rows: 5, class: "admin-input" %>
+  <% end %>
+
+  <%= render layout: "admin/shared/english", locals: { record: project } do %>
+    <%= admin_field form, :title_en do %>
+      <%= form.text_area :title_en, rows: 2, class: "admin-input" %>
+    <% end %>
+
+    <%= admin_field form, :description_en do %>
+      <%= form.text_area :description_en, rows: 5, class: "admin-input" %>
+    <% end %>
+  <% end %>
+
+  <div class="admin-fieldset">
+    <%= render "admin/shared/photo_field", form: form, attribute: :photo,
+               hint: "Opcional. Una foto del trabajo de campo o del proyecto. Si no hay, el sitio deja un recuadro vacío." %>
+  </div>
+
+  <%= render "admin/shared/form_actions", form: form, cancel_path: admin_projects_path %>
+<% end %>

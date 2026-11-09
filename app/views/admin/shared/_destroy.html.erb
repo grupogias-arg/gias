@@ -1,0 +1,8 @@
+<%# Botón de borrar, al pie del formulario de edición y separado del resto. %>
+<div class="admin-fieldset mt-16">
+  <p class="admin-label"><%= label %></p>
+  <p class="admin-hint"><%= hint %> No se puede deshacer.</p>
+  <%= button_to "Borrar", path, method: :delete,
+                class: "admin-button mt-3 border-vino text-vino hover:bg-vino hover:text-paper",
+                form: { data: { turbo_confirm: "¿Borrar «#{name}»? No se puede deshacer." } } %>
+</div>

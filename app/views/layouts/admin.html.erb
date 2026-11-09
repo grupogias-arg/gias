@@ -16,22 +16,32 @@
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
 
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= yield :head %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body class="bg-paper text-ink">
     <% if authenticated? %>
+      <%#
+        Siete secciones no entran en una línea en el celular: ahí el menú baja
+        a una segunda fila que se desliza de costado. Desde lg va todo junto.
+      %>
       <header class="border-b border-hairline bg-paper">
-        <div class="wrap flex h-[61px] items-center justify-between gap-4">
-          <div class="flex items-center gap-4">
+        <div class="wrap flex flex-wrap items-center justify-between gap-x-4 lg:h-[61px] lg:flex-nowrap">
+          <div class="flex h-[61px] items-center lg:h-auto">
             <%= link_to admin_root_path, class: "flex shrink-0 items-center", "aria-label": "Panel" do %>
               <%= image_tag "logo-sintesis.png", alt: "", width: 633, height: 513, class: "h-[28px] w-auto" %>
             <% end %>
-            <nav class="flex items-center gap-0.5" aria-label="Panel">
-              <%= nav_link_to "Novedades", admin_posts_path %>
-              <%= nav_link_to "Portada", admin_cover_photos_path %>
-            </nav>
           </div>
+
+          <nav class="order-last -mx-1 flex w-full items-center gap-0.5 overflow-x-auto pb-2 lg:order-none lg:mx-0 lg:mr-auto lg:w-auto lg:pb-0" aria-label="Panel">
+            <% [ [ "Novedades", admin_posts_path ], [ "Portada", admin_cover_photos_path ],
+                 [ "Equipo", admin_members_path ], [ "Publicaciones", admin_publications_path ],
+                 [ "Proyectos", admin_projects_path ], [ "Campañas", admin_campaigns_path ],
+                 [ "Divulgación", admin_outreach_items_path ] ].each do |label, path| %>
+              <%= nav_link_to label, path, active: request.path.start_with?(path), css_class: "shrink-0 whitespace-nowrap" %>
+            <% end %>
+          </nav>
 
           <div class="flex items-center gap-1">
             <%# Pestaña nueva a propósito: así el panel queda abierto al ir a mirar el sitio. %>

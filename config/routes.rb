@@ -16,6 +16,19 @@ Rails.application.routes.draw do
     resources :cover_photos, path: "portada", only: %i[index create destroy] do
       patch :move, on: :member, path: "mover"
     end
+
+    # El resto de las secciones: listado y formulario, sin página propia. Para
+    # ver cómo queda, el listado tiene un link al sitio.
+    edit_paths = { new: "nuevo", edit: "editar" }
+    resources :members, path: "equipo", except: :show, path_names: edit_paths do
+      patch :move, on: :member, path: "mover"
+    end
+    resources :publications, path: "publicaciones", except: :show, path_names: { new: "nueva", edit: "editar" }
+    resources :projects, path: "proyectos", except: :show, path_names: edit_paths
+    resources :campaigns, path: "campanas", except: :show, path_names: { new: "nueva", edit: "editar" }
+    resources :outreach_items, path: "divulgacion", except: :show, path_names: edit_paths do
+      patch :move, on: :member, path: "mover"
+    end
   end
 
   # Bilingüe ES/EN con español por defecto (CLAUDE.md).

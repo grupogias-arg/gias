@@ -1,0 +1,12 @@
+<% content_for :title, "Editar: #{@publication.title_in_database}" %>
+
+<div class="max-w-3xl">
+  <%= link_to "← Publicaciones", admin_publications_path, class: "font-mono text-[10.5px] uppercase tracking-[0.11em] text-accent hover:underline" %>
+  <h1 class="mt-3 mb-8 font-serif text-[28px] font-light leading-tight"><%= @publication.title_in_database %></h1>
+
+  <%= render "form", publication: @publication %>
+
+  <%= render "admin/shared/destroy", label: "Borrar la publicación", name: @publication.title_in_database,
+             hint: "Se borra del sitio, con su PDF si tenía.",
+             path: admin_publication_path(@publication) %>
+</div>

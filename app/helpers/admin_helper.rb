@@ -19,6 +19,14 @@ module AdminHelper
     end
   end
 
+  # El ID guardado, de vuelta como link: en el formulario se pega un link, así
+  # que se muestra un link (ver OutreachItem#extract_youtube_id).
+  def youtube_link(item)
+    return item.youtube_id if item.youtube_id.blank? || item.errors.include?(:youtube_id)
+
+    item.playlist? ? "https://www.youtube.com/playlist?list=#{item.youtube_id}" : "https://youtu.be/#{item.youtube_id}"
+  end
+
   STATUS_LABELS = {
     borrador:   "Borrador",
     programada: "Programada",

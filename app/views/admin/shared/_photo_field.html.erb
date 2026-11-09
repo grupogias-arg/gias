@@ -1,0 +1,25 @@
+<%#
+  Una sola foto (has_one_attached): la actual, la casilla para sacarla y el
+  campo para subir otra, con vista previa de lo que se eligió.
+%>
+<% attachment = form.object.public_send(attribute) %>
+
+<%= admin_field form, attribute, hint: hint do %>
+  <div data-controller="image-preview">
+    <% if attachment.attached? && attachment.persisted? %>
+      <div class="mt-3 flex items-end gap-4" data-image-preview-target="current">
+        <%= image_tag url_for(attachment.variant(:sm)), alt: "", class: "h-28 w-auto border border-hairline bg-paper-2 object-cover" %>
+        <label class="flex items-center gap-2 text-[15px]">
+          <%= check_box_tag "sacar_#{attribute}", "1", false, class: "size-4 accent-structure" %>
+          Sacar la foto
+        </label>
+      </div>
+      <p class="admin-hint mt-2">Para cambiarla, elegí otra abajo: reemplaza a la actual.</p>
+    <% end %>
+
+    <%= form.file_field attribute, direct_upload: true, accept: "image/jpeg,image/png,image/webp",
+                        class: "admin-input text-[14.5px]",
+                        data: { image_preview_target: "input", action: "image-preview#show" } %>
+    <div class="mt-3 flex flex-wrap gap-3" data-image-preview-target="preview"></div>
+  </div>
+<% end %>

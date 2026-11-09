@@ -1,0 +1,59 @@
+<%= form_with model: [ :admin, member ] do |form| %>
+  <%= render "admin/shared/errors", record: member %>
+
+  <%= admin_field form, :name, hint: "Como quiere que aparezca, por ejemplo «Nelson E. Ferretti»." do %>
+    <%= form.text_field :name, class: "admin-input", required: true %>
+  <% end %>
+
+  <%= admin_field form, :rank, hint: "Por ejemplo: Investigadora Asistente, Becario Doctoral, Pasante." do %>
+    <%= form.text_field :rank, class: "admin-input" %>
+  <% end %>
+
+  <%= admin_field form, :sede, hint: "Aparece al lado del cargo, por ejemplo «CERZOS» o «CERZOS · DBByF (UNS)»." do %>
+    <%= form.text_field :sede, class: "admin-input" %>
+  <% end %>
+
+  <%= admin_field form, :focus, hint: "Una o dos oraciones con el tema central de su trabajo. Va destacada arriba de la descripción." do %>
+    <%= form.text_area :focus, rows: 3, class: "admin-input" %>
+  <% end %>
+
+  <%= admin_field form, :bio, hint: "El resto del texto. Los nombres de especies y géneros se ponen en cursiva solos." do %>
+    <%= form.text_area :bio, rows: 6, class: "admin-input" %>
+  <% end %>
+
+  <%= render layout: "admin/shared/english", locals: { record: member } do %>
+    <%= admin_field form, :rank_en do %>
+      <%= form.text_field :rank_en, class: "admin-input" %>
+    <% end %>
+
+    <%= admin_field form, :focus_en do %>
+      <%= form.text_area :focus_en, rows: 3, class: "admin-input" %>
+    <% end %>
+
+    <%= admin_field form, :bio_en do %>
+      <%= form.text_area :bio_en, rows: 6, class: "admin-input" %>
+    <% end %>
+  <% end %>
+
+  <div class="admin-fieldset">
+    <%= admin_field form, :email, hint: "Opcional. Si se carga, el sitio muestra un link para escribirle." do %>
+      <%= form.email_field :email, class: "admin-input" %>
+    <% end %>
+
+    <%= admin_field form, :conicet_url,
+                    hint: "Opcional. Es la ficha pública de CONICET: bicyt.conicet.gov.ar/fichas/persona/… Copiá el link completo, con https://." do %>
+      <%= form.url_field :conicet_url, class: "admin-input", placeholder: "https://bicyt.conicet.gov.ar/fichas/persona/…" %>
+    <% end %>
+
+    <%= admin_field form, :researchgate_url, hint: "Opcional. Copiá el link completo del perfil, con https://." do %>
+      <%= form.url_field :researchgate_url, class: "admin-input", placeholder: "https://www.researchgate.net/profile/…" %>
+    <% end %>
+  </div>
+
+  <div class="admin-fieldset">
+    <%= render "admin/shared/photo_field", form: form, attribute: :photo,
+               hint: "Una foto de la persona. No hace falta achicarla: el sitio arma versiones livianas para el celular." %>
+  </div>
+
+  <%= render "admin/shared/form_actions", form: form, cancel_path: admin_members_path %>
+<% end %>
