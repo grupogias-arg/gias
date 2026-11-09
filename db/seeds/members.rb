@@ -16,13 +16,15 @@
 # Las fotos salen de la misma carpeta de cada integrante (hay una sola imagen
 # por carpeta). Si drive/ no está, los integrantes se cargan igual, sin foto.
 #
-# Pendiente: ninguno mandó su perfil de CONICET, solo ResearchGate. Por eso
-# `conicet_url` queda vacío y la ficha no muestra ese link.
+# El perfil de CONICET no lo mandaron: es la ficha pública de BICYT,
+# bicyt.conicet.gov.ar/fichas/persona/<bicyt_id>. Los IDs salen de la ficha de
+# Ferretti, que lista a sus dirigidos (CLAUDE.md, "Sincronización automática").
 # =============================================================================
 
 members = [
   {
     name: "Nelson E. Ferretti",
+    conicet_url: "https://bicyt.conicet.gov.ar/fichas/persona/21413",
     rank: "Investigador Independiente",
     rank_en: "Independent Researcher",
     sede: "CERZOS · DBByF (UNS)",
@@ -36,6 +38,7 @@ members = [
   },
   {
     name: "Leonela Schwerdt",
+    conicet_url: "https://bicyt.conicet.gov.ar/fichas/persona/52301",
     rank: "Investigadora Asistente",
     rank_en: "Assistant Researcher",
     sede: "CERZOS",
@@ -49,6 +52,7 @@ members = [
   },
   {
     name: "Justina Panchuk",
+    conicet_url: "https://bicyt.conicet.gov.ar/fichas/persona/428349",
     rank: "Becaria Posdoctoral",
     rank_en: "Postdoctoral Researcher",
     sede: "CERZOS",
@@ -62,6 +66,7 @@ members = [
   },
   {
     name: "Maite Allegue",
+    conicet_url: "https://bicyt.conicet.gov.ar/fichas/persona/456846",
     rank: "Becaria Doctoral",
     rank_en: "PhD Student",
     sede: "CERZOS",
@@ -75,6 +80,7 @@ members = [
   },
   {
     name: "Micaela Nicoletta",
+    conicet_url: "https://bicyt.conicet.gov.ar/fichas/persona/436652",
     rank: "Becaria Doctoral",
     rank_en: "PhD Student",
     sede: "CERZOS",
@@ -90,6 +96,7 @@ members = [
   },
   {
     name: "Micaela Irupé Millenpeier",
+    conicet_url: "https://bicyt.conicet.gov.ar/fichas/persona/477881",
     rank: "Becaria Doctoral",
     rank_en: "PhD Student",
     sede: "CERZOS · DBByF (UNS)",
@@ -103,6 +110,7 @@ members = [
   },
   {
     name: "Fiorella Signorotto",
+    conicet_url: "https://bicyt.conicet.gov.ar/fichas/persona/478347",
     rank: "Becaria Doctoral",
     rank_en: "PhD Student",
     sede: "CERZOS",
