@@ -78,8 +78,12 @@ cada paper a mano. **Es viable y no depende de que el grupo mande nada.**
 - **BICYT** (`bicyt.conicet.gov.ar/fichas/p/nelson-edgardo-ferretti`) es el
   perfil público del SIGEVA. Lo cargan los propios investigadores porque
   CONICET los evalúa con eso, así que está curado: en los 107 artículos de
-  Ferretti no hay ningún título repetido. Responde 200, sin Cloudflare ni
-  login. Están los 7 (artículos / congresos): Ferretti 107/83 (+1 libro,
+  Ferretti no hay ningún título repetido. En octubre respondía 200, sin
+  Cloudflare ni login. **En noviembre de 2026, a `curl` con su user-agent por
+  defecto le devuelve 403 "Web Application Firewall"** (también la ficha
+  `/fichas/persona/<id>`). Antes de escribir el job, confirmar que un pedido
+  identificado como bot del sitio (user-agent propio con el mail del grupo)
+  pasa; si no, preguntarle a CONICET antes que disfrazarse de navegador. Están los 7 (artículos / congresos): Ferretti 107/83 (+1 libro,
   5 capítulos), Schwerdt 32/25, Nicoletta 10/5, Panchuk 10/17, Allegue 7/6,
   Signorotto 5/3, Millenpeier 4/1.
   - No es una API documentada. La producción se pide con
@@ -365,6 +369,15 @@ desde el último **commit** (lo no commiteado no llega), y los seeds se corren
 desde la Mac contra producción por túnel SSH, porque leen `drive/` (excluido
 de la imagen) y convierten fotos con `sips`, que es solo de macOS.
 
+El definitivo va en **cuentas del grupo** (Hetzner y Cloudflare de
+`grupogias.arg@gmail.com`, con Clara invitada): es una instalación nueva, no
+un cambio de dominio de la prueba. Los seeds se corren **una sola vez**, en la
+carga inicial: pisan lo editado en el panel. En producción no cargan las
+publicaciones `[EJEMPLO]` salvo con `SEED_PLACEHOLDERS=true`.
+
+Tests: `bin/rails test` (integración del panel y el cliente de Crossref).
+Corren también en `bin/ci` y en GitHub Actions.
+
 **Dominio:** `gias.com.ar` está registrado en NIC Argentina a nombre de
 **Nelson Ferretti** (alta 5/10/2026, vence 5/10/2027). Las delegaciones DNS
 las cambia él con su clave fiscal, no Fiorela.
@@ -438,9 +451,6 @@ reemplazar, porque el grupo no avisa qué cambió.
 - Texto de la nota de "Semana de la Ciencia" (las fotos y el video ya están en
   `drive/DIVULGACION/`), que el doc "Ideas" menciona pero
   no incluye
-- Perfiles de CONICET del equipo: ya no hace falta pedirlos, son las fichas de
-  BICYT (`/fichas/persona/<bicyt_id>`, ver "Sincronización automática").
-  Falta cargarlos en `conicet_url`
 - **ORCID iD de los 7 integrantes.** Pedido a Fiorela en octubre de 2026. Ya no
   bloquea la sincronización de Publicaciones (la llave es el `bicyt_id`); sirve
   solo como dato de la ficha

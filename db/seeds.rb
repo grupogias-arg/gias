@@ -17,26 +17,25 @@
 #
 #   bin/rails db:seed
 #
-# En producción no corre salvo que se pida explícitamente:
+# En producción carga solo lo real. Las publicaciones de ejemplo se agregan
+# únicamente si se piden:
 #
 #   SEED_PLACEHOLDERS=true bin/rails db:seed
+#
+# Ojo: los seeds pisan lo que se haya editado en el panel (textos y fotos del
+# equipo, campañas, etc.). Sirven para la carga inicial, no para después.
 #
 # =============================================================================
 
 MARK = "[EJEMPLO]".freeze
 
-if Rails.env.production? && ENV["SEED_PLACEHOLDERS"] != "true"
-  abort <<~MSG
-    Estos seeds son datos de ejemplo, no contenido real del grupo.
-    Si de verdad los querés en producción: SEED_PLACEHOLDERS=true bin/rails db:seed
-  MSG
-end
+PLACEHOLDERS = !Rails.env.production? || ENV["SEED_PLACEHOLDERS"] == "true"
 
 def example(text) = "#{MARK} #{text}"
 
 load Rails.root.join("db/seeds/support.rb")
 
-puts "Cargando seeds (solo publicaciones son de ejemplo)..."
+puts PLACEHOLDERS ? "Cargando seeds (solo publicaciones son de ejemplo)..." : "Cargando seeds (sin las publicaciones de ejemplo)..."
 
 # -- Novedades ---------------------------------------------------------------
 # Las novedades NO son de ejemplo: las 3 notas salen de drive/NEWS/, con el
@@ -90,9 +89,11 @@ publications = [
   }
 ]
 
-publications.each do |attributes|
-  key = attributes[:doi].present? ? { doi: attributes[:doi] } : { title: attributes[:title] }
-  Publication.find_or_initialize_by(**key).update!(attributes)
+if PLACEHOLDERS
+  publications.each do |attributes|
+    key = attributes[:doi].present? ? { doi: attributes[:doi] } : { title: attributes[:title] }
+    Publication.find_or_initialize_by(**key).update!(attributes)
+  end
 end
 
 # -- Proyectos ---------------------------------------------------------------
@@ -136,7 +137,7 @@ puts <<~SUMMARY
 
     Novedades .......... #{Post.count}  real (drive/NEWS)
     Equipo ............. #{Member.count}  real (drive/EQUIPO)
-    Publicaciones ...... #{Publication.count}  EJEMPLO — las reales llegan con la sincronización de BICYT
+    Publicaciones ...... #{Publication.count}  #{PLACEHOLDERS ? "EJEMPLO" : "sin cargar (para los EJEMPLO: SEED_PLACEHOLDERS=true)"} — las reales llegan con la sincronización de BICYT
     Proyectos .......... #{Project.count}  real (drive/PROYECTOS)
     Campañas ........... #{Campaign.count}  real (drive/CAMPAÑAS), coordenadas aproximadas
     Divulgación ........ #{OutreachItem.count}  real (drive/DIVULGACION + títulos de YouTube)
