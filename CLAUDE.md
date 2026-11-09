@@ -236,7 +236,10 @@ previa, borrar).
   completa latitud y longitud. También acepta el par pegado de Google Maps.
 - **Se pegan links, no IDs**: `OutreachItem` saca el ID de cualquier link de
   YouTube y `Publication` normaliza el DOI pegado como `https://doi.org/…`.
-- Falta: traer título, autores y año desde Crossref al pegar un DOI.
+- **Crossref**: el botón "Traer datos" de Publicaciones completa título,
+  autores, año y revista a partir del DOI, solo en los campos vacíos. El
+  cliente es `Crossref.work(doi)` (`app/models/crossref.rb`), pensado para que
+  lo reuse `EnrichCandidateJob`; le falta la búsqueda por título.
 
 - **Login**: el generador de autenticación de Rails 8, acotado a `/admin`
   (`Admin::BaseController` incluye `Authentication`; el sitio público no pide

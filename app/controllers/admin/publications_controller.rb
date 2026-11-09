@@ -30,6 +30,29 @@ class Admin::PublicationsController < Admin::BaseController
     end
   end
 
+  # Lo pide el botón "Traer datos" (crossref_controller.js). Responde JSON con
+  # los datos del trabajo o con un mensaje para mostrar al lado del botón.
+  def crossref
+    doi = Publication.normalize_value_for(:doi, params[:doi].to_s)
+
+    if doi.blank? || !doi.match?(Publication::DOI_FORMAT)
+      render json: { error: "Eso no parece un DOI. Tiene que empezar con «10.», por ejemplo 10.1234/abcd.5678." },
+             status: :unprocessable_entity
+    elsif (existing = Publication.where.not(id: params[:id]).find_by("LOWER(doi) = ?", doi.downcase))
+      render json: { error: "Ese DOI ya está cargado: «#{existing.title}».", edit_url: edit_admin_publication_path(existing) },
+             status: :conflict
+    elsif (work = Crossref.work(doi))
+      render json: work
+    else
+      render json: { error: "Crossref no conoce ese DOI. Revisá que esté bien copiado, o completá los datos a mano." },
+             status: :not_found
+    end
+  rescue Crossref::Error => error
+    Rails.logger.warn("[crossref] #{error.message}")
+    render json: { error: "No se pudo consultar Crossref en este momento. Probá de nuevo en un rato o completá los datos a mano." },
+           status: :bad_gateway
+  end
+
   def destroy
     @publication.destroy!
     redirect_to admin_publications_path, notice: "Se borró «#{@publication.title}».", status: :see_other

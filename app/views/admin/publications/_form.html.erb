@@ -1,4 +1,7 @@
-<%= form_with model: [ :admin, publication ] do |form| %>
+<%= form_with model: [ :admin, publication ],
+              data: { controller: "crossref",
+                      crossref_url_value: crossref_admin_publications_path,
+                      crossref_publication_id_value: publication.id } do |form| %>
   <%= render "admin/shared/errors", record: publication %>
 
   <%= admin_field form, :kind do %>
@@ -6,25 +9,31 @@
   <% end %>
 
   <%= admin_field form, :doi,
-                  hint: "Obligatorio en las científicas: es el link a la revista. Se puede pegar el link entero (https://doi.org/10.…) o solo el número que empieza con «10.»." do %>
-    <%= form.text_field :doi, class: "admin-input font-mono", placeholder: "10.1234/abcd.5678" %>
+                  hint: "Obligatorio en las científicas: es el link a la revista. Se puede pegar el link entero (https://doi.org/10.…) o solo el número que empieza con «10.». Con «Traer datos» se completan solos el título, los autores, el año y la revista." do %>
+    <div class="flex flex-col gap-2 sm:flex-row sm:items-start">
+      <%= form.text_field :doi, class: "admin-input font-mono", placeholder: "10.1234/abcd.5678",
+                          data: { crossref_target: "doi" } %>
+      <button type="button" class="admin-button shrink-0 sm:mt-2 disabled:cursor-wait disabled:opacity-60"
+              data-crossref-target="button" data-action="crossref#fetch">Traer datos</button>
+    </div>
+    <p class="admin-hint mt-2 min-h-[1.45em]" data-crossref-target="status" aria-live="polite"></p>
   <% end %>
 
   <%= admin_field form, :title, hint: "Tal cual se publicó. Los nombres de especies se ponen en cursiva solos." do %>
-    <%= form.text_area :title, rows: 2, class: "admin-input", required: true %>
+    <%= form.text_area :title, rows: 2, class: "admin-input", required: true, data: { crossref_target: "title" } %>
   <% end %>
 
   <%= admin_field form, :authors, hint: "Como aparecen en el artículo, por ejemplo «Ferretti N., Schwerdt L.»." do %>
-    <%= form.text_field :authors, class: "admin-input" %>
+    <%= form.text_field :authors, class: "admin-input", data: { crossref_target: "authors" } %>
   <% end %>
 
   <div class="admin-row sm:grid-cols-[10rem_1fr]">
     <%= admin_field form, :year do %>
-      <%= form.number_field :year, class: "admin-input", min: 1901, max: Date.current.year + 1 %>
+      <%= form.number_field :year, class: "admin-input", min: 1901, max: Date.current.year + 1, data: { crossref_target: "year" } %>
     <% end %>
 
     <%= admin_field form, :journal do %>
-      <%= form.text_field :journal, class: "admin-input" %>
+      <%= form.text_field :journal, class: "admin-input", data: { crossref_target: "journal" } %>
     <% end %>
   </div>
 

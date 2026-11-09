@@ -23,7 +23,10 @@ Rails.application.routes.draw do
     resources :members, path: "equipo", except: :show, path_names: edit_paths do
       patch :move, on: :member, path: "mover"
     end
-    resources :publications, path: "publicaciones", except: :show, path_names: { new: "nueva", edit: "editar" }
+    resources :publications, path: "publicaciones", except: :show, path_names: { new: "nueva", edit: "editar" } do
+      # Botón "Traer datos" del formulario: título, autores, año y revista por DOI.
+      get :crossref, on: :collection
+    end
     resources :projects, path: "proyectos", except: :show, path_names: edit_paths
     resources :campaigns, path: "campanas", except: :show, path_names: { new: "nueva", edit: "editar" }
     resources :outreach_items, path: "divulgacion", except: :show, path_names: edit_paths do

@@ -2,6 +2,7 @@ class Publication < ApplicationRecord
   include Translatable
 
   KINDS = %w[cientifica divulgacion].freeze
+  DOI_FORMAT = %r{\A10\.\d{4,9}/\S+\z}
 
   enum :kind, KINDS.index_by(&:itself), validate: true
 
@@ -17,7 +18,7 @@ class Publication < ApplicationRecord
 
   validates :title, presence: true
   validates :doi, uniqueness: { case_sensitive: false },
-                  format: { with: %r{\A10\.\d{4,9}/\S+\z} },
+                  format: { with: DOI_FORMAT },
                   allow_blank: true
   validates :doi, presence: true, if: :cientifica?
   validates :year,
